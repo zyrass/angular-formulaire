@@ -1,4 +1,62 @@
-<section class="bg-red-500 flex-auto grid grid-cols-2 grid-rows-3">
+<section class="bg-red-500 flex-auto grid grid-cols-4 grid-rows-3">
+  <!-- Partie Résumé du cours -->
+  <section class="bg-red-50 p-8 col-span-3 row-span-2">
+    <h2 class="mt-2 mb-4 text-center text-3xl font-bold text-red-950 uppercase">
+      Résumé du cours
+    </h2>
+    <div class="p-2">
+      <p class="bg-red-200 p-2 rounded-lg mb-4">
+        Dans Angular, il existe deux approches principales pour la création de
+        formulaires :
+      </p>
+      <dl>
+        <dt class="font-bold text-red-950">
+          Formulaire basé sur un modèle (Template-Driven) :
+        </dt>
+        <dd class="px-8 italic mb-2">
+          Dans cette approche, la logique du formulaire est principalement
+          définie dans le fichier de modèle HTML. Il faut spécifier les règles
+          de validation directement dans le modèle et Angular infère la
+          structure du formulaire à partir de celui-ci.
+        </dd>
+
+        <dt class="font-bold text-red-950">
+          Formulaire basé sur les données (Data-Driven) :
+        </dt>
+        <dd class="px-8 italic mb-4">
+          Ici, la logique du formulaire est principalement définie dans le
+          composant TypeScript. Il faut explicitement créer les contrôles de
+          formulaire dans le code TypeScript et définir les règles de validation
+          et comportements associés.
+        </dd>
+      </dl>
+
+      <h3 class="text-xl font-bold text-center my-4 text-red-950 uppercase">
+        FormGroup
+      </h3>
+      <p class="py-2 px-4">
+        Le FormGroup est un des fondamentaux de la construction de formulaires
+        sur Angular. Il regroupe plusieurs contrôles de formulaire tels que les
+        <strong class="text-red-950">FormControl</strong> et les
+        <strong class="text-red-950">FormArray</strong>. De plus, il peut
+        également contenir d'autres FormGroup, permettant une organisation
+        hiérarchique des données du formulaire.
+      </p>
+
+      <h3 class="text-xl font-bold text-center my-4 text-red-950 uppercase">
+        Code de base
+      </h3>
+      <pre
+        class="bg-neutral-900 py-1 text-red-50 font-bold relative my-1 rounded-lg shadow-lg"
+      >
+          <span class="text-red-950 absolute top-4 right-0 bg-red-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">template HTML</span>
+          &lt;form <span class="text-red-400">(ngSubmit)="une_fonction()"</span>&gt;
+            <strong class="text-zinc-600 italic">... Le contenu du formulaire ici ...</strong>
+          &lt;/form&gt;
+        </pre>
+    </div>
+  </section>
+
   <!-- Partie formulaire -->
   <section class="bg-red-400 p-4 col-span-1 row-span-2">
     <h2 class="mt-2 mb-4 text-center text-3xl font-bold text-red-950">
@@ -55,66 +113,8 @@
     </form>
   </section>
 
-  <!-- Partie Résumé du cours -->
-  <section class="bg-red-50 p-8 col-span-1 row-span-2">
-    <h2 class="mt-2 mb-4 text-center text-3xl font-bold text-red-950 uppercase">
-      Résumé du cours
-    </h2>
-    <div class="p-2">
-      <p class="bg-red-200 p-2 rounded-lg mb-4">
-        Dans Angular, il existe deux approches principales pour la création de
-        formulaires :
-      </p>
-      <dl>
-        <dt class="font-bold text-red-950">
-          Formulaire basé sur un modèle (Template-Driven) :
-        </dt>
-        <dd class="px-8 italic mb-2">
-          Dans cette approche, la logique du formulaire est principalement
-          définie dans le fichier de modèle HTML. Il faut spécifier les règles
-          de validation directement dans le modèle et Angular infère la
-          structure du formulaire à partir de celui-ci.
-        </dd>
-
-        <dt class="font-bold text-red-950">
-          Formulaire basé sur les données (Data-Driven) :
-        </dt>
-        <dd class="px-8 italic mb-4">
-          Ici, la logique du formulaire est principalement définie dans le
-          composant TypeScript. Il faut explicitement créer les contrôles de
-          formulaire dans le code TypeScript et définir les règles de validation
-          et comportements associés.
-        </dd>
-      </dl>
-
-      <h3 class="text-xl font-bold text-center my-4 text-red-950 uppercase">
-        FormGroup
-      </h3>
-      <p class="py-2 px-4">
-        Le FormGroup est un des fondamentaux de la construction de formulaires
-        sur Angular. Il regroupe plusieurs contrôles de formulaire tels que les
-        <strong class="text-red-950">FormControl</strong> et les
-        <strong class="text-red-950">FormArray</strong>. De plus, il peut
-        également contenir d'autres FormGroup, permettant une organisation
-        hiérarchique des données du formulaire.
-      </p>
-
-      <h3 class="text-xl font-bold text-center my-4 text-red-950 uppercase">
-        Code de base
-      </h3>
-      <pre
-        class="bg-neutral-900 py-1 text-red-50 font-bold relative my-1 rounded-lg shadow-lg"
-      >
-        <span class="text-red-950 absolute top-4 right-0 bg-red-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">template HTML</span>
-        &lt;form <span class="text-red-400">(ngSubmit)="une_fonction()"</span>&gt;
-          <strong class="text-zinc-600 italic">... Le contenu du formulaire ici ...</strong>
-        &lt;/form&gt;
-      </pre>
-    </div>
-  </section>
-
   <!-- Ma conclusion -->
-  <section class="p-4 col-span-2 row-span-1 relative">
+  <section class="p-4 col-span-4 row-span-1 relative">
     <h2 class="mt-2 mb-4 text-center text-3xl font-bold text-red-950 uppercase">
       Conclusion
     </h2>
