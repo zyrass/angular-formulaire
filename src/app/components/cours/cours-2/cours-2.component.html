@@ -1,21 +1,158 @@
-<section class="bg-red-500 flex-auto grid grid-cols-2 grid-rows-3">
+<section class="bg-red-500 flex-auto grid grid-cols-4 grid-rows-3">
+  <!-- Partie Résumé du cours -->
+  <section class="bg-red-50 p-8 col-span-3 row-span-2">
+    <h2 class="mt-2 mb-4 text-center text-3xl font-bold text-red-950 uppercase">
+      Résumé du cours
+    </h2>
+    <div class="p-2">
+      <p class="bg-red-200 p-2 rounded-lg mb-4">
+        Afin d'utiliser le module lié aux formulaires, je dois importer
+        obligatoirement le module
+        <strong class="text-red-950">ReactiveFormsModule</strong> qui provient
+        de <strong class="text-red-950">&#64;angular/forms</strong>.
+      </p>
+
+      <pre
+        class="bg-neutral-900 py-1 text-red-50 font-bold relative my-1 rounded-lg shadow-lg"
+      >
+          <span class="text-red-950 absolute top-4 right-0 bg-red-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">app Module</span>
+          <strong class="text-zinc-600 italic">... des imports ...</strong>
+          <span class="text-red-400">import &#123; ReactiveFormsModule &#125; from '&#64;angular/forms';</span>
+
+          &#64;NgModule(&#123;
+            declarations: [ <strong class="text-zinc-600 italic">... des components ...</strong> ],
+            imports: [ <strong class="text-zinc-600 italic">... des modules ...</strong>, <span class="text-red-400">ReactiveFormsModule</span>],
+            providers: [provideClientHydration()],
+            bootstrap: [AppComponent],
+          &#125;)
+        </pre>
+
+      <p class="py-2 px-4">
+        Pour la partie HTML, là ou le formulaire est utilisé, dnas le tag
+        <strong>&lt;form&gt;</strong>, il faut placer la directive
+        <strong>[formGroup]="form"</strong> qui sera <strong>bindé</strong> à un
+        attribut portant le nom de <strong>"form"</strong> afin d'être utilisé
+      </p>
+
+      <pre
+        class="bg-neutral-900 py-1 text-red-50 font-bold relative my-1 rounded-lg shadow-lg"
+      >
+          <span class="text-red-950 absolute top-4 right-0 bg-red-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">template HTML</span>
+          &lt;form (ngSubmit)="une_fonction()" <span class="text-red-400">[formGroup]="form"</span>&gt;
+            <strong class="text-zinc-600 italic">... Le contenu du formulaire ici ...</strong>
+          &lt;/form&gt;
+        </pre>
+
+      <p class="py-2 px-4">
+        Ci-dessous le début du composant avec l'import de
+        <strong class="text-red-950">FormGroup</strong> et
+        <strong class="text-red-950">FormControl</strong> toujours depuis
+        <strong class="text-red-950">&#64;angular/forms</strong>,
+      </p>
+      <pre
+        class="bg-neutral-900 py-1 text-red-50 font-bold relative my-1 rounded-lg shadow-lg"
+      >
+          <span class="text-red-950 absolute top-4 right-0 bg-red-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">component TS</span>
+          <strong class="text-zinc-600 italic">... des imports ...</strong>
+          <strong class="text-red-400">import &#123; FormControl, FormGroup &#125; from '&#64;angular/forms';</strong>
+
+          <strong class="text-zinc-600 italic">... dans la classe ...</strong>
+          <strong class="text-red-400">public form: FormGroup;</strong>
+        </pre>
+
+      <p class="py-2 px-4">
+        La logique se passe dans le component, donc ici il est question
+        d'ajouter tout les inputs que je souhaite gérer. Pour celà,
+        <strong class="text-red-950"
+          >je vais assigner une nouvelle instance</strong
+        >
+        de <strong class="text-red-950">FormGroup</strong> et lui passer un
+        objet comprenant des clés, valeurs. Chacune de ces clés correspond à un
+        input en particulié. Pour celà, je vais définir un nom pour chaque clé
+        selon l'input désiré. Pour ce qui est de la valeur, il s'agira
+        d'instancier <strong class="text-red-950">FormControl</strong> en
+        passant en <strong class="text-red-950">1er</strong> paramètre une
+        chaîne de caractère vide soit dans le code j'obtiens :
+      </p>
+
+      <pre
+        class="bg-neutral-900 py-1 text-red-50 font-bold relative my-1 rounded-lg shadow-lg"
+      >
+          <span class="text-red-950 absolute top-4 right-0 bg-red-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">component TS</span>
+          <strong class="text-zinc-600 italic">... dans la classe ...</strong>
+          public form: FormGroup<strong class="text-red-400"> = new FormGroup(&#123;
+            lastname: new FormControl(''),
+            firstname: new FormControl(''),
+            passPhrase: new FormControl(''),
+          &#125;)</strong>
+        </pre>
+
+      <p class="py-2 px-4">
+        Afin de pouvoir lié les <strong class="text-red-950">clés</strong> sur
+        l'input html, il faut ajouter la directive
+        <strong>formControlName</strong> avec comme valeur le nom de la clé
+        souhaité.
+      </p>
+
+      <pre
+        class="bg-neutral-900 py-1 text-red-50 font-bold relative my-1 rounded-lg shadow-lg"
+      >
+          <span class="text-red-950 absolute top-4 right-0 bg-red-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">template HTML</span>
+          &lt;form (ngSubmit)="une_fonction() [formGroup]="form"&gt;
+
+            &lt;div class="form-group flex flex-col p-2">
+              &lt;label for="" class="font-bold uppercase mb-1">Nom :&lt;/label>
+              &lt;input
+                <span class="text-red-400">formControlName="lastname"</span>
+                type="text"
+                placeholder="votre nom"
+                class="w-full rounded-md"
+              />
+            &lt;/div>
+
+            &lt;div class="form-group flex flex-col p-2">
+              &lt;label for="" class="font-bold uppercase mb-1">Nom :&lt;/label>
+              &lt;input
+                <span class="text-red-400">formControlName="firstname"</span>
+                type="text"
+                placeholder="votre nom"
+                class="w-full rounded-md"
+              />
+            &lt;/div>
+
+            <strong class="text-zinc-600 italic">... etc ...</strong>
+          &lt;/form&gt;
+        </pre>
+    </div>
+  </section>
+
   <!-- Partie formulaire -->
   <section class="bg-red-400 p-4 col-span-1 row-span-2">
     <h2 class="mt-2 mb-4 text-center text-3xl font-bold text-red-950">
       {{ title | uppercase }}
     </h2>
 
-    <form (submit)="submitForm()" class="bg-red-200 m-8 p-8">
+    <form
+      (ngSubmit)="submitForm()"
+      [formGroup]="form"
+      class="bg-red-200 m-8 p-8"
+    >
       <!-- Nom -->
       <div class="form-group flex flex-col p-2">
         <label for="" class="font-bold uppercase mb-1">Nom :</label>
-        <input type="text" placeholder="votre nom" class="w-full rounded-md" />
+        <input
+          formControlName="lastname"
+          type="text"
+          placeholder="votre nom"
+          class="w-full rounded-md"
+        />
       </div>
 
       <!-- Prénom -->
       <div class="form-group flex flex-col p-2">
         <label for="" class="font-bold uppercase mb-1">Prénom :</label>
         <input
+          formControlName="firstname"
           type="text"
           placeholder="votre prénom"
           class="w-full rounded-md"
@@ -26,6 +163,7 @@
       <div class="form-group flex flex-col p-2">
         <label for="" class="font-bold uppercase mb-1">Phrase de passe :</label>
         <input
+          formControlName="passPhrase"
           type="text"
           placeholder="votre phrase de passe"
           class="w-full rounded-md"
@@ -55,82 +193,31 @@
     </form>
   </section>
 
-  <!-- Partie Résumé du cours -->
-  <section class="bg-red-50 p-8 col-span-1 row-span-2">
-    <h2 class="mt-2 mb-4 text-center text-3xl font-bold text-red-950 uppercase">
-      Résumé du cours
-    </h2>
-    <div class="p-2">
-      <p class="bg-red-200 p-2 rounded-lg mb-4">
-        Dans Angular, il existe deux approches principales pour la création de
-        formulaires :
-      </p>
-      <dl>
-        <dt class="font-bold text-red-950">
-          Formulaire basé sur un modèle (Template-Driven) :
-        </dt>
-        <dd class="px-8 italic mb-2">
-          Dans cette approche, la logique du formulaire est principalement
-          définie dans le fichier de modèle HTML. Il faut spécifier les règles
-          de validation directement dans le modèle et Angular infère la
-          structure du formulaire à partir de celui-ci.
-        </dd>
-
-        <dt class="font-bold text-red-950">
-          Formulaire basé sur les données (Data-Driven) :
-        </dt>
-        <dd class="px-8 italic mb-4">
-          Ici, la logique du formulaire est principalement définie dans le
-          composant TypeScript. Il faut explicitement créer les contrôles de
-          formulaire dans le code TypeScript et définir les règles de validation
-          et comportements associés.
-        </dd>
-      </dl>
-
-      <h3 class="text-xl font-bold text-center my-4 text-red-950 uppercase">
-        FormGroup
-      </h3>
-      <p class="py-2 px-4">
-        Le FormGroup est un des fondamentaux de la construction de formulaires
-        sur Angular. Il regroupe plusieurs contrôles de formulaire tels que les
-        <strong class="text-red-950">FormControl</strong> et les
-        <strong class="text-red-950">FormArray</strong>. De plus, il peut
-        également contenir d'autres FormGroup, permettant une organisation
-        hiérarchique des données du formulaire.
-      </p>
-
-      <h3 class="text-xl font-bold text-center my-4 text-red-950 uppercase">
-        Code de base
-      </h3>
-      <pre
-        class="bg-neutral-900 py-1 text-red-50 font-bold relative my-1 rounded-lg shadow-lg"
-      >
-        <span class="text-red-950 absolute top-4 right-0 bg-red-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">template HTML</span>
-        &lt;form <span class="text-red-400">(ngSubmit)="une_fonction()"</span>&gt;
-          ... Le contenu du formulaire ici ...
-        &lt;/form&gt;
-      </pre>
-    </div>
-  </section>
-
   <!-- Ma conclusion -->
-  <section class="p-4 col-span-2 row-span-1 relative">
+  <section class="p-4 col-span-4 row-span-1 relative">
     <h2 class="mt-2 mb-4 text-center text-3xl font-bold text-red-950 uppercase">
       Conclusion
     </h2>
     <dl class="italic w-8/12 mx-auto p-2 text-lg">
-      <dt class="font-bold text-red-950">(ngSubmit) :</dt>
+      <dt class="font-bold text-red-950">ReactiveFormsModule:</dt>
       <dd class="px-8 italic mb-4 text-red-50">
-        C'est un événement déclenché lors de la soumission du formulaire.<br />Il
-        faut lier cette action à une fonction dans le composant TypeScript.
+        Ce module est indispensable au bon fonctionnement des formulaires.
       </dd>
-      <dt class="font-bold text-red-950">submitForm() :</dt>
+      <dt class="font-bold text-red-950">[formGroup]="form" :</dt>
       <dd class="px-8 italic mb-4 text-red-50">
-        C'est la fonction à exécuter lorsque le formulaire est soumis. <br />
-        Pour gérer la logique de soumission, il faut définir dans le
-        composant.<br />
-        En utilisant ces concepts, je peux créer des formulaires efficaces et
-        bien organisés pour mes futures applications Angular.
+        Binding d'une directive extrêmement important où je lie l'attribut form
+        de mon component qui est du type FormGroup
+      </dd>
+      <dt class="font-bold text-red-950">new FormGroup(&#123;&#125;) :</dt>
+      <dd class="px-8 italic mb-4 text-red-50">
+        Instanciation de la classe FormGroup en lui passant un objet qui
+        contient toutes les clés liés aux formulaires et chacune de ses clé est
+        instancié par une classe FormControl ou j'y passe une chaine de
+        caractère vide en premier paramètre.
+      </dd>
+      <dt class="font-bold text-red-950">formControlName="x"</dt>
+      <dd class="px-8 italic mb-4 text-red-50">
+        "x" correspond au nom d'une clé précédemment cité.
       </dd>
     </dl>
     <div

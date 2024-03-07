@@ -20,6 +20,7 @@ import { Cours9Component } from './components/cours/cours-9/cours-9.component';
 import { Cours10Component } from './components/cours/cours-10/cours-10.component';
 import { Cours11Component } from './components/cours/cours-11/cours-11.component';
 import { Cours12Component } from './components/cours/cours-12/cours-12.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,7 @@ import { Cours12Component } from './components/cours/cours-12/cours-12.component
     Cours11Component,
     Cours12Component,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [provideClientHydration()],
   bootstrap: [AppComponent],
 })
