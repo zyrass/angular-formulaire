@@ -14,7 +14,7 @@
       class="h-32 flex flex-col mt-2 mb-4 p-8 flex-auto rounded-tl-lg rounded-bl-lg bg-slate-950 text-left text-5xl font-black text-slate-50"
     >
       <h1>
-        <span class="text-slate-600">Partie 2 - </span>
+        <span class="text-slate-600">Partie 3 - </span>
         {{ title }}
       </h1>
       <p class="font-normal py-2 text-lg text-zinc-500 cursor-pointer">
@@ -28,9 +28,7 @@
 
   <!-- Partie Résumé du cours -->
   <section class="bg-slate-50 p-8 col-span-3">
-    <h2
-      class="mt-2 mb-4 text-center text-3xl font-bold text-slate-950 uppercase"
-    >
+    <h2 class="mt-2 mb-4 text-center text-3xl font-bold text-slate-950">
       Résumé du cours
     </h2>
     <div class="p-2">
@@ -131,7 +129,7 @@
           &lt;form (ngSubmit)="une_fonction() [formGroup]="form"&gt;
 
             &lt;div class="form-group flex flex-col p-2">
-              &lt;label for="" class="font-bold uppercase mb-1">Nom :&lt;/label>
+              &lt;label for="" class="font-bold  mb-1">Nom :&lt;/label>
               &lt;input
                 <span class="text-slate-400">formControlName="lastname"</span>
                 type="text"
@@ -141,7 +139,7 @@
             &lt;/div>
 
             &lt;div class="form-group flex flex-col p-2">
-              &lt;label for="" class="font-bold uppercase mb-1">Nom :&lt;/label>
+              &lt;label for="" class="font-bold  mb-1">Nom :&lt;/label>
               &lt;input
                 <span class="text-slate-400">formControlName="firstname"</span>
                 type="text"
@@ -158,9 +156,7 @@
 
   <!-- Partie formulaire -->
   <section class="bg-slate-400 p-4 col-span-2">
-    <h2
-      class="mt-2 mb-4 text-center text-3xl font-bold uppercase text-slate-950"
-    >
+    <h2 class="mt-2 mb-4 text-center text-3xl font-bold text-slate-950">
       Formulaire
     </h2>
 
@@ -246,7 +242,7 @@
     </figure>
 
     <div class="w-6/12 mx-auto">
-      <h2 class="mb-4 text-center text-3xl font-bold text-slate-500 uppercase">
+      <h2 class="mb-4 text-center text-3xl font-bold text-slate-500">
         Conclusion
       </h2>
       <dl class="italic p-2 text-lg">
@@ -287,11 +283,13 @@
       </dl>
     </div>
 
-    <figure class="bg-white my-8 rounded-full mr-12">
+    <figure
+      class="bg-white my-8 rounded-full mr-12 *:hover:filter *:hover:grayscale-0"
+    >
       <img
         src="../../../../assets/Angular_gradient.png"
         alt="logo angular v17"
-        class="size-64"
+        class="size-64 filter grayscale"
       />
     </figure>
   </section>

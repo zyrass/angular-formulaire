@@ -1,0 +1,67 @@
+<section class="bg-slate-600 flex-auto">
+  <!-- Partie Titre -->
+  <section class="flex items-center justify-between py-4">
+    <figure class="bg-white m-8 rounded-full mr-12">
+      <img
+        src="../../../../assets/Angular_gradient.png"
+        alt="logo angular v17"
+        class="size-24"
+      />
+    </figure>
+    <div
+      class="h-32 flex flex-col mt-2 mb-4 p-8 flex-auto rounded-tl-lg rounded-bl-lg bg-slate-950 text-left text-5xl font-black text-slate-50"
+    >
+      <h1>
+        <span class="text-slate-600">List </span>
+        {{ title }}
+      </h1>
+      <p class="font-normal py-2 text-lg text-zinc-500 cursor-pointer">
+        <span class="underline text-slate-50">/cours/</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- Partie Liste -->
+  <section
+    class="mx-auto bg-slate-500 flex flex-wrap items-center justify-evenly gap-4 py-12 px-48"
+  >
+    <table>
+      <thead>
+        <tr class="*:border-2 *:py-2 *:px-4 *:bg-slate-950 *:text-slate-50">
+          <th>#</th>
+          <th>Titre</th>
+          <th>Description</th>
+          <th>status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let lesson of lessons; let i = index"
+          class="*:border-2 *:py-2 *:px-4 hover:bg-slate-950 *:text-slate-50 cursor-pointer"
+          (click)="rediriger(lesson.slug)"
+        >
+          <td class="text-center font-black">
+            {{ lesson.num }}
+          </td>
+          <td class="text-center font-bold uppercase">
+            {{ lesson.title }}
+          </td>
+          <td class="italic">
+            {{ lesson.description }}
+          </td>
+          <td class="text-center bg-slate-600 text-2xl">
+            {{ lesson.status }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="p-8 bg-slate-600">
+    <ul class="flex justify-evenly *:text-slate-50 *:font-bold italic">
+      <li>✅ - Acquis</li>
+      <li>❌ - Non Acquis</li>
+      <li>✒️ - En cours de rédaction ou d'apprentissage</li>
+      <li>🚧 - A développer et à apprendre</li>
+    </ul>
+  </section>
+</section>
