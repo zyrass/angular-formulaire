@@ -1,16 +1,46 @@
-<section class="bg-red-500 flex-auto grid grid-cols-4 grid-rows-3">
+<!-- Contenu -->
+<section
+  class="bg-slate-600 flex-auto grid grid-cols-5 grid-rows-[1fr_auto_auto]"
+>
+  <!-- Partie Titre -->
+  <section class="col-span-5 flex items-center justify-between py-4">
+    <figure class="bg-white m-8 rounded-full mr-12">
+      <img
+        src="../../../../assets/Angular_gradient.png"
+        alt="logo angular v17"
+        class="size-24"
+      />
+    </figure>
+    <div
+      class="h-32 flex flex-col mt-2 mb-4 p-8 flex-auto rounded-tl-lg rounded-bl-lg bg-slate-950 text-left text-5xl font-black text-slate-50"
+    >
+      <h1>
+        <span class="text-slate-600">Partie 1 - </span>
+        {{ title }}
+      </h1>
+      <p class="font-normal py-2 text-lg text-zinc-500 cursor-pointer">
+        <span routerLink="/cours" class="underline hover:text-slate-50"
+          >/cours/</span
+        >
+        <span class="underline text-slate-50">{{ slug }}</span>
+      </p>
+    </div>
+  </section>
+
   <!-- Partie Résumé du cours -->
-  <section class="bg-red-50 p-8 col-span-3 row-span-2">
-    <h2 class="mt-2 mb-4 text-center text-3xl font-bold text-red-950 uppercase">
+  <section class="bg-slate-50 p-8 col-span-3">
+    <h2
+      class="mt-2 mb-4 text-center text-3xl font-bold text-slate-950 uppercase"
+    >
       Résumé du cours
     </h2>
     <div class="p-2">
-      <p class="bg-red-200 p-2 rounded-lg mb-4">
+      <p class="bg-slate-200 p-2 rounded-lg mb-4">
         Dans Angular, il existe deux approches principales pour la création de
         formulaires :
       </p>
       <dl>
-        <dt class="font-bold text-red-950">
+        <dt class="font-bold text-slate-950">
           Formulaire basé sur un modèle (Template-Driven) :
         </dt>
         <dd class="px-8 italic mb-2">
@@ -20,10 +50,10 @@
           structure du formulaire à partir de celui-ci.
         </dd>
 
-        <dt class="font-bold text-red-950">
+        <dt class="font-bold text-slate-950">
           Formulaire basé sur les données (Data-Driven) :
         </dt>
-        <dd class="px-8 italic mb-4">
+        <dd class="px-8 italic">
           Ici, la logique du formulaire est principalement définie dans le
           composant TypeScript. Il faut explicitement créer les contrôles de
           formulaire dans le code TypeScript et définir les règles de validation
@@ -31,39 +61,49 @@
         </dd>
       </dl>
 
-      <h3 class="text-xl font-bold text-center my-4 text-red-950 uppercase">
-        FormGroup
-      </h3>
       <p class="py-2 px-4">
         Le FormGroup est un des fondamentaux de la construction de formulaires
         sur Angular. Il regroupe plusieurs contrôles de formulaire tels que les
-        <strong class="text-red-950">FormControl</strong> et les
-        <strong class="text-red-950">FormArray</strong>. De plus, il peut
+        <strong class="text-slate-950">FormControl</strong> et les
+        <strong class="text-slate-950">FormArray</strong>. De plus, il peut
         également contenir d'autres FormGroup, permettant une organisation
         hiérarchique des données du formulaire.
       </p>
 
-      <h3 class="text-xl font-bold text-center my-4 text-red-950 uppercase">
-        Code de base
-      </h3>
       <pre
-        class="bg-neutral-900 py-1 text-red-50 font-bold relative my-1 rounded-lg shadow-lg"
+        class="bg-neutral-900 py-1 text-slate-50 font-bold relative my-1 rounded-lg shadow-lg"
       >
-          <span class="text-red-950 absolute top-4 right-0 bg-red-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">template HTML</span>
-          &lt;form <span class="text-red-400">(ngSubmit)="une_fonction()"</span>&gt;
-            <strong class="text-zinc-600 italic">... Le contenu du formulaire ici ...</strong>
-          &lt;/form&gt;
-        </pre>
+        <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">template HTML</span>
+        &lt;form <span class="text-slate-400">(ngSubmit)="submitForm()"</span>&gt;
+          <strong class="text-zinc-600 italic">... Le contenu du formulaire ici ...</strong>
+        &lt;/form&gt;
+      </pre>
+      <pre
+        class="bg-neutral-900 py-1 text-slate-50 font-bold relative my-1 rounded-lg shadow-lg"
+      >
+      <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">component TS</span>
+        <strong class="text-zinc-600 italic">... Dans la classe ...</strong>
+        <span class="text-slate-400">public submitForm() &#123;&#125;</span> <strong class="text-zinc-600 italic">// Permet d'éviter le crash de l'application en l'initialisant</strong>
+    </pre>
     </div>
   </section>
 
   <!-- Partie formulaire -->
-  <section class="bg-red-400 p-4 col-span-1 row-span-2">
-    <h2 class="mt-2 mb-4 text-center text-3xl font-bold text-red-950">
-      {{ title | uppercase }}
+  <section class="bg-slate-400 p-4 col-span-2">
+    <h2
+      class="mt-2 mb-4 text-center text-3xl font-bold uppercase text-slate-950"
+    >
+      Formulaire
     </h2>
 
-    <form (submit)="submitForm()" class="bg-red-200 m-8 p-8">
+    <p class="py-2 text-center italic">
+      Ci-desosus se trouve le formulaire utilisé dans le résumé du cours
+    </p>
+
+    <form
+      (submit)="submitForm()"
+      class="bg-slate-200 m-8 p-8 rounded-lg shadow-lg"
+    >
       <!-- Nom -->
       <div class="form-group flex flex-col p-2">
         <label for="" class="font-bold uppercase mb-1">Nom :</label>
@@ -105,7 +145,7 @@
       <!-- button de soumission-->
       <div class="text-center">
         <button
-          class="bg-red-500 my-8 px-4 py-2 font-bold rounded-md text-red-50"
+          class="bg-slate-500 my-8 px-4 py-2 font-bold rounded-md text-slate-50"
         >
           Valider
         </button>
@@ -114,27 +154,51 @@
   </section>
 
   <!-- Ma conclusion -->
-  <section class="p-4 col-span-4 row-span-1 relative">
-    <h2 class="mt-2 mb-4 text-center text-3xl font-bold text-red-950 uppercase">
-      Conclusion
-    </h2>
-    <dl class="italic w-8/12 mx-auto p-2 text-lg">
-      <dt class="font-bold text-red-950">(ngSubmit) :</dt>
-      <dd class="px-8 italic mb-4 text-red-50">
-        C'est un événement déclenché lors de la soumission du formulaire.<br />Il
-        faut lier cette action à une fonction dans le composant TypeScript.
-      </dd>
-      <dt class="font-bold text-red-950">submitForm() :</dt>
-      <dd class="px-8 italic mb-4 text-red-50">
-        C'est la fonction à exécuter lorsque le formulaire est soumis. <br />
-        Pour gérer la logique de soumission, il faut définir dans le
-        composant.<br />
-        En utilisant ces concepts, je peux créer des formulaires efficaces et
-        bien organisés pour mes futures applications Angular.
-      </dd>
-    </dl>
-    <div
-      class="absolute top-12 right-5 bottom-0 bg-[url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Angular_gradient.png/1024px-Angular_gradient.png')] bg-cover size-64 filter sepia opacity-50"
-    ></div>
+  <section class="p-8 bg-black flex items-center justify-center col-span-5">
+    <figure class="flex flex-col items-center">
+      <img
+        src="../../../../assets/alain.jpg"
+        alt=""
+        class="size-56 rounded-full border-4 border-slate-500 mb-2"
+      />
+      <figcaption class="py-2 px-4 rounded-lg text-center flex flex-col">
+        <span class="font-black text-slate-500">Alain Guillon</span>
+        <span class="italic text-slate-600"
+          >Développeur fullstack certifié</span
+        >
+      </figcaption>
+    </figure>
+
+    <div class="w-6/12 mx-auto">
+      <h2
+        class="mt-2 mb-4 text-center text-3xl font-bold text-slate-500 uppercase"
+      >
+        Conclusion
+      </h2>
+      <dl class="italic p-2 text-lg">
+        <dt class="font-bold text-slate-500">(ngSubmit) :</dt>
+        <dd class="px-8 italic mb-4 text-slate-50">
+          C'est un événement déclenché lors de la soumission du formulaire.<br />Il
+          faut lier cette action à une fonction dans le composant TypeScript.
+        </dd>
+        <dt class="font-bold text-slate-500">submitForm() :</dt>
+        <dd class="px-8 italic mb-4 text-slate-50">
+          C'est la fonction à exécuter lorsque le formulaire est soumis.
+          <br />
+          Pour gérer la logique de soumission, il faut définir dans le
+          composant.<br />
+          En utilisant ces concepts, je peux créer des formulaires efficaces et
+          bien organisés pour mes futures applications Angular.
+        </dd>
+      </dl>
+    </div>
+
+    <figure class="bg-white my-8 rounded-full mr-12">
+      <img
+        src="../../../../assets/Angular_gradient.png"
+        alt="logo angular v17"
+        class="size-64"
+      />
+    </figure>
   </section>
 </section>
