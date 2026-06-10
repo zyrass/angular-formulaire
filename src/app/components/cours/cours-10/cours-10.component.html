@@ -1,0 +1,278 @@
+<!-- Contenu -->
+<section
+  class="bg-slate-600 flex-auto p-6 md:p-8 grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8"
+>
+  <!-- Partie Titre -->
+  <section class="lg:col-span-5 flex items-center justify-between py-2 gap-6">
+    <figure class="bg-white m-4 rounded-full shadow-lg">
+      <img
+        src="../../../../assets/Angular_gradient.png"
+        alt="logo angular v17"
+        class="size-24 p-2"
+      />
+    </figure>
+    <div
+      class="flex flex-col p-8 flex-auto rounded-lg bg-slate-950 text-left text-slate-50 shadow-md"
+    >
+      <h1 class="text-3xl md:text-5xl font-black tracking-tight">
+        {{ title }}
+      </h1>
+    </div>
+  </section>
+
+  <!-- Version Impact Notice -->
+  <div *ngIf="selectedVersion !== 'v17' && versionNote" class="lg:col-span-5 bg-slate-900/90 border border-indigo-500/30 p-5 rounded-2xl shadow-xl flex items-center gap-4 transition-all duration-300">
+    <div class="bg-indigo-600 text-white font-bold text-xs uppercase tracking-wider px-3 py-1.5 rounded-lg shadow-sm shadow-indigo-500/20">
+      {{ selectedVersion | uppercase }}
+    </div>
+    <div class="flex-auto">
+      <h4 class="text-indigo-400 text-sm font-bold tracking-wide">Évolution Angular {{ selectedVersion | uppercase }}</h4>
+      <p class="text-slate-300 text-xs mt-1 leading-relaxed" [innerHTML]="versionNote"></p>
+    </div>
+  </div>
+
+  <!-- Partie Résumé du cours -->
+  <section class="bg-slate-50 p-8 lg:col-span-3 rounded-2xl shadow-lg border border-slate-200">
+    <h2
+      class="mt-2 mb-6 text-center text-3xl font-bold text-slate-950 uppercase tracking-wide"
+    >
+      Résumé du cours
+    </h2>
+    <div class="p-2 space-y-4">
+      <p class="bg-slate-200 p-4 rounded-lg">
+        L'un des plus grands atouts de l'approche réactive d'Angular est l'exposition sous forme d'observables (`Observable`) des flux d'événements liés aux formulaires.
+      </p>
+
+      <h3 class="font-bold text-slate-950 text-xl mt-4">1. Écouter les changements de valeurs : `valueChanges`</h3>
+      <p class="py-1">
+        La propriété `valueChanges` est un flux qui émet la nouvelle valeur du champ (ou du formulaire) à chaque frappe de clavier ou modification programmatique :
+      </p>
+
+      <!-- Code v17 / v18 (RxJS pur) -->
+      <div *ngIf="selectedVersion === 'v17' || selectedVersion === 'v18'">
+        <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto">
+          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">TS (v17/v18)</span>
+          <span class="text-indigo-400">this</span>.form.valueChanges.subscribe((newValue) => &#123;
+            console.log(<span class="text-emerald-400">'Nouvelle valeur :'</span>, newValue);
+          &#125;);
+        </pre>
+      </div>
+
+      <!-- Code v19 / v20 (RxJS Interop / toSignal) -->
+      <div *ngIf="selectedVersion === 'v19' || selectedVersion === 'v20'">
+        <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto">
+          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">TS (v19/v20)</span>
+          <span class="text-indigo-400">import</span> &#123; <span class="text-amber-400">toSignal</span> &#125; <span class="text-indigo-400">from</span> <span class="text-emerald-400">'&#64;angular/core/rxjs-interop'</span>;
+
+          <span class="text-slate-500">// Conversion de l'Observable en Signal</span>
+          <span class="text-indigo-400">public</span> searchVal = <span class="text-amber-400">toSignal</span>(<span class="text-indigo-400">this</span>.form.valueChanges);
+        </pre>
+      </div>
+
+      <!-- Code v21 (Native Signals) -->
+      <div *ngIf="selectedVersion === 'v21'">
+        <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto">
+          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">TS (v21)</span>
+          <span class="text-slate-500">// Utilisation directe du Signal natif exposé par le FormGroup</span>
+          <span class="text-indigo-400">public</span> searchVal = <span class="text-indigo-400">this</span>.form.valueSignal;
+        </pre>
+      </div>
+
+      <h3 class="font-bold text-slate-950 text-xl mt-6">2. Écouter l'état de validation : `statusChanges`</h3>
+      <p class="py-1">
+        La propriété `statusChanges` émet une chaîne de caractères (`'VALID'`, `'INVALID'`, `'PENDING'` ou `'DISABLED'`) dès que le statut de validation du contrôle change :
+      </p>
+
+      <!-- Code v17 / v18 (RxJS pur) -->
+      <div *ngIf="selectedVersion === 'v17' || selectedVersion === 'v18'">
+        <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto">
+          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">TS (v17/v18)</span>
+          <span class="text-indigo-400">this</span>.form.statusChanges.subscribe((newStatus) => &#123;
+            console.log(<span class="text-emerald-400">'Statut :'</span>, newStatus);
+          &#125;);
+        </pre>
+      </div>
+
+      <!-- Code v19 / v20 (RxJS Interop / toSignal) -->
+      <div *ngIf="selectedVersion === 'v19' || selectedVersion === 'v20'">
+        <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto">
+          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">TS (v19/v20)</span>
+          <span class="text-indigo-400">import</span> &#123; <span class="text-amber-400">toSignal</span> &#125; <span class="text-indigo-400">from</span> <span class="text-emerald-400">'&#64;angular/core/rxjs-interop'</span>;
+
+          <span class="text-slate-500">// Conversion de l'Observable en Signal</span>
+          <span class="text-indigo-400">public</span> formStatus = <span class="text-amber-400">toSignal</span>(<span class="text-indigo-400">this</span>.form.statusChanges);
+        </pre>
+      </div>
+
+      <!-- Code v21 (Native Signals) -->
+      <div *ngIf="selectedVersion === 'v21'">
+        <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto">
+          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">TS (v21)</span>
+          <span class="text-slate-500">// Utilisation directe du Signal natif pour le statut de validation</span>
+          <span class="text-indigo-400">public</span> formStatus = <span class="text-indigo-400">this</span>.form.statusSignal;
+        </pre>
+      </div>
+
+      <h3 class="font-bold text-slate-950 text-xl mt-6">3. Libération de ressources</h3>
+      
+      <!-- Libération v17 / v18 -->
+      <div *ngIf="selectedVersion === 'v17' || selectedVersion === 'v18'">
+        <p class="py-1">
+          **Très important** : Pensez toujours à vous désabonner de ces flux dans le hook de cycle de vie `ngOnDestroy()` pour éviter des fuites de mémoire (memory leaks).
+        </p>
+      </div>
+
+      <!-- Libération v19+ -->
+      <div *ngIf="selectedVersion !== 'v17' && selectedVersion !== 'v18'">
+        <p class="py-1 text-emerald-800 bg-emerald-100/80 p-3 rounded-lg border border-emerald-300">
+          💡 **Avantage des Signaux** : Contrairement aux Observables classiques, l'utilisation de `toSignal()` ou des propriétés de signaux natifs (`valueSignal`) libère automatiquement les ressources lorsque le composant est détruit. Aucun désabonnement manuel n'est requis dans `ngOnDestroy()` !
+        </p>
+      </div>
+
+      <!-- Schéma d'architecture Observables -->
+      <div class="mt-6 p-6 bg-slate-900 rounded-xl border border-slate-700 shadow-md">
+        <h4 class="text-slate-200 text-sm font-bold uppercase tracking-wider mb-4 flex items-center gap-1.5 justify-center">
+          🔄 Diagramme de Flux de l'Observable Réactif
+        </h4>
+        <div class="flex justify-center items-center py-2">
+          <svg class="w-full max-w-3xl md:max-w-4xl lg:max-w-5xl mx-auto" viewBox="0 0 500 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Arrière-plan -->
+            <rect width="500" height="220" rx="12" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+            
+            <!-- Lifelines -->
+            <line x1="90" y1="40" x2="90" y2="180" stroke="#475569" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <line x1="250" y1="40" x2="250" y2="180" stroke="#475569" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <line x1="410" y1="40" x2="410" y2="180" stroke="#475569" stroke-width="1.5" stroke-dasharray="3 3"/>
+            
+            <!-- Nodes Top -->
+            <rect x="30" y="15" width="120" height="25" rx="4" fill="#0369a1" stroke="#0ea5e9" stroke-width="1"/>
+            <text x="90" y="31" fill="#e0f2fe" font-size="9" font-weight="bold" font-family="sans-serif" text-anchor="middle">1. Saisie DOM</text>
+            
+            <rect x="190" y="15" width="120" height="25" rx="4" fill="#581c87" stroke="#a855f7" stroke-width="1"/>
+            <text x="250" y="31" fill="#f3e8ff" font-size="9" font-weight="bold" font-family="sans-serif" text-anchor="middle">2. AbstractControl</text>
+            
+            <rect x="350" y="15" width="120" height="25" rx="4" fill="#065f46" stroke="#10b981" stroke-width="1"/>
+            <text x="410" y="31" fill="#d1fae5" font-size="9" font-weight="bold" font-family="sans-serif" text-anchor="middle">3. Souscription</text>
+
+            <!-- Event 1: User types -->
+            <path d="M 90 70 L 245 70" stroke="#38bdf8" stroke-width="1.5"/>
+            <polygon points="245,67 250,70 245,73" fill="#38bdf8"/>
+            <text x="170" y="62" fill="#38bdf8" font-size="8" font-family="sans-serif" text-anchor="middle">Frappe 'a'</text>
+
+            <!-- Event 2: Value emits -->
+            <path d="M 250 100 L 405 100" stroke="#c084fc" stroke-width="1.5"/>
+            <polygon points="405,97 410,100 405,103" fill="#c084fc"/>
+            <text x="330" y="92" fill="#c084fc" font-size="8" font-family="sans-serif" text-anchor="middle">valueChanges.emit('a')</text>
+
+            <!-- Event 3: Validation status recalculates -->
+            <path d="M 250 120 L 250 140" stroke="#f472b6" stroke-width="1.5"/>
+            <text x="252" y="132" fill="#f472b6" font-size="8" font-family="sans-serif">Re-calcul</text>
+
+            <!-- Event 4: Status emits -->
+            <path d="M 250 160 L 405 160" stroke="#34d399" stroke-width="1.5"/>
+            <polygon points="405,157 410,160 405,163" fill="#34d399"/>
+            <text x="330" y="152" fill="#34d399" font-size="8" font-family="sans-serif" text-anchor="middle">statusChanges.emit('VALID')</text>
+          </svg>
+        </div>
+        <p class="text-xs text-slate-400 mt-2 text-center italic">
+          L'écoute en continu (subscribe) réagit de manière asynchrone aux moindres flux émis par le contrôle.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partie formulaire -->
+  <section class="bg-slate-400 p-8 lg:col-span-2 rounded-2xl shadow-lg border border-slate-300 flex flex-col justify-between">
+    <div>
+      <h2
+        class="mt-2 mb-4 text-center text-3xl font-bold uppercase text-slate-950 tracking-wide"
+      >
+        Formulaire
+      </h2>
+
+      <p class="py-2 text-center italic text-slate-800">
+        Saisissez du texte pour observer les émissions captées par les souscriptions dans le composant.
+      </p>
+
+      <form
+        [formGroup]="form"
+        class="bg-slate-200 p-6 rounded-lg shadow-md space-y-4"
+      >
+        <!-- Barre de recherche -->
+        <div class="form-group flex flex-col">
+          <label class="font-bold uppercase mb-1 text-slate-700 text-sm">Recherche (Requis) :</label>
+          <input
+            formControlName="search"
+            type="text"
+            placeholder="Tapez votre recherche..."
+            class="w-full rounded-md border-slate-300 shadow-sm"
+          />
+        </div>
+      </form>
+
+      <!-- Flux d'Observables en Direct -->
+      <div class="mt-6 p-4 bg-slate-900 rounded-lg shadow-inner text-white font-mono text-xs space-y-3">
+        <h4 class="text-slate-400 font-bold uppercase tracking-wider mb-2">Souscriptions actives (Flux live) :</h4>
+        
+        <div class="bg-slate-850 p-2 rounded border border-slate-800">
+          <span class="block text-slate-500 font-bold">valueChanges.subscribe() :</span>
+          <span class="text-green-400 text-sm">"{{ lastChange }}"</span>
+        </div>
+
+        <div class="bg-slate-850 p-2 rounded border border-slate-800">
+          <span class="block text-slate-500 font-bold">statusChanges.subscribe() :</span>
+          <span [class.text-green-400]="lastStatus === 'VALID'" [class.text-red-400]="lastStatus === 'INVALID'" class="text-sm font-bold">
+            {{ lastStatus }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ma conclusion -->
+  <section class="p-8 bg-slate-900 rounded-2xl shadow-xl border border-slate-800 flex flex-col lg:flex-row items-center justify-between lg:col-span-5 gap-8 mt-4">
+    <figure class="flex flex-col items-center flex-shrink-0">
+      <img
+        src="../../../../assets/alain.jpg"
+        alt="Alain Guillon"
+        class="size-48 rounded-full border-4 border-slate-500 shadow-lg object-cover mb-2"
+      />
+      <figcaption class="text-center">
+        <span class="block font-black text-slate-400 text-lg">Alain Guillon</span>
+        <span class="block italic text-slate-500 text-sm"
+          >Développeur fullstack certifié</span
+        >
+      </figcaption>
+    </figure>
+
+    <div class="flex-auto max-w-2xl px-4">
+      <h2
+        class="mb-4 text-center lg:text-left text-3xl font-bold text-slate-400 uppercase tracking-wider"
+      >
+        Conclusion
+      </h2>
+      <dl class="italic space-y-4 text-slate-300">
+        <div>
+          <dt class="font-bold text-slate-400 text-lg">flux réactifs :</dt>
+          <dd class="px-4 mt-1">
+            Les flux observables permettent d'implémenter facilement des fonctionnalités avancées comme de l'autocomplétion (avec l'opérateur `debounceTime` de RxJS).
+          </dd>
+        </div>
+        <div>
+          <dt class="font-bold text-slate-400 text-lg">Désabonnement :</dt>
+          <dd class="px-4 mt-1">
+            Toujours détruire les abonnements lors de la destruction du composant (`ngOnDestroy`) pour s'assurer que l'application ne consomme pas de mémoire inutilement.
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    <figure class="bg-white rounded-full p-4 shadow-md flex-shrink-0 hidden lg:block">
+      <img
+        src="../../../../assets/Angular_gradient.png"
+        alt="logo angular v17"
+        class="size-36"
+      />
+    </figure>
+  </section>
+</section>

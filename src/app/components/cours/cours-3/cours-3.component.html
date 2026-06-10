@@ -1,295 +1,259 @@
+<!-- Contenu -->
 <section
-  class="bg-slate-600 flex-auto grid grid-cols-5 grid-rows-[1fr_auto_auto]"
+  class="bg-slate-600 flex-auto p-6 md:p-8 grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8"
 >
   <!-- Partie Titre -->
-  <section class="col-span-5 flex items-center justify-between py-4">
-    <figure class="bg-white m-8 rounded-full mr-12">
+  <section class="lg:col-span-5 flex items-center justify-between py-2 gap-6">
+    <figure class="bg-white m-4 rounded-full shadow-lg">
       <img
         src="../../../../assets/Angular_gradient.png"
         alt="logo angular v17"
-        class="size-24"
+        class="size-24 p-2"
       />
     </figure>
     <div
-      class="h-32 flex flex-col mt-2 mb-4 p-8 flex-auto rounded-tl-lg rounded-bl-lg bg-slate-950 text-left text-5xl font-black text-slate-50"
+      class="flex flex-col p-8 flex-auto rounded-lg bg-slate-950 text-left text-slate-50 shadow-md"
     >
-      <h1>
-        <span class="text-slate-600">Partie 3 - </span>
+      <h1 class="text-3xl md:text-5xl font-black tracking-tight">
         {{ title }}
       </h1>
-      <p class="font-normal py-2 text-lg text-zinc-500 cursor-pointer">
-        <span routerLink="/cours" class="underline hover:text-slate-50"
-          >/cours/</span
-        >
-        <span class="underline text-slate-50">{{ slug }}</span>
-      </p>
     </div>
   </section>
 
+  <!-- Version Impact Notice -->
+  <div *ngIf="selectedVersion !== 'v17' && versionNote" class="lg:col-span-5 bg-slate-900/90 border border-indigo-500/30 p-5 rounded-2xl shadow-xl flex items-center gap-4 transition-all duration-300">
+    <div class="bg-indigo-600 text-white font-bold text-xs uppercase tracking-wider px-3 py-1.5 rounded-lg shadow-sm shadow-indigo-500/20">
+      {{ selectedVersion | uppercase }}
+    </div>
+    <div class="flex-auto">
+      <h4 class="text-indigo-400 text-sm font-bold tracking-wide">Évolution Angular {{ selectedVersion | uppercase }}</h4>
+      <p class="text-slate-300 text-xs mt-1 leading-relaxed" [innerHTML]="versionNote"></p>
+    </div>
+  </div>
+
   <!-- Partie Résumé du cours -->
-  <section class="bg-slate-50 p-8 col-span-3">
-    <h2 class="mt-2 mb-4 text-center text-3xl font-bold text-slate-950">
+  <section class="bg-slate-50 p-8 lg:col-span-3 rounded-2xl shadow-lg border border-slate-200">
+    <h2
+      class="mt-2 mb-6 text-center text-3xl font-bold text-slate-950 uppercase tracking-wide"
+    >
       Résumé du cours
     </h2>
-    <div class="p-2">
-      <p class="bg-slate-200 p-2 rounded-lg mb-4">
-        Afin d'utiliser le module lié aux formulaires, je dois importer
-        obligatoirement le module
-        <strong class="text-slate-950">ReactiveFormsModule</strong> qui provient
-        de <strong class="text-slate-950">&#64;angular/forms</strong>.
+    <div class="p-2 space-y-4">
+      <p class="bg-slate-200 p-4 rounded-lg">
+        La gestion et la réinitialisation des valeurs sont deux aspects centraux des formulaires réactifs Angular.
       </p>
 
-      <pre
-        class="bg-neutral-900 py-1 text-slate-50 font-bold relative my-1 rounded-lg shadow-lg"
-      >
-          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">app Module</span>
-          <strong class="text-zinc-600 italic">... des imports ...</strong>
-          <span class="text-slate-400">import &#123; ReactiveFormsModule &#125; from '&#64;angular/forms';</span>
+      <h3 class="font-bold text-slate-950 text-xl mt-4">
+        1. Accéder à la valeur : 
+        <span *ngIf="selectedVersion === 'v17' || selectedVersion === 'v18'">`form.value`</span>
+        <span *ngIf="selectedVersion === 'v19' || selectedVersion === 'v20'">`toSignal(valueChanges)`</span>
+        <span *ngIf="selectedVersion === 'v21'">`form.valueSignal`</span>
+      </h3>
 
-          &#64;NgModule(&#123;
-            declarations: [ <strong class="text-zinc-600 italic">... des components ...</strong> ],
-            imports: [ <strong class="text-zinc-600 italic">... des modules ...</strong>, <span class="text-slate-400">ReactiveFormsModule</span>],
-            providers: [provideClientHydration()],
-            bootstrap: [AppComponent],
-          &#125;)
+      <!-- Explications et Code v17 / v18 -->
+      <div *ngIf="selectedVersion === 'v17' || selectedVersion === 'v18'">
+        <p class="py-1">
+          L'objet <strong class="text-slate-950">FormGroup</strong> possède un accesseur (getter) <strong class="text-slate-950">value</strong> qui retourne un objet JSON représentant les valeurs actuelles des champs.
+        </p>
+        <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto">
+          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">TS (v17/v18)</span>
+          console.log(<span class="text-indigo-400">this</span>.form.value); 
+          <span class="text-slate-500 italic">// Résultat : &#123; lastname: '...', firstname: '...', passPhrase: '...' &#125;</span>
         </pre>
+        <p class="py-1">
+          Pour récupérer la valeur d'un contrôle spécifique, on peut utiliser la méthode `.get()` :
+        </p>
+        <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto">
+          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">TS (v17/v18)</span>
+          <span class="text-indigo-400">const</span> lastname = <span class="text-indigo-400">this</span>.form.get(<span class="text-emerald-400">'lastname'</span>)?.value;
+        </pre>
+      </div>
 
-      <p class="py-2 px-4">
-        Pour la partie HTML, là ou le formulaire est utilisé, dnas le tag
-        <strong>&lt;form&gt;</strong>, il faut placer la directive
-        <strong>[formGroup]="form"</strong> qui sera <strong>bindé</strong> à un
-        attribut portant le nom de <strong>"form"</strong> afin d'être utilisé
+      <!-- Explications et Code v19 / v20 -->
+      <div *ngIf="selectedVersion === 'v19' || selectedVersion === 'v20'">
+        <p class="py-1">
+          En Angular 19/20, pour intégrer de façon réactive et synchrone les modifications dans les templates sans surcharger le DOM, on convertit l'Observable `valueChanges` en un Signal grâce à `toSignal()` :
+        </p>
+        <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto">
+          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">TS (v19/v20)</span>
+          <span class="text-indigo-400">import</span> &#123; <span class="text-amber-400">toSignal</span> &#125; <span class="text-indigo-400">from</span> <span class="text-emerald-400">'&#64;angular/core/rxjs-interop'</span>;
+
+          <span class="text-slate-500">// Déclaration du signal de valeur (lecteur synchrone)</span>
+          <span class="text-indigo-400">public</span> formValue = <span class="text-amber-400">toSignal</span>(<span class="text-indigo-400">this</span>.form.valueChanges, &#123; initialValue: <span class="text-indigo-400">this</span>.form.value &#125;);
+
+          <span class="text-slate-500">// Utilisation dans le TypeScript : formValue()</span>
+          console.log(<span class="text-indigo-400">this</span>.formValue());
+        </pre>
+      </div>
+
+      <!-- Explications et Code v21 -->
+      <div *ngIf="selectedVersion === 'v21'">
+        <p class="py-1">
+          En Angular 21, les contrôles et les formulaires exposent nativement des accesseurs de type Signal. Vous pouvez lire la valeur de manière synchrone et réactive via la propriété native `valueSignal` :
+        </p>
+        <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto">
+          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">TS (v21)</span>
+          <span class="text-slate-500">// Accès direct au Signal natif exposé par le FormGroup</span>
+          console.log(<span class="text-indigo-400">this</span>.form.valueSignal());
+
+          <span class="text-slate-500">// Accès direct au Signal d'un FormControl spécifique</span>
+          console.log(<span class="text-indigo-400">this</span>.form.get(<span class="text-emerald-400">'lastname'</span>)?.valueSignal());
+        </pre>
+      </div>
+
+      <h3 class="font-bold text-slate-950 text-xl mt-6">2. Réinitialiser le formulaire : `form.reset()`</h3>
+      <p class="py-1">
+        La méthode <strong class="text-slate-950">reset()</strong> remet à zéro les valeurs de tous les contrôles, et remet leurs états (flags) à l'état initial : `pristine` (non modifié) et `untouched` (non visité).
       </p>
-
       <pre
-        class="bg-neutral-900 py-1 text-slate-50 font-bold relative my-1 rounded-lg shadow-lg"
+        class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto"
       >
-          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">template HTML</span>
-          &lt;form (ngSubmit)="submitForm()" <span class="text-slate-400">[formGroup]="form"</span>&gt;
-            <strong class="text-zinc-600 italic">... Le contenu du formulaire ici ...</strong>
-          &lt;/form&gt;
-        </pre>
+        <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">TS</span>
+        <span class="text-indigo-400">this</span>.form.reset(); <span class="text-slate-500 italic">// Vide tout le formulaire</span>
+      </pre>
 
-      <p class="py-2 px-4">
-        Ci-dessous le début du composant avec l'import de
-        <strong class="text-slate-950">FormGroup</strong> et
-        <strong class="text-slate-950">FormControl</strong> toujours depuis
-        <strong class="text-slate-950">&#64;angular/forms</strong>,
+      <p class="py-1">
+        Il est aussi possible de réinitialiser le formulaire en lui injectant des valeurs par défaut :
       </p>
       <pre
-        class="bg-neutral-900 py-1 text-slate-50 font-bold relative my-1 rounded-lg shadow-lg"
+        class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto"
       >
-          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">component TS</span>
-          <strong class="text-zinc-600 italic">... des imports ...</strong>
-          <strong class="text-slate-400">import &#123; FormControl, FormGroup &#125; from '&#64;angular/forms';</strong>
-
-          <strong class="text-zinc-600 italic">... dans la classe ...</strong>
-          <strong class="text-slate-400">public form: FormGroup;</strong> <strong class="text-zinc-600 italic">// attribut</strong>
-          public submitForm() &#123;&#125;  <strong class="text-zinc-600 italic">// méthode</strong>
-        </pre>
-
-      <p class="py-2 px-4">
-        La logique se passe dans le component, donc ici il est question
-        d'ajouter tout les inputs que je souhaite gérer. Pour celà,
-        <strong class="text-slate-950"
-          >je vais assigner une nouvelle instance</strong
-        >
-        de <strong class="text-slate-950">FormGroup</strong> et lui passer un
-        objet comprenant des clés, valeurs. Chacune de ces clés correspond à un
-        input en particulié. Pour celà, je vais définir un nom pour chaque clé
-        selon l'input désiré. Pour ce qui est de la valeur, il s'agira
-        d'instancier <strong class="text-slate-950">FormControl</strong> en
-        passant en <strong class="text-slate-950">1er</strong> paramètre une
-        chaîne de caractère vide soit dans le code j'obtiens :
-      </p>
-
-      <pre
-        class="bg-neutral-900 py-1 text-slate-50 font-bold relative my-1 rounded-lg shadow-lg"
-      >
-          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">component TS</span>
-          <strong class="text-zinc-600 italic">... dans la classe ...</strong>
-          public form: FormGroup<strong class="text-slate-400"> = new FormGroup(&#123;
-            lastname: new FormControl(''),
-            firstname: new FormControl(''),
-            passPhrase: new FormControl(''),
-          &#125;)</strong>
-        </pre>
-
-      <p class="py-2 px-4">
-        Afin de pouvoir lié les <strong class="text-slate-950">clés</strong> sur
-        l'input html, il faut ajouter la directive
-        <strong>formControlName</strong> avec comme valeur le nom de la clé
-        souhaité.
-      </p>
-
-      <pre
-        class="bg-neutral-900 py-1 text-slate-50 font-bold relative my-1 rounded-lg shadow-lg"
-      >
-          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">template HTML</span>
-          &lt;form (ngSubmit)="une_fonction() [formGroup]="form"&gt;
-
-            &lt;div class="form-group flex flex-col p-2">
-              &lt;label for="" class="font-bold  mb-1">Nom :&lt;/label>
-              &lt;input
-                <span class="text-slate-400">formControlName="lastname"</span>
-                type="text"
-                placeholder="votre nom"
-                class="w-full rounded-md"
-              />
-            &lt;/div>
-
-            &lt;div class="form-group flex flex-col p-2">
-              &lt;label for="" class="font-bold  mb-1">Nom :&lt;/label>
-              &lt;input
-                <span class="text-slate-400">formControlName="firstname"</span>
-                type="text"
-                placeholder="votre nom"
-                class="w-full rounded-md"
-              />
-            &lt;/div>
-
-            <strong class="text-zinc-600 italic">... etc ...</strong>
-          &lt;/form&gt;
-        </pre>
+        <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">TS</span>
+        <span class="text-indigo-400">this</span>.form.reset(&#123;
+          lastname: <span class="text-emerald-400">'Dupont'</span>,
+          firstname: <span class="text-emerald-400">'Jean'</span>
+        &#125;);
+      </pre>
     </div>
   </section>
 
   <!-- Partie formulaire -->
-  <section class="bg-slate-400 p-4 col-span-2">
-    <h2 class="mt-2 mb-4 text-center text-3xl font-bold text-slate-950">
-      Formulaire
-    </h2>
+  <section class="bg-slate-400 p-8 lg:col-span-2 rounded-2xl shadow-lg border border-slate-300 flex flex-col justify-between">
+    <div>
+      <h2
+        class="mt-2 mb-4 text-center text-3xl font-bold uppercase text-slate-950 tracking-wide"
+      >
+        Formulaire
+      </h2>
 
-    <p class="py-2 text-center italic">
-      Ci-desosus se trouve le formulaire utilisé dans le résumé du cours
-    </p>
+      <p class="py-2 text-center italic text-slate-800">
+        Modifiez les champs ci-dessous pour voir l'objet `form.value` se mettre à jour en direct.
+      </p>
 
-    <form
-      (ngSubmit)="submitForm()"
-      [formGroup]="form"
-      class="bg-slate-200 m-8 p-8 rounded-lg shadow-lg"
-    >
-      <!-- Nom -->
-      <div class="form-group flex flex-col p-2">
-        <label for="" class="font-bold uppercase mb-1">Nom :</label>
-        <input
-          formControlName="lastname"
-          type="text"
-          placeholder="votre nom"
-          class="w-full rounded-md"
-        />
+      <form
+        (ngSubmit)="submitForm()"
+        [formGroup]="form"
+        class="bg-slate-200 p-6 rounded-lg shadow-md space-y-4"
+      >
+        <!-- Nom -->
+        <div class="form-group flex flex-col">
+          <label class="font-bold uppercase mb-1 text-slate-700 text-sm">Nom :</label>
+          <input
+            formControlName="lastname"
+            type="text"
+            placeholder="votre nom"
+            class="w-full rounded-md border-slate-300 shadow-sm"
+          />
+        </div>
+
+        <!-- Prénom -->
+        <div class="form-group flex flex-col">
+          <label class="font-bold uppercase mb-1 text-slate-700 text-sm">Prénom :</label>
+          <input
+            formControlName="firstname"
+            type="text"
+            placeholder="votre prénom"
+            class="w-full rounded-md border-slate-300 shadow-sm"
+          />
+        </div>
+
+        <!-- Phrase de passe -->
+        <div class="form-group flex flex-col">
+          <label class="font-bold uppercase mb-1 text-slate-700 text-sm">Phrase de passe :</label>
+          <input
+            formControlName="passPhrase"
+            type="text"
+            placeholder="votre phrase de passe"
+            class="w-full rounded-md border-slate-300 shadow-sm"
+          />
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="flex items-center justify-center gap-4 pt-4">
+          <button
+            type="submit"
+            class="bg-slate-600 hover:bg-slate-700 text-slate-50 font-bold px-6 py-2 rounded-md shadow-md transition-colors"
+          >
+            Valider
+          </button>
+          <button
+            type="button"
+            (click)="resetForm()"
+            class="bg-red-600 hover:bg-red-700 text-slate-50 font-bold px-6 py-2 rounded-md shadow-md transition-colors"
+          >
+            Réinitialiser
+          </button>
+        </div>
+      </form>
+
+      <!-- Rendu en direct de la valeur -->
+      <div class="mt-6 p-4 bg-slate-900 rounded-lg shadow-inner">
+        <h4 class="text-slate-400 font-bold text-xs uppercase tracking-wider mb-2">
+          Valeur en temps réel 
+          <span *ngIf="selectedVersion === 'v17' || selectedVersion === 'v18'">(form.value)</span>
+          <span *ngIf="selectedVersion === 'v19' || selectedVersion === 'v20'">(toSignal)</span>
+          <span *ngIf="selectedVersion === 'v21'">(form.valueSignal)</span>
+          :
+        </h4>
+        <pre *ngIf="selectedVersion === 'v17' || selectedVersion === 'v18'" class="text-green-400 font-mono text-xs overflow-x-auto">{{ form.value | json }}</pre>
+        <pre *ngIf="selectedVersion !== 'v17' && selectedVersion !== 'v18'" class="text-green-400 font-mono text-xs overflow-x-auto">{{ formValueSignal() | json }}</pre>
       </div>
-
-      <!-- Prénom -->
-      <div class="form-group flex flex-col p-2">
-        <label for="" class="font-bold uppercase mb-1">Prénom :</label>
-        <input
-          formControlName="firstname"
-          type="text"
-          placeholder="votre prénom"
-          class="w-full rounded-md"
-        />
-      </div>
-
-      <!-- Phrase de passe -->
-      <div class="form-group flex flex-col p-2">
-        <label for="" class="font-bold uppercase mb-1">Phrase de passe :</label>
-        <input
-          formControlName="passPhrase"
-          type="text"
-          placeholder="votre phrase de passe"
-          class="w-full rounded-md"
-        />
-      </div>
-
-      <!-- Confirmer la phrase de passe -->
-      <div class="form-group flex flex-col p-2">
-        <label for="" class="font-bold uppercase mb-1"
-          >Confirmation de la phrase de passe :</label
-        >
-        <input
-          type="text"
-          placeholder="confirmer votre phrase de passe"
-          class="w-full rounded-md"
-        />
-      </div>
-
-      <!-- button de soumission-->
-      <div class="text-center">
-        <button
-          class="bg-slate-500 my-8 px-4 py-2 font-bold rounded-md text-slate-50"
-        >
-          Valider
-        </button>
-      </div>
-    </form>
+    </div>
   </section>
 
   <!-- Ma conclusion -->
-  <section class="p-8 bg-black items-center flex justify-center col-span-5">
-    <figure class="flex flex-col items-center">
+  <section class="p-8 bg-slate-900 rounded-2xl shadow-xl border border-slate-800 flex flex-col lg:flex-row items-center justify-between lg:col-span-5 gap-8 mt-4">
+    <figure class="flex flex-col items-center flex-shrink-0">
       <img
         src="../../../../assets/alain.jpg"
-        alt=""
-        class="size-56 rounded-full border-4 border-slate-500 mb-2"
+        alt="Alain Guillon"
+        class="size-48 rounded-full border-4 border-slate-500 shadow-lg object-cover mb-2"
       />
-      <figcaption class="py-2 px-4 rounded-lg text-center flex flex-col">
-        <span class="font-black text-slate-500">Alain Guillon</span>
-        <span class="italic text-slate-600"
+      <figcaption class="text-center">
+        <span class="block font-black text-slate-400 text-lg">Alain Guillon</span>
+        <span class="block italic text-slate-500 text-sm"
           >Développeur fullstack certifié</span
         >
       </figcaption>
     </figure>
 
-    <div class="w-6/12 mx-auto">
-      <h2 class="mb-4 text-center text-3xl font-bold text-slate-500">
+    <div class="flex-auto max-w-2xl px-4">
+      <h2
+        class="mb-4 text-center lg:text-left text-3xl font-bold text-slate-400 uppercase tracking-wider"
+      >
         Conclusion
       </h2>
-      <dl class="italic p-2 text-lg">
-        <dt class="font-bold text-slate-500">(ngSubmit) :</dt>
-        <dd class="px-8 italic mb-4 text-slate-50">
-          C'est un événement déclenché lors de la soumission du formulaire.<br />Il
-          faut lier cette action à une fonction dans le composant TypeScript.
-        </dd>
-        <dt class="font-bold text-slate-500">submitForm() :</dt>
-        <dd class="px-8 italic mb-4 text-slate-50">
-          C'est la fonction à exécuter lorsque le formulaire est soumis. <br />
-          Pour gérer la logique de soumission, il faut définir dans le
-          composant.<br />
-          En utilisant ces concepts, je peux créer des formulaires efficaces et
-          bien organisés pour mes futures applications Angular.
-        </dd>
-
-        <dt class="font-bold text-slate-500">ReactiveFormsModule:</dt>
-        <dd class="px-8 italic mb-4 text-slate-50">
-          Ce module est indispensable au bon fonctionnement des formulaires.
-        </dd>
-        <dt class="font-bold text-slate-500">[formGroup]="form" :</dt>
-        <dd class="px-8 italic mb-4 text-slate-50">
-          Binding d'une directive extrêmement important où je lie l'attribut
-          form de mon component qui est du type FormGroup
-        </dd>
-        <dt class="font-bold text-slate-500">new FormGroup(&#123;&#125;) :</dt>
-        <dd class="px-8 italic mb-4 text-slate-50">
-          Instanciation de la classe FormGroup en lui passant un objet qui
-          contient toutes les clés liés aux formulaires et chacune de ses clé
-          est instancié par une classe FormControl ou j'y passe une chaine de
-          caractère vide en premier paramètre.
-        </dd>
-        <dt class="font-bold text-slate-500">formControlName="x"</dt>
-        <dd class="px-8 italic mb-4 text-slate-50">
-          "x" correspond au nom d'une clé précédemment cité.
-        </dd>
+      <dl class="italic space-y-4 text-slate-300">
+        <div>
+          <dt class="font-bold text-slate-400 text-lg">form.value :</dt>
+          <dd class="px-4 mt-1">
+            Retourne un objet global contenant l'état des valeurs à l'instant T. Très utile pour envoyer les données au backend après soumission.
+          </dd>
+        </div>
+        <div>
+          <dt class="font-bold text-slate-400 text-lg">form.reset() :</dt>
+          <dd class="px-4 mt-1">
+            Permet de vider le formulaire proprement et de réinitialiser l'état CSS des classes de validation (`ng-untouched`, `ng-pristine`).
+          </dd>
+        </div>
       </dl>
     </div>
 
-    <figure
-      class="bg-white my-8 rounded-full mr-12 *:hover:filter *:hover:grayscale-0"
-    >
+    <figure class="bg-white rounded-full p-4 shadow-md flex-shrink-0 hidden lg:block">
       <img
         src="../../../../assets/Angular_gradient.png"
         alt="logo angular v17"
-        class="size-64 filter grayscale"
+        class="size-36"
       />
     </figure>
   </section>

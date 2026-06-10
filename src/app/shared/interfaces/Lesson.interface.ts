@@ -4,4 +4,6 @@ export interface Lesson {
   slug: string;
   description: string;
   status: string;
+  track?: 'basics' | 'forms' | 'advanced';
 }
+

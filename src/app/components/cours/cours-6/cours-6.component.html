@@ -1,0 +1,228 @@
+<!-- Contenu -->
+<section
+  class="bg-slate-600 flex-auto p-6 md:p-8 grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8"
+>
+  <!-- Partie Titre -->
+  <section class="lg:col-span-5 flex items-center justify-between py-2 gap-6">
+    <figure class="bg-white m-4 rounded-full shadow-lg">
+      <img
+        src="../../../../assets/Angular_gradient.png"
+        alt="logo angular v17"
+        class="size-24 p-2"
+      />
+    </figure>
+    <div
+      class="flex flex-col p-8 flex-auto rounded-lg bg-slate-950 text-left text-slate-50 shadow-md"
+    >
+      <h1 class="text-3xl md:text-5xl font-black tracking-tight">
+        {{ title }}
+      </h1>
+    </div>
+  </section>
+
+  <!-- Version Impact Notice -->
+  <div *ngIf="selectedVersion !== 'v17' && versionNote" class="lg:col-span-5 bg-slate-900/90 border border-indigo-500/30 p-5 rounded-2xl shadow-xl flex items-center gap-4 transition-all duration-300">
+    <div class="bg-indigo-600 text-white font-bold text-xs uppercase tracking-wider px-3 py-1.5 rounded-lg shadow-sm shadow-indigo-500/20">
+      {{ selectedVersion | uppercase }}
+    </div>
+    <div class="flex-auto">
+      <h4 class="text-indigo-400 text-sm font-bold tracking-wide">Évolution Angular {{ selectedVersion | uppercase }}</h4>
+      <p class="text-slate-300 text-xs mt-1 leading-relaxed" [innerHTML]="versionNote"></p>
+    </div>
+  </div>
+
+  <!-- Partie Résumé du cours -->
+  <section class="bg-slate-50 p-8 lg:col-span-3 rounded-2xl shadow-lg border border-slate-200">
+    <h2
+      class="mt-2 mb-6 text-center text-3xl font-bold text-slate-950 uppercase tracking-wide"
+    >
+      Résumé du cours
+    </h2>
+    <div class="p-2 space-y-4">
+      <p class="bg-slate-200 p-4 rounded-lg">
+        Chaque contrôle de formulaire est représenté par un objet étendant `AbstractControl` qui maintient un ensemble de drapeaux (flags) d'états. De plus, Angular applique automatiquement des classes CSS correspondant à ces états sur les balises `<input>`.
+      </p>
+
+      <h3 class="font-bold text-slate-950 text-xl mt-4">1. Les couples d'états d'un contrôle</h3>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-slate-100 p-3 rounded shadow-sm border border-slate-200">
+          <h4 class="font-bold text-slate-800 mb-1">Visite (Focus)</h4>
+          <ul class="text-sm space-y-1">
+            <li>🟢 <strong class="text-slate-950">touched</strong> : Le champ a perdu le focus au moins une fois.</li>
+            <li>🔴 <strong class="text-slate-950">untouched</strong> : Le champ n'a jamais perdu le focus.</li>
+          </ul>
+        </div>
+        <div class="bg-slate-100 p-3 rounded shadow-sm border border-slate-200">
+          <h4 class="font-bold text-slate-800 mb-1">Modification (Ecriture)</h4>
+          <ul class="text-sm space-y-1">
+            <li>🟢 <strong class="text-slate-950">dirty</strong> : L'utilisateur a modifié la valeur.</li>
+            <li>🔴 <strong class="text-slate-950">pristine</strong> : La valeur n'a pas été modifiée.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="font-bold text-slate-950 text-xl mt-6">2. Classes CSS injectées par Angular</h3>
+      <p class="py-1">
+        Angular applique dynamiquement des classes CSS sur les éléments HTML liés aux contrôles :
+      </p>
+      <ul class="list-disc pl-6 space-y-1">
+        <li>`ng-touched` / `ng-untouched`</li>
+        <li>`ng-dirty` / `ng-pristine`</li>
+        <li>`ng-valid` / `ng-invalid`</li>
+      </ul>
+
+      <h3 class="font-bold text-slate-950 text-xl mt-6">3. Exemple d'utilisation en CSS</h3>
+      <p class="py-1">
+        On peut par exemple appliquer une bordure rouge uniquement aux champs invalides et déjà visités :
+      </p>
+      <pre
+        class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto"
+      >
+        <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">CSS</span>
+        input.ng-invalid.ng-touched &#123;
+          <span class="text-indigo-400">border</span>: <span class="text-sky-400">2px</span> solid <span class="text-emerald-400">red</span>;
+        &#125;
+      </pre>
+    </div>
+  </section>
+
+  <!-- Partie formulaire -->
+  <section class="bg-slate-400 p-8 lg:col-span-2 rounded-2xl shadow-lg border border-slate-300 flex flex-col justify-between">
+    <div>
+      <h2
+        class="mt-2 mb-4 text-center text-3xl font-bold uppercase text-slate-950 tracking-wide"
+      >
+        Formulaire
+      </h2>
+
+      <p class="py-2 text-center italic text-slate-800">
+        Interagissez avec le champ pseudo pour voir ses états basculer instantanément.
+      </p>
+
+      <form
+        (ngSubmit)="submitForm()"
+        [formGroup]="form"
+        class="bg-slate-200 p-6 rounded-lg shadow-md space-y-4"
+      >
+        <!-- Pseudo -->
+        <div class="form-group flex flex-col">
+          <label class="font-bold uppercase mb-1 text-slate-700 text-sm">Pseudo (Min 3 caractères) :</label>
+          <input
+            #nicknameInput
+            formControlName="nickname"
+            type="text"
+            placeholder="Ex: Alain"
+            class="w-full rounded-md border-2 border-slate-300 focus:outline-none transition-colors duration-300"
+            [class.border-red-500]="form.get('nickname')?.invalid && form.get('nickname')?.touched"
+            [class.border-green-500]="form.get('nickname')?.valid && form.get('nickname')?.touched"
+          />
+        </div>
+
+        <!-- button de soumission-->
+        <div class="text-center pt-4">
+          <button
+            type="submit"
+            [disabled]="form.invalid"
+            class="bg-slate-600 hover:bg-slate-700 text-slate-50 font-bold px-6 py-2 rounded-md shadow-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Valider
+          </button>
+        </div>
+      </form>
+
+      <!-- Affichage dynamique des drapeaux -->
+      <div class="mt-6 p-4 bg-slate-900 rounded-lg shadow-inner text-white font-mono text-xs space-y-2">
+        <h4 class="text-slate-400 font-bold uppercase tracking-wider mb-2">
+          Accès aux drapeaux (
+          <span *ngIf="selectedVersion === 'v17' || selectedVersion === 'v18'">Propriétés Classiques</span>
+          <span *ngIf="selectedVersion === 'v19' || selectedVersion === 'v20'">toSignal() wrapper</span>
+          <span *ngIf="selectedVersion === 'v21'">Signals Natifs</span>
+          ) :
+        </h4>
+        <div>
+          <span>touched :</span>
+          <span class="text-slate-500 font-sans mr-2 ml-1">
+            <span *ngIf="selectedVersion === 'v17' || selectedVersion === 'v18'">ctrl.touched</span>
+            <span *ngIf="selectedVersion === 'v19' || selectedVersion === 'v20'">toSignal(touched$)</span>
+            <span *ngIf="selectedVersion === 'v21'">ctrl.touchedSignal()</span>
+            =
+          </span>
+          <span [class.text-green-400]="form.get('nickname')?.touched" [class.text-red-400]="!form.get('nickname')?.touched">
+            {{ form.get('nickname')?.touched }}
+          </span>
+        </div>
+        <div>
+          <span>dirty :</span>
+          <span class="text-slate-500 font-sans mr-2 ml-1">
+            <span *ngIf="selectedVersion === 'v17' || selectedVersion === 'v18'">ctrl.dirty</span>
+            <span *ngIf="selectedVersion === 'v19' || selectedVersion === 'v20'">toSignal(dirty$)</span>
+            <span *ngIf="selectedVersion === 'v21'">ctrl.dirtySignal()</span>
+            =
+          </span>
+          <span [class.text-green-400]="form.get('nickname')?.dirty" [class.text-red-400]="!form.get('nickname')?.dirty">
+            {{ form.get('nickname')?.dirty }}
+          </span>
+        </div>
+        <div>
+          <span>valid :</span>
+          <span class="text-slate-500 font-sans mr-2 ml-1">
+            <span *ngIf="selectedVersion === 'v17' || selectedVersion === 'v18'">ctrl.valid</span>
+            <span *ngIf="selectedVersion === 'v19' || selectedVersion === 'v20'">toSignal(valid$)</span>
+            <span *ngIf="selectedVersion === 'v21'">ctrl.validSignal()</span>
+            =
+          </span>
+          <span [class.text-green-400]="form.get('nickname')?.valid" [class.text-red-400]="!form.get('nickname')?.valid">
+            {{ form.get('nickname')?.valid }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ma conclusion -->
+  <section class="p-8 bg-slate-900 rounded-2xl shadow-xl border border-slate-800 flex flex-col lg:flex-row items-center justify-between lg:col-span-5 gap-8 mt-4">
+    <figure class="flex flex-col items-center flex-shrink-0">
+      <img
+        src="../../../../assets/alain.jpg"
+        alt="Alain Guillon"
+        class="size-48 rounded-full border-4 border-slate-500 shadow-lg object-cover mb-2"
+      />
+      <figcaption class="text-center">
+        <span class="block font-black text-slate-400 text-lg">Alain Guillon</span>
+        <span class="block italic text-slate-500 text-sm"
+          >Développeur fullstack certifié</span
+        >
+      </figcaption>
+    </figure>
+
+    <div class="flex-auto max-w-2xl px-4">
+      <h2
+        class="mb-4 text-center lg:text-left text-3xl font-bold text-slate-400 uppercase tracking-wider"
+      >
+        Conclusion
+      </h2>
+      <dl class="italic space-y-4 text-slate-300">
+        <div>
+          <dt class="font-bold text-slate-400 text-lg">Classes automatiques :</dt>
+          <dd class="px-4 mt-1">
+            Les classes `ng-valid`, `ng-invalid`, etc., permettent de modifier l'apparence des champs via le CSS global du projet sans aucune logique TypeScript.
+          </dd>
+        </div>
+        <div>
+          <dt class="font-bold text-slate-400 text-lg">Bordures réactives :</dt>
+          <dd class="px-4 mt-1">
+            En liant la classe CSS avec `form.get('nickname')?.touched`, on s'assure d'un retour visuel de validation propre et discret pour l'utilisateur.
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    <figure class="bg-white rounded-full p-4 shadow-md flex-shrink-0 hidden lg:block">
+      <img
+        src="../../../../assets/Angular_gradient.png"
+        alt="logo angular v17"
+        class="size-36"
+      />
+    </figure>
+  </section>
+</section>

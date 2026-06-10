@@ -1,0 +1,109 @@
+<!-- Leçon 10 : Change Detection & OnPush -->
+<section class="bg-slate-950 flex-auto p-6 md:p-8 grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8">
+  <section class="lg:col-span-5 flex items-center gap-6 py-2">
+    <figure class="bg-white m-4 rounded-full shadow-lg flex-shrink-0"><img src="../../../../assets/Angular_gradient.png" alt="logo angular" class="size-20 p-2" /></figure>
+    <div class="flex flex-col p-6 flex-auto rounded-xl bg-slate-900 border border-slate-800 text-left text-slate-50 shadow-md">
+      <span class="text-xs font-black uppercase tracking-widest text-amber-500 mb-1">Fondamentaux · Leçon 10</span>
+      <h1 class="text-3xl md:text-4xl font-black tracking-tight">{{ title }}</h1>
+      <p class="text-slate-400 text-sm mt-2">Comprendre le mécanisme qui met à jour la vue, et comment l'optimiser avec OnPush et l'immutabilité.</p>
+    </div>
+  </section>
+
+  <section class="bg-slate-900 border border-slate-800 p-8 lg:col-span-3 rounded-2xl shadow-lg">
+    <h2 class="mt-2 mb-6 text-center text-2xl font-bold text-white uppercase tracking-wide">Résumé du cours</h2>
+    <div class="text-slate-300 space-y-5 text-sm leading-relaxed">
+      <p class="bg-slate-800/60 border-l-4 border-amber-500 pl-4 py-3 rounded-r-lg">
+        La <strong>Change Detection</strong> est le mécanisme par lequel Angular détecte les changements dans les données et met à jour le DOM en conséquence. Par défaut, Angular vérifie l'intégralité de l'arbre de composants à chaque événement.
+      </p>
+
+      <h3 class="font-bold text-white text-lg">1. Stratégie Default (comportement par défaut)</h3>
+      <pre class="bg-slate-800 py-4 px-5 text-slate-50 font-mono text-xs rounded-xl shadow-lg overflow-x-auto border border-slate-700">
+<span class="text-slate-500">// Angular vérifie TOUS les composants à chaque :</span>
+<span class="text-slate-500">// - Événement DOM (click, input...)</span>
+<span class="text-slate-500">// - Réponse HTTP</span>
+<span class="text-slate-500">// - setTimeout / setInterval</span>
+<span class="text-slate-500">// - Promise résolue</span>
+
+<span class="text-amber-400">&#64;Component</span>(&#123;
+  changeDetection: ChangeDetectionStrategy.<span class="text-sky-400">Default</span>  <span class="text-slate-500">← implicite</span>
+&#125;)</pre>
+
+      <h3 class="font-bold text-white text-lg mt-6">2. Stratégie OnPush — optimisation</h3>
+      <pre class="bg-slate-800 py-4 px-5 text-slate-50 font-mono text-xs rounded-xl shadow-lg overflow-x-auto border border-slate-700">
+<span class="text-amber-400">&#64;Component</span>(&#123;
+  changeDetection: ChangeDetectionStrategy.<span class="text-emerald-400">OnPush</span>
+&#125;)
+<span class="text-indigo-400">export class</span> UserCardComponent &#123;
+  <span class="text-amber-400">&#64;Input</span>() user!: User;
+&#125;
+
+<span class="text-slate-500">// Angular ne vérifie ce composant QUE si :</span>
+<span class="text-slate-500">// 1. La référence d'un &#64;Input change (nouvelle instance)</span>
+<span class="text-slate-500">// 2. Un événement est déclenché dans ce composant</span>
+<span class="text-slate-500">// 3. Un Observable via async pipe émet une valeur</span>
+<span class="text-slate-500">// 4. markForCheck() / detectChanges() est appelé manuellement</span></pre>
+
+      <h3 class="font-bold text-white text-lg mt-6">3. Immutabilité — la clé d'OnPush</h3>
+      <pre class="bg-slate-800 py-4 px-5 text-slate-50 font-mono text-xs rounded-xl shadow-lg overflow-x-auto border border-slate-700">
+<span class="text-slate-500">// ❌ MAL : mutation d'objet — OnPush ne détecte PAS</span>
+<span class="text-indigo-400">this</span>.user.name = <span class="text-emerald-400">'Alain'</span>;
+
+<span class="text-slate-500">// ✅ BIEN : nouvelle référence — OnPush détecte</span>
+<span class="text-indigo-400">this</span>.user = &#123; ...<span class="text-indigo-400">this</span>.user, name: <span class="text-emerald-400">'Alain'</span> &#125;;
+
+<span class="text-slate-500">// ❌ MAL : push sur tableau existant</span>
+<span class="text-indigo-400">this</span>.items.<span class="text-amber-400">push</span>(newItem);
+
+<span class="text-slate-500">// ✅ BIEN : nouveau tableau</span>
+<span class="text-indigo-400">this</span>.items = [...<span class="text-indigo-400">this</span>.items, newItem];</pre>
+
+      <h3 class="font-bold text-white text-lg mt-6">4. Déclenchement manuel</h3>
+      <pre class="bg-slate-800 py-4 px-5 text-slate-50 font-mono text-xs rounded-xl shadow-lg overflow-x-auto border border-slate-700">
+<span class="text-indigo-400">private</span> cdr = <span class="text-amber-400">inject</span>(ChangeDetectorRef);
+
+<span class="text-slate-500">// Marque le composant pour vérification au prochain cycle</span>
+<span class="text-indigo-400">this</span>.cdr.<span class="text-amber-400">markForCheck</span>();
+
+<span class="text-slate-500">// Force la vérification immédiate</span>
+<span class="text-indigo-400">this</span>.cdr.<span class="text-amber-400">detectChanges</span>();</pre>
+    </div>
+  </section>
+
+  <section class="bg-slate-900 border border-slate-800 p-8 lg:col-span-2 rounded-2xl shadow-lg flex flex-col">
+    <h2 class="mt-2 mb-4 text-center text-2xl font-bold text-white uppercase tracking-wide">À retenir</h2>
+    <div class="space-y-4 flex-auto">
+      <div class="bg-slate-800 border border-slate-700 rounded-xl p-4">
+        <h4 class="text-xs font-black uppercase tracking-wider text-amber-400 mb-3">Default vs OnPush</h4>
+        <div class="text-xs space-y-2">
+          <div class="flex justify-between"><span class="text-slate-400">Default</span><span class="text-rose-400">Vérifie tout → lent</span></div>
+          <div class="flex justify-between"><span class="text-slate-400">OnPush</span><span class="text-emerald-400">Vérifie si besoin → rapide</span></div>
+        </div>
+      </div>
+      <div class="bg-slate-800 border border-slate-700 rounded-xl p-4">
+        <h4 class="text-xs font-black uppercase tracking-wider text-sky-400 mb-3">Signals = Zoneless</h4>
+        <p class="text-xs text-slate-400">Avec les Signals (v16+), Angular peut s'affranchir de Zone.js et ne mettre à jour que les composants qui consomment un signal modifié — la CD la plus granulaire possible.</p>
+      </div>
+      <div class="bg-amber-950/40 border border-amber-700/40 rounded-xl p-4">
+        <h4 class="text-xs font-black uppercase tracking-wider text-amber-400 mb-2">💡 Conseil pro</h4>
+        <p class="text-xs text-slate-300">Appliquez <code class="text-emerald-400">OnPush</code> à tous vos composants présentationnel (purs). Réservez <code class="text-sky-400">Default</code> aux composants conteneurs qui gèrent l'état.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-8 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl flex flex-col lg:flex-row items-center justify-between lg:col-span-5 gap-8 mt-2">
+    <figure class="flex flex-col items-center flex-shrink-0">
+      <img src="../../../../assets/alain.jpg" alt="Alain Guillon" class="size-36 rounded-full border-4 border-slate-700 shadow-lg object-cover mb-2" />
+      <figcaption class="text-center">
+        <span class="block font-black text-slate-400 text-base">Alain Guillon</span>
+        <span class="block italic text-slate-500 text-xs">Développeur fullstack certifié</span>
+      </figcaption>
+    </figure>
+    <div class="flex-auto max-w-2xl px-4">
+      <h2 class="mb-4 text-center lg:text-left text-2xl font-bold text-slate-400 uppercase tracking-wider">Conclusion</h2>
+      <p class="text-slate-300 text-sm leading-relaxed text-justify">La Change Detection est souvent la source principale de problèmes de performance dans les applications Angular de taille moyenne à grande. Adopter <code class="text-emerald-400">OnPush</code> et les principes d'immutabilité dès le départ vous évitera des refactorisations douloureuses. L'avènement des Signals en v16+ représente l'évolution naturelle vers une réactivité fine-grained sans Zone.js.</p>
+    </div>
+    <figure class="bg-white rounded-full p-3 shadow-md flex-shrink-0 hidden lg:block">
+      <img src="../../../../assets/Angular_gradient.png" alt="logo angular" class="size-28" />
+    </figure>
+  </section>
+</section>

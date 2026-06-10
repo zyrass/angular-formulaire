@@ -1,0 +1,110 @@
+<!-- Leçon 6 : Services & Injection de Dépendances -->
+<section class="bg-slate-950 flex-auto p-6 md:p-8 grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8">
+  <section class="lg:col-span-5 flex items-center gap-6 py-2">
+    <figure class="bg-white m-4 rounded-full shadow-lg flex-shrink-0"><img src="../../../../assets/Angular_gradient.png" alt="logo angular" class="size-20 p-2" /></figure>
+    <div class="flex flex-col p-6 flex-auto rounded-xl bg-slate-900 border border-slate-800 text-left text-slate-50 shadow-md">
+      <span class="text-xs font-black uppercase tracking-widest text-amber-500 mb-1">Fondamentaux · Leçon 6</span>
+      <h1 class="text-3xl md:text-4xl font-black tracking-tight">{{ title }}</h1>
+      <p class="text-slate-400 text-sm mt-2">Centralisez la logique métier dans des services injectables et maîtrisez le système DI d'Angular.</p>
+    </div>
+  </section>
+
+  <section class="bg-slate-900 border border-slate-800 p-8 lg:col-span-3 rounded-2xl shadow-lg">
+    <h2 class="mt-2 mb-6 text-center text-2xl font-bold text-white uppercase tracking-wide">Résumé du cours</h2>
+    <div class="text-slate-300 space-y-5 text-sm leading-relaxed">
+      <p class="bg-slate-800/60 border-l-4 border-amber-500 pl-4 py-3 rounded-r-lg">
+        Un <strong>service Angular</strong> est une classe singleton qui centralise la logique métier, les appels HTTP et l'état partagé. L'<strong>injection de dépendances</strong> (DI) permet à Angular de fournir automatiquement ces services aux composants qui en ont besoin.
+      </p>
+
+      <h3 class="font-bold text-white text-lg">1. Créer un service injectable</h3>
+      <pre class="bg-slate-800 py-4 px-5 text-slate-50 font-mono text-xs rounded-xl shadow-lg overflow-x-auto border border-slate-700">
+<span class="text-indigo-400">import</span> &#123; Injectable &#125; <span class="text-indigo-400">from</span> <span class="text-emerald-400">'&#64;angular/core'</span>;
+
+<span class="text-amber-400">&#64;Injectable</span>(&#123;
+  providedIn: <span class="text-emerald-400">'root'</span>  <span class="text-slate-500">← singleton global, tree-shakable</span>
+&#125;)
+<span class="text-indigo-400">export class</span> UserService &#123;
+  <span class="text-indigo-400">private</span> users: User[] = [];
+
+  <span class="text-indigo-400">public</span> <span class="text-amber-400">getAll</span>(): User[] &#123;
+    <span class="text-indigo-400">return this</span>.users;
+  &#125;
+
+  <span class="text-indigo-400">public</span> <span class="text-amber-400">add</span>(user: User): <span class="text-indigo-400">void</span> &#123;
+    <span class="text-indigo-400">this</span>.users.<span class="text-amber-400">push</span>(user);
+  &#125;
+&#125;</pre>
+
+      <h3 class="font-bold text-white text-lg mt-6">2. Injecter dans un composant</h3>
+      <pre class="bg-slate-800 py-4 px-5 text-slate-50 font-mono text-xs rounded-xl shadow-lg overflow-x-auto border border-slate-700">
+<span class="text-slate-500">// Méthode classique — constructeur (v2–v17)</span>
+<span class="text-indigo-400">export class</span> UserListComponent &#123;
+  <span class="text-indigo-400">constructor</span>(<span class="text-indigo-400">private</span> userService: UserService) &#123;&#125;
+
+  <span class="text-indigo-400">public</span> users = <span class="text-indigo-400">this</span>.userService.<span class="text-amber-400">getAll</span>();
+&#125;
+
+<span class="text-slate-500">// Méthode fonctionnelle — inject() (v14+, recommandée)</span>
+<span class="text-indigo-400">export class</span> UserListComponent &#123;
+  <span class="text-indigo-400">private</span> userService = <span class="text-amber-400">inject</span>(UserService);
+  <span class="text-indigo-400">public</span>  users = <span class="text-indigo-400">this</span>.userService.<span class="text-amber-400">getAll</span>();
+&#125;</pre>
+
+      <h3 class="font-bold text-white text-lg mt-6">3. Scope des providers</h3>
+      <div class="space-y-2">
+        <div class="bg-slate-800 rounded-lg p-3">
+          <code class="text-amber-400 text-xs">providedIn: 'root'</code>
+          <p class="text-xs text-slate-400 mt-1">Singleton global — une seule instance pour toute l'app. Recommandé pour les services HTTP, auth, etc.</p>
+        </div>
+        <div class="bg-slate-800 rounded-lg p-3">
+          <code class="text-amber-400 text-xs">providers: [MyService]</code> dans <code class="text-sky-400 text-xs">&#64;Component</code>
+          <p class="text-xs text-slate-400 mt-1">Instance dédiée au composant et ses enfants. Idéal pour les services à état locaux.</p>
+        </div>
+        <div class="bg-slate-800 rounded-lg p-3">
+          <code class="text-amber-400 text-xs">providers: [MyService]</code> dans <code class="text-sky-400 text-xs">&#64;NgModule</code>
+          <p class="text-xs text-slate-400 mt-1">Partagé dans le module. Utilisé pour lazy-loaded features.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-slate-900 border border-slate-800 p-8 lg:col-span-2 rounded-2xl shadow-lg flex flex-col">
+    <h2 class="mt-2 mb-4 text-center text-2xl font-bold text-white uppercase tracking-wide">À retenir</h2>
+    <div class="space-y-4 flex-auto">
+      <div class="bg-slate-800 border border-slate-700 rounded-xl p-4">
+        <h4 class="text-xs font-black uppercase tracking-wider text-amber-400 mb-2">Génération CLI</h4>
+        <code class="block bg-slate-900 p-2 rounded text-xs font-mono text-emerald-400">ng g service shared/services/user</code>
+      </div>
+      <div class="bg-slate-800 border border-slate-700 rounded-xl p-4">
+        <h4 class="text-xs font-black uppercase tracking-wider text-sky-400 mb-3">inject() vs constructeur</h4>
+        <p class="text-xs text-slate-400"><code class="text-amber-400">inject()</code> peut être utilisé en dehors du constructeur (dans les champs de classe), ce qui simplifie l'héritage et réduit le boilerplate.</p>
+      </div>
+      <div class="bg-slate-800 border border-slate-700 rounded-xl p-4">
+        <h4 class="text-xs font-black uppercase tracking-wider text-indigo-400 mb-3">Tokens DI avancés</h4>
+        <div class="font-mono text-xs text-slate-400 space-y-1">
+          <p><span class="text-sky-400">InjectionToken</span> — valeurs scalaires</p>
+          <p><span class="text-sky-400">&#64;Optional()</span> — dépendance nullable</p>
+          <p><span class="text-sky-400">&#64;Self()</span> — cherche uniquement localement</p>
+          <p><span class="text-sky-400">&#64;SkipSelf()</span> — cherche dans le parent</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-8 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl flex flex-col lg:flex-row items-center justify-between lg:col-span-5 gap-8 mt-2">
+    <figure class="flex flex-col items-center flex-shrink-0">
+      <img src="../../../../assets/alain.jpg" alt="Alain Guillon" class="size-36 rounded-full border-4 border-slate-700 shadow-lg object-cover mb-2" />
+      <figcaption class="text-center">
+        <span class="block font-black text-slate-400 text-base">Alain Guillon</span>
+        <span class="block italic text-slate-500 text-xs">Développeur fullstack certifié</span>
+      </figcaption>
+    </figure>
+    <div class="flex-auto max-w-2xl px-4">
+      <h2 class="mb-4 text-center lg:text-left text-2xl font-bold text-slate-400 uppercase tracking-wider">Conclusion</h2>
+      <p class="text-slate-300 text-sm leading-relaxed text-justify">L'injection de dépendances est l'une des forces majeures d'Angular. Elle encourage la séparation des préoccupations (SoC) et facilite les tests unitaires en permettant de remplacer les services réels par des mocks. Adoptez <code class="text-amber-400">inject()</code> systématiquement dans vos nouveaux projets — c'est l'approche moderne, plus compatible avec la zoneless architecture et les Signals.</p>
+    </div>
+    <figure class="bg-white rounded-full p-3 shadow-md flex-shrink-0 hidden lg:block">
+      <img src="../../../../assets/Angular_gradient.png" alt="logo angular" class="size-28" />
+    </figure>
+  </section>
+</section>

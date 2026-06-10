@@ -1,13 +1,140 @@
-<header
-  class="h-24 bg-slate-950 text-amber-50 flex items-center justify-evenly"
->
-  <h1
-    class="font-black uppercase text-3xl text-slate-500 cursor-pointer hover:text-slate-50"
-    (click)="rediriger()"
+<header class="bg-slate-950 border-b border-slate-800/60 shadow-xl sticky top-0 z-40">
+  <div class="max-w-screen-2xl mx-auto px-6 md:px-12 h-20 flex items-center justify-between gap-6">
+
+    <!-- ── Logo / Marque ────────────────────────────────────────────────── -->
+    <div class="flex items-center gap-4 flex-shrink-0 cursor-pointer group" (click)="rediriger('/')">
+      <div class="bg-white rounded-full p-1.5 shadow-lg group-hover:scale-105 transition-transform">
+        <img src="../../../../assets/Angular_gradient.png" alt="Angular" class="size-8" />
+      </div>
+      <div class="flex flex-col leading-none">
+        <span class="font-black uppercase text-sm tracking-widest text-white group-hover:text-indigo-300 transition-colors">
+          Mémoire Angular
+        </span>
+        <span class="text-[10px] text-slate-500 italic hidden sm:block">Plateforme d'apprentissage progressive</span>
+      </div>
+    </div>
+
+    <!-- ── Navigation desktop ────────────────────────────────────────────── -->
+    <nav class="hidden lg:flex items-center gap-1">
+      <a
+        routerLink="/"
+        routerLinkActive="!bg-slate-800 !text-white !border-slate-700"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="px-4 py-2 rounded-xl text-sm text-slate-400 hover:text-white hover:bg-slate-800/60 border border-transparent transition-all duration-200 font-medium"
+      >
+        Accueil
+      </a>
+      <a
+        routerLink="/setup"
+        routerLinkActive="!bg-slate-800 !text-white !border-slate-700"
+        class="px-4 py-2 rounded-xl text-sm text-slate-400 hover:text-white hover:bg-slate-800/60 border border-transparent transition-all duration-200 font-medium"
+      >
+        Installation &amp; CSS
+      </a>
+
+      <!-- Séparateur -->
+      <div class="w-px h-5 bg-slate-700 mx-2"></div>
+
+      <button
+        (click)="navigateToTrack('basics')"
+        class="px-4 py-2 rounded-xl text-sm text-slate-400 hover:text-white hover:bg-sky-900/40 border border-transparent hover:border-sky-700/40 transition-all duration-200 font-medium cursor-pointer flex items-center gap-2"
+      >
+        <span class="w-1.5 h-1.5 rounded-full bg-sky-400 flex-shrink-0"></span>
+        Fondamentaux
+      </button>
+      <button
+        (click)="navigateToTrack('forms')"
+        class="px-4 py-2 rounded-xl text-sm text-slate-400 hover:text-white hover:bg-amber-900/30 border border-transparent hover:border-amber-700/40 transition-all duration-200 font-medium cursor-pointer flex items-center gap-2"
+      >
+        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0"></span>
+        Formulaires
+      </button>
+      <button
+        (click)="navigateToTrack('advanced')"
+        class="px-4 py-2 rounded-xl text-sm text-slate-400 hover:text-white hover:bg-indigo-900/40 border border-transparent hover:border-indigo-700/40 transition-all duration-200 font-medium cursor-pointer flex items-center gap-2"
+      >
+        <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0"></span>
+        Concepts Modernes
+      </button>
+    </nav>
+
+    <!-- ── Bouton hamburger mobile ────────────────────────────────────────── -->
+    <button
+      (click)="toggleMenu()"
+      class="lg:hidden flex flex-col items-center justify-center w-10 h-10 rounded-xl border border-slate-700 hover:border-slate-500 bg-slate-900 hover:bg-slate-800 transition-all cursor-pointer gap-1.5"
+      aria-label="Menu"
+    >
+      <span
+        class="block w-5 h-0.5 bg-slate-300 transition-all duration-300 origin-center"
+        [class.rotate-45]="menuOpen"
+        [class.translate-y-2]="menuOpen"
+      ></span>
+      <span
+        class="block w-5 h-0.5 bg-slate-300 transition-all duration-300"
+        [class.opacity-0]="menuOpen"
+        [class.scale-x-0]="menuOpen"
+      ></span>
+      <span
+        class="block w-5 h-0.5 bg-slate-300 transition-all duration-300 origin-center"
+        [class.-rotate-45]="menuOpen"
+        [class.-translate-y-2]="menuOpen"
+      ></span>
+    </button>
+  </div>
+
+  <!-- ── Menu mobile (dropdown) ─────────────────────────────────────────── -->
+  <div
+    *ngIf="menuOpen"
+    class="lg:hidden border-t border-slate-800 bg-slate-950/98 backdrop-blur-xl"
   >
-    Mémoire Angular | Les formulaires
-  </h1>
-  <span class="italic opacity-50"
-    >Apprentissage sur la plateforme de Dyma.fr</span
-  >
+    <nav class="max-w-screen-2xl mx-auto px-6 py-4 flex flex-col gap-1">
+      <a
+        routerLink="/"
+        [routerLinkActiveOptions]="{ exact: true }"
+        routerLinkActive="!bg-slate-800 !text-white"
+        (click)="menuOpen = false"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all font-medium"
+      >
+        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        Accueil
+      </a>
+      <a
+        routerLink="/setup"
+        routerLinkActive="!bg-slate-800 !text-white"
+        (click)="menuOpen = false"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all font-medium"
+      >
+        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Installation &amp; CSS
+      </a>
+
+      <div class="border-t border-slate-800 my-2"></div>
+      <p class="text-[10px] uppercase tracking-widest text-slate-600 font-black px-4 mb-1">Parcours</p>
+
+      <button
+        (click)="navigateToTrack('basics'); menuOpen = false"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-sky-900/30 transition-all font-medium cursor-pointer w-full text-left"
+      >
+        <span class="w-2 h-2 rounded-full bg-sky-400 flex-shrink-0"></span>
+        Fondamentaux Angular
+        <span class="ml-auto text-[10px] text-slate-500 font-black uppercase tracking-wider">11 leçons</span>
+      </button>
+      <button
+        (click)="navigateToTrack('forms'); menuOpen = false"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-amber-900/20 transition-all font-medium cursor-pointer w-full text-left"
+      >
+        <span class="w-2 h-2 rounded-full bg-amber-400 flex-shrink-0"></span>
+        Formulaires Réactifs
+        <span class="ml-auto text-[10px] text-slate-500 font-black uppercase tracking-wider">12 leçons</span>
+      </button>
+      <button
+        (click)="navigateToTrack('advanced'); menuOpen = false"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-indigo-900/30 transition-all font-medium cursor-pointer w-full text-left"
+      >
+        <span class="w-2 h-2 rounded-full bg-indigo-400 flex-shrink-0"></span>
+        Concepts Modernes
+        <span class="ml-auto text-[10px] text-slate-500 font-black uppercase tracking-wider">4 leçons</span>
+      </button>
+    </nav>
+  </div>
 </header>

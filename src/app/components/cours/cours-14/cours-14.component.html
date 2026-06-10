@@ -1,0 +1,150 @@
+<section class="bg-slate-600 flex-auto p-6 md:p-8 grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8">
+  
+  <!-- Title Block -->
+  <section class="lg:col-span-5 flex items-center justify-between py-2 gap-6">
+    <figure class="bg-white m-4 rounded-full shadow-lg">
+      <img
+        src="../../../../assets/Angular_gradient.png"
+        alt="logo angular"
+        class="size-24 p-2"
+      />
+    </figure>
+    <div class="flex flex-col p-8 flex-auto rounded-lg bg-slate-950 text-left text-slate-50 shadow-md">
+      <h1 class="text-3xl md:text-5xl font-black tracking-tight">
+        {{ title }}
+      </h1>
+    </div>
+  </section>
+
+  <!-- Version Impact Notice -->
+  <div *ngIf="selectedVersion !== 'v17' && versionNote" class="lg:col-span-5 bg-slate-900/90 border border-indigo-500/30 p-5 rounded-2xl shadow-xl flex items-center gap-4 transition-all duration-300">
+    <div class="bg-indigo-600 text-white font-bold text-xs uppercase tracking-wider px-3 py-1.5 rounded-lg shadow-sm shadow-indigo-500/20">
+      {{ selectedVersion | uppercase }}
+    </div>
+    <div class="flex-auto">
+      <h4 class="text-indigo-400 text-sm font-bold tracking-wide">Évolution Angular {{ selectedVersion | uppercase }}</h4>
+      <p class="text-slate-300 text-xs mt-1 leading-relaxed" [innerHTML]="versionNote"></p>
+    </div>
+  </div>
+
+  <!-- Lesson Resume -->
+  <section class="bg-slate-50 p-8 lg:col-span-3 rounded-2xl shadow-lg border border-slate-200">
+    <h2 class="mt-2 mb-6 text-center text-3xl font-bold text-slate-950 uppercase tracking-wide">
+      Résumé du cours
+    </h2>
+
+    <div class="text-slate-700 space-y-4">
+      <p class="bg-slate-200 p-4 rounded-lg">
+        Depuis les dernières versions d'Angular, l'ancien module `HttpClientModule` est abandonné au profit de la configuration fonctionnelle `provideHttpClient()`. Les intercepteurs, autrefois basés sur des services de classe complexes, sont devenus de simples fonctions légères enregistrées globalement.
+      </p>
+
+      <h3 class="font-bold text-slate-950 text-xl mt-4">1. Enregistrement Fonctionnel</h3>
+      <p class="text-sm">
+        Les intercepteurs fonctionnels sont déclarés dans le fichier de bootstrap/config de l'application (ex: `app.config.ts`) :
+      </p>
+      
+      <!-- Code Snippet -->
+      <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-xs relative my-2 rounded-lg shadow-lg overflow-x-auto">
+<span class="text-indigo-400">export const</span> appConfig: ApplicationConfig = &#123;
+  providers: [
+    <span class="text-amber-400">provideHttpClient</span>(
+      <span class="text-indigo-400">withInterceptors</span>([authInterceptor])
+    )
+  ]
+&#125;;</pre>
+
+      <h3 class="font-bold text-slate-950 text-xl mt-6">2. Exemple d'Intercepteur Fonctionnel (v18+)</h3>
+      <p class="text-sm">
+        Un intercepteur fonctionnel reçoit la requête (`HttpRequest`) et le gestionnaire suivant (`HttpHandlerFn`) et retourne un flux observable d'événements HTTP :
+      </p>
+
+      <!-- Code Snippet -->
+      <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-xs relative my-2 rounded-lg shadow-lg overflow-x-auto">
+<span class="text-indigo-400">import</span> &#123; HttpInterceptorFn &#125; <span class="text-indigo-400">from</span> <span class="text-emerald-400">'&#64;angular/common/http'</span>;
+
+<span class="text-indigo-400">export const</span> authInterceptor: HttpInterceptorFn = (req, next) => &#123;
+  <span class="text-slate-500">// Cloner la requête pour insérer le token d'autorisation</span>
+  <span class="text-indigo-400">const</span> clonedReq = req.<span class="text-amber-400">clone</span>(&#123;
+    headers: req.headers.<span class="text-amber-400">set</span>(<span class="text-emerald-400">'Authorization'</span>, <span class="text-emerald-400">'Bearer token-123'</span>)
+  &#125;);
+  <span class="text-indigo-400">return</span> <span class="text-amber-400">next</span>(clonedReq);
+&#125;;</pre>
+    </div>
+  </section>
+
+  <!-- Playground -->
+  <section class="bg-slate-400 p-8 lg:col-span-2 rounded-2xl shadow-lg border border-slate-300 flex flex-col justify-between">
+    <div>
+      <h2 class="mt-2 mb-4 text-center text-3xl font-bold uppercase text-slate-950 tracking-wide">
+        Playground
+      </h2>
+
+      <p class="py-2 text-center italic text-slate-800 text-sm">
+        Déclenchez une requête HTTP réelle vers une API REST publique d'entraînement et analysez les en-têtes interceptés et la réponse JSON.
+      </p>
+
+      <div class="bg-slate-200 p-6 rounded-lg shadow-md space-y-6">
+        <!-- Fire request trigger -->
+        <div>
+          <button 
+            (click)="fireRequest()" 
+            [disabled]="loading"
+            class="w-full bg-slate-900 hover:bg-slate-850 text-white font-bold py-3 px-4 rounded-lg shadow transition-all duration-300 uppercase tracking-wider text-xs flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+          >
+            <svg *ngIf="loading" class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            {{ loading ? 'Chargement en cours...' : 'Lancer la requête HTTP' }}
+          </button>
+        </div>
+
+        <!-- En-têtes simulés interceptés -->
+        <div>
+          <h4 class="font-bold uppercase text-slate-700 text-xs mb-1.5 tracking-wider">1. En-têtes interceptés (Simulés)</h4>
+          <pre class="bg-slate-950 text-slate-50 p-3 rounded font-mono text-[10px] leading-relaxed min-h-[50px] overflow-x-auto">
+{{ requestHeadersSent || '// Aucune requête lancée' }}</pre>
+        </div>
+
+        <!-- Réponse JSON reçue -->
+        <div>
+          <h4 class="font-bold uppercase text-slate-700 text-xs mb-1.5 tracking-wider">2. Réponse JSON de l'API</h4>
+          <pre class="bg-slate-950 text-emerald-400 p-3 rounded font-mono text-[10px] leading-relaxed min-h-[120px] overflow-x-auto">
+{{ apiResponse ? (apiResponse | json) : '// Les données de l\'API s\'afficheront ici' }}</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Conclusion Alain Guillon -->
+  <section class="p-8 bg-slate-900 rounded-2xl shadow-xl border border-slate-800 flex flex-col lg:flex-row items-center justify-between lg:col-span-5 gap-8 mt-4">
+    <figure class="flex flex-col items-center flex-shrink-0">
+      <img
+        src="../../../../assets/alain.jpg"
+        alt="Alain Guillon"
+        class="size-48 rounded-full border-4 border-slate-500 shadow-lg object-cover mb-2"
+      />
+      <figcaption class="text-center">
+        <span class="block font-black text-slate-400 text-lg">Alain Guillon</span>
+        <span class="block italic text-slate-500 text-sm">Développeur fullstack certifié</span>
+      </figcaption>
+    </figure>
+
+    <div class="flex-auto max-w-2xl px-4">
+      <h2 class="mb-4 text-center lg:text-left text-3xl font-bold text-slate-400 uppercase tracking-wider">
+        Conclusion
+      </h2>
+      <p class="text-slate-300 text-sm leading-relaxed text-justify">
+        L'unification de HttpClient vers des configurations fonctionnelles est un atout majeur pour l'optimisation des applications modernes. L'absence de classes d'intercepteurs superflues simplifie grandement l'injection de dépendances via `inject()` et permet un arbre de dépendances (tree-shaking) ultra-efficace, réduisant drastiquement la taille finale de votre application en production.
+      </p>
+    </div>
+
+    <figure class="bg-white rounded-full p-4 shadow-md flex-shrink-0 hidden lg:block">
+      <img
+        src="../../../../assets/Angular_gradient.png"
+        alt="logo angular v17"
+        class="size-36"
+      />
+    </figure>
+  </section>
+</section>

@@ -1,10 +1,10 @@
-<div class="h-screen grid grid-rows-[6rem_auto_6rem] bg-slate-50">
+<div class="min-h-screen flex flex-col bg-slate-950">
   <!-- Header -->
   <app-header></app-header>
 
   <!-- Contenu principal -->
-  <main class="flex">
-    <section class="w-full">
+  <main class="flex flex-col flex-1 overflow-hidden">
+    <section class="flex flex-col flex-1 overflow-y-auto">
       <router-outlet></router-outlet>
     </section>
   </main>

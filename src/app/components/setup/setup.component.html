@@ -1,0 +1,310 @@
+<section class="bg-slate-950 flex-auto p-6 md:p-8 grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8">
+  
+  <!-- Title Block -->
+  <section class="lg:col-span-5 flex items-center justify-between py-2 gap-6">
+    <figure class="bg-white m-4 rounded-full shadow-lg">
+      <img
+        src="../../../../assets/Angular_gradient.png"
+        alt="logo angular"
+        class="size-24 p-2"
+      />
+    </figure>
+    <div class="flex flex-col p-8 flex-auto rounded-lg bg-slate-950 text-left text-slate-50 shadow-md">
+      <nav class="flex items-center gap-2 text-sm text-slate-400 mb-2 font-semibold">
+        <a routerLink="/" class="hover:text-red-400 transition-colors flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          Accueil
+        </a>
+        <span class="text-slate-600">/</span>
+        <span class="text-slate-300">Guide de Démarrage</span>
+      </nav>
+      <h1 class="text-3xl md:text-5xl font-black tracking-tight">
+        Installation, Config & Design System
+      </h1>
+    </div>
+  </section>
+
+  <!-- Left Side: Installation & CLI, Template Changes -->
+  <section class="bg-slate-900 p-8 lg:col-span-3 rounded-2xl shadow-lg border border-slate-800 space-y-8">
+    <div>
+      <h2 class="text-2xl font-bold text-white uppercase tracking-wide mb-4 border-b border-slate-700 pb-2">
+        1. Prérequis & Angular CLI
+      </h2>
+      <p class="text-slate-400 text-sm leading-relaxed mb-4">
+        Pour démarrer avec Angular, vous devez installer Node.js puis installer le CLI globalement. Voici la matrice de compatibilité recommandée :
+      </p>
+      
+      <!-- Compatibility Table -->
+      <div class="overflow-x-auto my-4 rounded-xl border border-slate-700">
+        <table class="w-full text-left border-collapse text-xs md:text-sm">
+          <thead>
+            <tr class="bg-slate-800 text-slate-200 *:p-3 *:border-b *:border-slate-700">
+              <th>Version Angular</th>
+              <th>Node.js requis</th>
+              <th>Commande de création</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800 text-slate-300">
+            <tr class="hover:bg-slate-800/40">
+              <td class="p-3 font-bold">Angular v17</td>
+              <td class="p-3">v18.13.0 / v20.x</td>
+              <td class="p-3 font-mono text-[11px]">ng new mon-projet</td>
+            </tr>
+            <tr class="hover:bg-slate-800/40 bg-slate-900/30">
+              <td class="p-3 font-bold">Angular v18</td>
+              <td class="p-3">v18.19.0 / v20.x</td>
+              <td class="p-3 font-mono text-[11px]">ng new mon-projet</td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="p-3 font-bold">Angular v19 - v21</td>
+              <td class="p-3">v20.11.0 / v22.x ✅</td>
+              <td class="p-3 font-mono text-[11px]">ng new mon-projet --zoneless</td>
+            </tr>
+            <tr class="hover:bg-emerald-900/20 bg-emerald-950/30 border border-emerald-800/30">
+              <td class="p-3 font-bold text-emerald-400">Ce cours (v17)</td>
+              <td class="p-3 text-emerald-300 font-bold">Node 22 LTS ⭐ Recommandé</td>
+              <td class="p-3 font-mono text-[11px] text-emerald-300">ng new mon-projet</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Node 22 Install Block -->
+      <div class="bg-slate-800/60 border border-emerald-700/40 rounded-2xl p-5 space-y-3">
+        <h3 class="text-sm font-black uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+          <span>⚡</span> Installer Node 22 LTS — Recommandé pour ce cours
+        </h3>
+        <p class="text-slate-400 text-xs leading-relaxed">
+          Node 22 est la version <strong class="text-slate-200">Active LTS</strong> — sécurité renforcée, performances améliorées et compatibilité garantie avec Angular v17 à v21. C'est la version utilisée pour ce mémoire.
+        </p>
+        <div class="space-y-2">
+          <span class="text-xs text-slate-500 font-bold uppercase tracking-wider">Via nvm (macOS / Linux / WSL)</span>
+          <pre class="bg-slate-900 rounded-xl px-4 py-3 text-emerald-300 font-mono text-xs overflow-x-auto border border-slate-700">nvm install 22
+nvm use 22
+nvm alias default 22</pre>
+        </div>
+        <div class="space-y-2">
+          <span class="text-xs text-slate-500 font-bold uppercase tracking-wider">Via nvm-windows (Windows)</span>
+          <pre class="bg-slate-900 rounded-xl px-4 py-3 text-emerald-300 font-mono text-xs overflow-x-auto border border-slate-700">nvm install 22
+nvm use 22</pre>
+        </div>
+        <div class="space-y-2">
+          <span class="text-xs text-slate-500 font-bold uppercase tracking-wider">Vérification</span>
+          <pre class="bg-slate-900 rounded-xl px-4 py-3 text-sky-300 font-mono text-xs overflow-x-auto border border-slate-700">node --version   # → v22.x.x
+npm --version    # → 10.x.x</pre>
+        </div>
+      </div>
+
+      <!-- Skip-install workflow -->
+      <div class="bg-slate-800/60 border border-amber-700/40 rounded-2xl p-5 space-y-3">
+        <h3 class="text-sm font-black uppercase tracking-wider text-amber-400 flex items-center gap-2">
+          <span>💡</span> Créer le projet sans installer les modules (si Node 22 pas encore actif)
+        </h3>
+        <p class="text-slate-400 text-xs leading-relaxed">
+          Si vous n'avez pas encore Node 22 d'actif, utilisez le flag <code class="text-amber-300">--skip-install</code> pour générer la structure du projet <strong class="text-slate-200">sans lancer npm install</strong>. Vous basculez ensuite vers Node 22, puis installez les dépendances.
+        </p>
+
+        <div class="space-y-2">
+          <span class="text-xs text-slate-500 font-bold uppercase tracking-wider">Étape 1 — Créer le projet sans installer</span>
+          <pre class="bg-slate-900 rounded-xl px-4 py-3 text-amber-300 font-mono text-xs overflow-x-auto border border-slate-700">ng new mon-projet --skip-install
+cd mon-projet</pre>
+        </div>
+
+        <div class="space-y-2">
+          <span class="text-xs text-slate-500 font-bold uppercase tracking-wider">Étape 2 — Activer Node 22</span>
+          <pre class="bg-slate-900 rounded-xl px-4 py-3 text-emerald-300 font-mono text-xs overflow-x-auto border border-slate-700">nvm use 22
+node --version   # → v22.x.x ✅</pre>
+        </div>
+
+        <div class="space-y-2">
+          <span class="text-xs text-slate-500 font-bold uppercase tracking-wider">Étape 3 — Installer les dépendances</span>
+          <pre class="bg-slate-900 rounded-xl px-4 py-3 text-sky-300 font-mono text-xs overflow-x-auto border border-slate-700">npm install</pre>
+        </div>
+
+        <div class="bg-slate-900/60 border border-slate-700 rounded-xl px-3 py-2">
+          <p class="text-xs text-slate-400 leading-relaxed">
+            <strong class="text-slate-200">Pourquoi ?</strong> Angular CLI installe automatiquement les <code class="text-amber-300">node_modules</code> après <code class="text-amber-300">ng new</code>. Avec <code class="text-amber-300">--skip-install</code>, vous gardez le contrôle sur la version Node utilisée pour l'installation.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bases et Conditions qui ont changé -->
+    <div>
+      <h2 class="text-2xl font-bold text-white uppercase tracking-wide mb-4 border-b border-slate-700 pb-2">
+        2. Les bases des Templates : Évolution de la Syntaxe
+      </h2>
+      <p class="text-slate-400 text-sm leading-relaxed mb-4">
+        Le rendu conditionnel et les boucles ont subi une révolution majeure à partir d'Angular v17 avec l'arrivée du <strong>Control Flow natif</strong>, qui remplace les anciennes directives structurelles.
+      </p>
+
+      <div class="space-y-4">
+        <!-- Conditional block comparison -->
+        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+          <h4 class="font-bold text-slate-100 text-sm uppercase tracking-wider mb-2">Les Conditions : Du *ngIf au &#64;if</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <span class="block text-xs font-bold text-slate-400 mb-1">Ancienne Syntaxe (Requiert CommonModule)</span>
+              <pre class="bg-neutral-900 p-3 rounded-lg text-slate-50 text-[11px] font-mono">&lt;div <span class="text-indigo-400">*ngIf</span>="<span class="text-emerald-400">isLoaded</span>"&gt;
+  Contenu affiché
+&lt;/div&gt;
+&lt;div <span class="text-indigo-400">*ngIf</span>="<span class="text-emerald-400">!isLoaded</span>"&gt;
+  Chargement...
+&lt;/div&gt;</pre>
+            </div>
+            <div>
+              <span class="block text-xs font-bold text-indigo-500 mb-1">Nouvelle Syntaxe (Native et Optimisée)</span>
+              <pre class="bg-neutral-900 p-3 rounded-lg text-slate-50 text-[11px] font-mono"><span class="text-indigo-400">&#64;if</span> (isLoaded) &#123;
+  Contenu affiché
+&#125; <span class="text-indigo-400">&#64;else</span> &#123;
+  Chargement...
+&#125;</pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loop block comparison -->
+        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+          <h4 class="font-bold text-slate-100 text-sm uppercase tracking-wider mb-2">Les Boucles : Du *ngFor au &#64;for</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <span class="block text-xs font-bold text-slate-500 mb-1">Ancienne Syntaxe</span>
+              <pre class="bg-neutral-900 p-3 rounded-lg text-slate-50 text-[11px] font-mono">&lt;div <span class="text-indigo-400">*ngFor</span>="<span class="text-emerald-400">let item of items; let i = index</span>"&gt;
+  {{ '{{ i }} : {{ item.name }}' }}
+&lt;/div&gt;</pre>
+            </div>
+            <div>
+              <span class="block text-xs font-bold text-indigo-500 mb-1">Nouvelle Syntaxe (Clé "track" obligatoire)</span>
+              <pre class="bg-neutral-900 p-3 rounded-lg text-slate-50 text-[11px] font-mono"><span class="text-indigo-400">&#64;for</span> (item of items; track item.id) &#123;
+  &lt;div&gt;{{ '{{ $index }} : {{ item.name }}' }}&lt;/div&gt;
+&#125; <span class="text-indigo-400">&#64;empty</span> &#123;
+  &lt;p&gt;Aucun élément disponible.&lt;/p&gt;
+&#125;</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Right Side: Vanilla CSS vs Tailwind CSS -->
+  <section class="bg-slate-900 p-8 lg:col-span-2 rounded-2xl shadow-lg border border-slate-800 flex flex-col justify-between">
+    <div>
+      <h2 class="text-2xl font-bold text-white uppercase tracking-wide mb-4 border-b border-slate-700 pb-2">
+        3. Intégration du CSS
+      </h2>
+      <p class="text-slate-400 text-sm leading-relaxed mb-6">
+        Angular supporte nativement différents formats de préprocesseurs (CSS, SCSS, Sass, Less). Le framework utilise par défaut l'<strong>Encapsulation d'Émulation CSS</strong> pour isoler les styles.
+      </p>
+
+      <div class="space-y-6">
+        <!-- Vanilla CSS block -->
+        <div class="border-l-4 border-slate-700 pl-4">
+          <h4 class="font-bold text-slate-100 text-base mb-1">Option A : Utilisation du CSS Classique (Vanilla)</h4>
+          <p class="text-slate-400 text-xs leading-relaxed mb-2">
+            Le CSS standard est écrit au niveau du composant et configuré dans le décorateur `&#64;Component`. Les styles sont limités à ce seul composant.
+          </p>
+          <pre class="bg-neutral-900 p-3 rounded-lg text-slate-50 text-[11px] font-mono"><span class="text-indigo-400">&#64;Component</span>(&#123;
+  selector: <span class="text-emerald-400">'app-card'</span>,
+  templateUrl: <span class="text-emerald-400">'./card.component.html'</span>,
+  styleUrls: [<span class="text-emerald-400">'./card.component.css'</span>] <span class="text-slate-500">// Styles locaux</span>
+&#125;)</pre>
+        </div>
+
+        <!-- Tailwind CSS block -->
+        <div class="border-l-4 border-indigo-600 pl-4">
+          <h4 class="font-bold text-slate-100 text-base mb-1">Option B : Tailwind CSS v3 (PostCSS classique)</h4>
+          <p class="text-slate-400 text-xs leading-relaxed mb-2">
+            Pour utiliser Tailwind v3, configurez le scanner de fichiers via le fichier de configuration JS.
+          </p>
+          
+          <div class="space-y-2 text-xs">
+            <span class="block font-bold text-slate-300">1. Installation :</span>
+            <pre class="bg-neutral-900 p-2 rounded text-slate-50 font-mono text-[10px]"><span class="text-indigo-400">npm install</span> -D tailwindcss postcss autoprefixer
+npx tailwindcss init</pre>
+            
+            <span class="block font-bold text-slate-300 mt-2">2. Configuration (tailwind.config.js) :</span>
+            <pre class="bg-neutral-900 p-2 rounded text-slate-50 font-mono text-[10px] overflow-x-auto"><span class="text-indigo-400">content</span>: [
+  <span class="text-emerald-400">"./src/**/*.{{ '{' }}html,ts{{ '}' }}"</span>, <span class="text-slate-500">// Scanner les fichiers</span>
+],</pre>
+            
+            <span class="block font-bold text-slate-300 mt-2">3. Import Global (styles.css) :</span>
+            <pre class="bg-neutral-900 p-2 rounded text-slate-50 font-mono text-[10px]"><span class="text-indigo-400">&#64;tailwind</span> base;
+<span class="text-indigo-400">&#64;tailwind</span> components;
+<span class="text-indigo-400">&#64;tailwind</span> utilities;</pre>
+          </div>
+        </div>
+
+        <!-- Tailwind CSS v4 block -->
+        <div class="border-l-4 border-rose-500 pl-4">
+          <h4 class="font-bold text-slate-100 text-base mb-1">Option C : Tailwind CSS v4 (CSS-First / Moderne)</h4>
+          <p class="text-slate-400 text-xs leading-relaxed mb-2">
+            Tailwind v4 supprime <code>tailwind.config.js</code> au profit d'une configuration 100% basée sur CSS et le nouveau moteur de compilation Rust.
+          </p>
+          
+          <div class="space-y-2 text-xs">
+            <span class="block font-bold text-slate-300">1. Installation :</span>
+            <pre class="bg-neutral-900 p-2 rounded text-slate-50 font-mono text-[10px]"><span class="text-indigo-400">npm install</span> tailwindcss &#64;tailwindcss/postcss postcss</pre>
+            
+            <span class="block font-bold text-slate-300 mt-2">2. Activer dans postcss.config.js :</span>
+            <pre class="bg-neutral-900 p-2 rounded text-slate-50 font-mono text-[10px] overflow-x-auto"><span class="text-indigo-400">module.exports</span> = &#123;
+  plugins: &#123;
+    <span class="text-emerald-400">'&#64;tailwindcss/postcss'</span>: &#123;&#125;,
+  &#125;
+&#125;</pre>
+            
+            <span class="block font-bold text-slate-300 mt-2">3. Configuration Directe (styles.css) :</span>
+            <pre class="bg-neutral-900 p-2 rounded text-slate-50 font-mono text-[10px] overflow-x-auto"><span class="text-indigo-400">&#64;import</span> <span class="text-emerald-400">"tailwindcss"</span>;
+
+<span class="text-slate-500">/* Variables CSS du thème */</span>
+<span class="text-indigo-400">&#64;theme</span> &#123;
+  --color-indigo-500: <span class="text-emerald-400">#4f46e5</span>;
+&#125;</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Back button -->
+    <div class="text-center pt-8 mt-6 border-t border-slate-700">
+      <a
+        routerLink="/"
+        class="inline-block bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-2.5 rounded-lg shadow-md transition-colors text-sm"
+      >
+        ← Retour à l'accueil
+      </a>
+    </div>
+  </section>
+
+  <!-- Conclusion Alain Guillon -->
+  <section class="p-8 bg-slate-900 rounded-2xl shadow-xl border border-slate-800 flex flex-col lg:flex-row items-center justify-between lg:col-span-5 gap-8 mt-4">
+    <figure class="flex flex-col items-center flex-shrink-0">
+      <img
+        src="../../../../assets/alain.jpg"
+        alt="Alain Guillon"
+        class="size-48 rounded-full border-4 border-slate-500 shadow-lg object-cover mb-2"
+      />
+      <figcaption class="text-center">
+        <span class="block font-black text-slate-400 text-lg">Alain Guillon</span>
+        <span class="block italic text-slate-500 text-sm">Développeur fullstack certifié</span>
+      </figcaption>
+    </figure>
+
+    <div class="flex-auto max-w-2xl px-4">
+      <h2 class="mb-4 text-center lg:text-left text-3xl font-bold text-slate-400 uppercase tracking-wider">
+        Mon Conseil Design
+      </h2>
+      <p class="text-slate-300 text-sm leading-relaxed text-justify">
+        Que vous choisissiez le CSS natif pour garder un contrôle d'encapsulation absolu sur vos composants, ou Tailwind CSS pour accélérer le prototypage réactif de vos interfaces, l'important est de rester homogène. L'arrivée du nouveau control flow (&#64;if / &#64;for) réduit le besoin d'importer le `CommonModule` dans chaque composant standalone, améliorant d'environ 10% le temps de compilation de vos bundles d'application.
+      </p>
+    </div>
+
+    <figure class="bg-white rounded-full p-4 shadow-md flex-shrink-0 hidden lg:block">
+      <img
+        src="../../../../assets/Angular_gradient.png"
+        alt="logo angular v17"
+        class="size-36"
+      />
+    </figure>
+  </section>
+</section>

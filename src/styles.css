@@ -1,8 +1,13 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
 
 @layer base {
+  html, body {
+    background-color: #020617; /* slate-950 */
+    color-scheme: dark;
+    min-height: 100%;
+  }
+
   body {
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
@@ -23,4 +28,31 @@
     color: rgb(71 85 105 / var(--tw-text-opacity)) !important;
     background-color: rgb(248 250 252 / var(--tw-bg-opacity)) !important;
   }
+}
+
+/* ── Scrollbar personnalisée ────────────────────────────────────────────── */
+
+/* Webkit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617; /* slate-950 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155; /* slate-700 */
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4f46e5; /* indigo-600 */
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #334155 #020617;
 }

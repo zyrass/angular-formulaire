@@ -1,68 +1,76 @@
 <!-- Contenu -->
 <section
-  class="bg-slate-600 flex-auto grid grid-cols-5 grid-rows-[1fr_auto_auto]"
+  class="bg-slate-600 flex-auto p-6 md:p-8 grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8"
 >
   <!-- Partie Titre -->
-  <section class="col-span-5 flex items-center justify-between py-4">
-    <figure class="bg-white m-8 rounded-full mr-12">
+  <section class="lg:col-span-5 flex items-center justify-between py-2 gap-6">
+    <figure class="bg-white m-4 rounded-full shadow-lg">
       <img
         src="../../../../assets/Angular_gradient.png"
         alt="logo angular v17"
-        class="size-24"
+        class="size-24 p-2"
       />
     </figure>
     <div
-      class="h-32 flex flex-col mt-2 mb-4 p-8 flex-auto rounded-tl-lg rounded-bl-lg bg-slate-950 text-left text-5xl font-black text-slate-50"
+      class="flex flex-col p-8 flex-auto rounded-lg bg-slate-950 text-left text-slate-50 shadow-md"
     >
-      <h1>
-        <span class="text-slate-600">Partie 1 - </span>
+      <h1 class="text-3xl md:text-5xl font-black tracking-tight">
         {{ title }}
       </h1>
-      <p class="font-normal py-2 text-lg text-zinc-500 cursor-pointer">
-        <span routerLink="/cours" class="underline hover:text-slate-50"
-          >/cours/</span
-        >
-        <span class="underline text-slate-50">{{ slug }}</span>
-      </p>
     </div>
   </section>
 
+  <!-- Version Impact Notice -->
+  <div *ngIf="selectedVersion !== 'v17' && versionNote" class="lg:col-span-5 bg-slate-900/90 border border-indigo-500/30 p-5 rounded-2xl shadow-xl flex items-center gap-4 transition-all duration-300">
+    <div class="bg-indigo-600 text-white font-bold text-xs uppercase tracking-wider px-3 py-1.5 rounded-lg shadow-sm shadow-indigo-500/20">
+      {{ selectedVersion | uppercase }}
+    </div>
+    <div class="flex-auto">
+      <h4 class="text-indigo-400 text-sm font-bold tracking-wide">Évolution Angular {{ selectedVersion | uppercase }}</h4>
+      <p class="text-slate-300 text-xs mt-1 leading-relaxed" [innerHTML]="versionNote"></p>
+    </div>
+  </div>
+
   <!-- Partie Résumé du cours -->
-  <section class="bg-slate-50 p-8 col-span-3">
+  <section class="bg-slate-50 p-8 lg:col-span-3 rounded-2xl shadow-lg border border-slate-200">
     <h2
-      class="mt-2 mb-4 text-center text-3xl font-bold text-slate-950 uppercase"
+      class="mt-2 mb-6 text-center text-3xl font-bold text-slate-950 uppercase tracking-wide"
     >
       Résumé du cours
     </h2>
-    <div class="p-2">
-      <p class="bg-slate-200 p-2 rounded-lg mb-4">
+    <div class="p-2 space-y-4">
+      <p class="bg-slate-200 p-4 rounded-lg">
         Dans Angular, il existe deux approches principales pour la création de
         formulaires :
       </p>
-      <dl>
-        <dt class="font-bold text-slate-950">
-          Formulaire basé sur un modèle (Template-Driven) :
-        </dt>
-        <dd class="px-8 italic mb-2">
-          Dans cette approche, la logique du formulaire est principalement
-          définie dans le fichier de modèle HTML. Il faut spécifier les règles
-          de validation directement dans le modèle et Angular infère la
-          structure du formulaire à partir de celui-ci.
-        </dd>
+      <dl class="space-y-4">
+        <div>
+          <dt class="font-bold text-slate-950 text-lg">
+            Formulaire basé sur un modèle (Template-Driven) :
+          </dt>
+          <dd class="px-6 italic text-slate-700 mt-1">
+            Dans cette approche, la logique du formulaire est principalement
+            définie dans le fichier de modèle HTML. Il faut spécifier les règles
+            de validation directement dans le modèle et Angular infère la
+            structure du formulaire à partir de celui-ci.
+          </dd>
+        </div>
 
-        <dt class="font-bold text-slate-950">
-          Formulaire basé sur les données (Data-Driven) :
-        </dt>
-        <dd class="px-8 italic">
-          Ici, la logique du formulaire est principalement définie dans le
-          composant TypeScript. Il faut explicitement créer les contrôles de
-          formulaire dans le code TypeScript et définir les règles de validation
-          et comportements associés.
-        </dd>
+        <div>
+          <dt class="font-bold text-slate-950 text-lg">
+            Formulaire basé sur les données (Data-Driven) :
+          </dt>
+          <dd class="px-6 italic text-slate-700 mt-1">
+            Ici, la logique du formulaire est principalement définie dans le
+            composant TypeScript. Il faut explicitement créer les contrôles de
+            formulaire dans le code TypeScript et définir les règles de validation
+            et comportements associés.
+          </dd>
+        </div>
       </dl>
 
-      <p class="py-2 px-4">
-        Le FormGroup est un des fondamentaux de la construction de formulaires
+      <p class="py-2">
+        Le <strong class="text-slate-950">FormGroup</strong> est un des fondamentaux de la construction de formulaires
         sur Angular. Il regroupe plusieurs contrôles de formulaire tels que les
         <strong class="text-slate-950">FormControl</strong> et les
         <strong class="text-slate-950">FormArray</strong>. De plus, il peut
@@ -71,133 +79,178 @@
       </p>
 
       <pre
-        class="bg-neutral-900 py-1 text-slate-50 font-bold relative my-1 rounded-lg shadow-lg"
+        class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-4 rounded-lg shadow-lg overflow-x-auto"
       >
-        <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">template HTML</span>
+        <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">template HTML</span>
         &lt;form <span class="text-slate-400">(ngSubmit)="submitForm()"</span>&gt;
-          <strong class="text-zinc-600 italic">... Le contenu du formulaire ici ...</strong>
+          <span class="text-slate-500 italic">// ... Le contenu du formulaire ici ...</span>
         &lt;/form&gt;
       </pre>
       <pre
-        class="bg-neutral-900 py-1 text-slate-50 font-bold relative my-1 rounded-lg shadow-lg"
+        class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-4 rounded-lg shadow-lg overflow-x-auto"
       >
-      <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">component TS</span>
-        <strong class="text-zinc-600 italic">... Dans la classe ...</strong>
-        <span class="text-slate-400">public submitForm() &#123;&#125;</span> <strong class="text-zinc-600 italic">// Permet d'éviter le crash de l'application en l'initialisant</strong>
-    </pre>
+        <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">component TS</span>
+        <span class="text-slate-500 italic">// ... Dans la classe ...</span>
+        <span class="text-indigo-400">public</span> submitForm() &#123;&#125; <span class="text-slate-500 italic">// Permet d'éviter le crash de l'application en l'initialisant</span>
+      </pre>
+
+      <h3 class="font-bold text-slate-950 text-xl mt-6">Démarrage de l'Application (Bootstrapping) :</h3>
+      <p class="py-1">
+        La façon dont une application Angular démarre et configure les dépendances globales a grandement évolué :
+      </p>
+
+      <!-- Bootstrapping v17 (Module classique) -->
+      <div *ngIf="selectedVersion === 'v17'">
+        <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto">
+          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">main.ts (v17)</span>
+          <span class="text-indigo-400">import</span> &#123; platformBrowserDynamic &#125; <span class="text-indigo-400">from</span> <span class="text-emerald-400">'&#64;angular/platform-browser-dynamic'</span>;
+          <span class="text-indigo-400">import</span> &#123; AppModule &#125; <span class="text-indigo-400">from</span> <span class="text-emerald-400">'./app/app.module'</span>;
+
+          platformBrowserDynamic().bootstrapModule(AppModule)
+            .catch(err => console.error(err));
+        </pre>
+      </div>
+
+      <!-- Bootstrapping v18 (Standalone par défaut) -->
+      <div *ngIf="selectedVersion === 'v18'">
+        <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto">
+          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">main.ts (v18)</span>
+          <span class="text-indigo-400">import</span> &#123; bootstrapApplication &#125; <span class="text-indigo-400">from</span> <span class="text-emerald-400">'&#64;angular/platform-browser'</span>;
+          <span class="text-indigo-400">import</span> &#123; AppComponent &#125; <span class="text-indigo-400">from</span> <span class="text-emerald-400">'./app/app.component'</span>;
+
+          bootstrapApplication(AppComponent)
+            .catch(err => console.error(err));
+        </pre>
+      </div>
+
+      <!-- Bootstrapping v19+ (Zoneless par défaut ou expérimental) -->
+      <div *ngIf="selectedVersion !== 'v17' && selectedVersion !== 'v18'">
+        <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto">
+          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">main.ts (v19+)</span>
+          <span class="text-indigo-400">import</span> &#123; bootstrapApplication &#125; <span class="text-indigo-400">from</span> <span class="text-emerald-400">'&#64;angular/platform-browser'</span>;
+          <span class="text-indigo-400">import</span> &#123; AppComponent &#125; <span class="text-indigo-400">from</span> <span class="text-emerald-400">'./app/app.component'</span>;
+          <span class="text-indigo-400">import</span> &#123; provideExperimentalZonelessChangeDetection &#125; <span class="text-indigo-400">from</span> <span class="text-emerald-400">'&#64;angular/core'</span>;
+
+          bootstrapApplication(AppComponent, &#123;
+            providers: [
+              provideExperimentalZonelessChangeDetection() <span class="text-slate-500">// Démarrage léger sans Zone.js</span>
+            ]
+          &#125;).catch(err => console.error(err));
+        </pre>
+      </div>
     </div>
   </section>
 
   <!-- Partie formulaire -->
-  <section class="bg-slate-400 p-4 col-span-2">
-    <h2
-      class="mt-2 mb-4 text-center text-3xl font-bold uppercase text-slate-950"
-    >
-      Formulaire
-    </h2>
+  <section class="bg-slate-400 p-8 lg:col-span-2 rounded-2xl shadow-lg border border-slate-300 flex flex-col justify-between">
+    <div>
+      <h2
+        class="mt-2 mb-4 text-center text-3xl font-bold uppercase text-slate-950 tracking-wide"
+      >
+        Formulaire
+      </h2>
 
-    <p class="py-2 text-center italic">
-      Ci-desosus se trouve le formulaire utilisé dans le résumé du cours
-    </p>
+      <p class="py-2 text-center italic text-slate-800">
+        Ci-dessous se trouve le formulaire utilisé dans le résumé du cours
+      </p>
 
-    <form
-      (submit)="submitForm()"
-      class="bg-slate-200 m-8 p-8 rounded-lg shadow-lg"
-    >
-      <!-- Nom -->
-      <div class="form-group flex flex-col p-2">
-        <label for="" class="font-bold uppercase mb-1">Nom :</label>
-        <input type="text" placeholder="votre nom" class="w-full rounded-md" />
-      </div>
+      <form
+        (submit)="submitForm()"
+        class="bg-slate-200 p-6 rounded-lg shadow-md space-y-4"
+      >
+        <!-- Nom -->
+        <div class="form-group flex flex-col">
+          <label class="font-bold uppercase mb-1 text-slate-700 text-sm">Nom :</label>
+          <input type="text" placeholder="votre nom" class="w-full rounded-md border-slate-300 shadow-sm" />
+        </div>
 
-      <!-- Prénom -->
-      <div class="form-group flex flex-col p-2">
-        <label for="" class="font-bold uppercase mb-1">Prénom :</label>
-        <input
-          type="text"
-          placeholder="votre prénom"
-          class="w-full rounded-md"
-        />
-      </div>
+        <!-- Prénom -->
+        <div class="form-group flex flex-col">
+          <label class="font-bold uppercase mb-1 text-slate-700 text-sm">Prénom :</label>
+          <input
+            type="text"
+            placeholder="votre prénom"
+            class="w-full rounded-md border-slate-300 shadow-sm"
+          />
+        </div>
 
-      <!-- Phrase de passe -->
-      <div class="form-group flex flex-col p-2">
-        <label for="" class="font-bold uppercase mb-1">Phrase de passe :</label>
-        <input
-          type="text"
-          placeholder="votre phrase de passe"
-          class="w-full rounded-md"
-        />
-      </div>
+        <!-- Phrase de passe -->
+        <div class="form-group flex flex-col">
+          <label class="font-bold uppercase mb-1 text-slate-700 text-sm">Phrase de passe :</label>
+          <input
+            type="text"
+            placeholder="votre phrase de passe"
+            class="w-full rounded-md border-slate-300 shadow-sm"
+          />
+        </div>
 
-      <!-- Confirmer la phrase de passe -->
-      <div class="form-group flex flex-col p-2">
-        <label for="" class="font-bold uppercase mb-1"
-          >Confirmation de la phrase de passe :</label
-        >
-        <input
-          type="text"
-          placeholder="confirmer votre phrase de passe"
-          class="w-full rounded-md"
-        />
-      </div>
+        <!-- Confirmer la phrase de passe -->
+        <div class="form-group flex flex-col">
+          <label class="font-bold uppercase mb-1 text-slate-700 text-sm"
+            >Confirmation de la phrase de passe :</label
+          >
+          <input
+            type="text"
+            placeholder="confirmer votre phrase de passe"
+            class="w-full rounded-md border-slate-300 shadow-sm"
+          />
+        </div>
 
-      <!-- button de soumission-->
-      <div class="text-center">
-        <button
-          class="bg-slate-500 my-8 px-4 py-2 font-bold rounded-md text-slate-50"
-        >
-          Valider
-        </button>
-      </div>
-    </form>
+        <!-- button de soumission-->
+        <div class="text-center pt-4">
+          <button
+            class="bg-slate-600 hover:bg-slate-700 text-slate-50 font-bold px-6 py-2 rounded-md shadow-md transition-colors"
+          >
+            Valider
+          </button>
+        </div>
+      </form>
+    </div>
   </section>
 
   <!-- Ma conclusion -->
-  <section class="p-8 bg-black flex items-center justify-center col-span-5">
-    <figure class="flex flex-col items-center">
+  <section class="p-8 bg-slate-900 rounded-2xl shadow-xl border border-slate-800 flex flex-col lg:flex-row items-center justify-between lg:col-span-5 gap-8 mt-4">
+    <figure class="flex flex-col items-center flex-shrink-0">
       <img
         src="../../../../assets/alain.jpg"
-        alt=""
-        class="size-56 rounded-full border-4 border-slate-500 mb-2"
+        alt="Alain Guillon"
+        class="size-48 rounded-full border-4 border-slate-500 shadow-lg object-cover mb-2"
       />
-      <figcaption class="py-2 px-4 rounded-lg text-center flex flex-col">
-        <span class="font-black text-slate-500">Alain Guillon</span>
-        <span class="italic text-slate-600"
+      <figcaption class="text-center">
+        <span class="block font-black text-slate-400 text-lg">Alain Guillon</span>
+        <span class="block italic text-slate-500 text-sm"
           >Développeur fullstack certifié</span
         >
       </figcaption>
     </figure>
 
-    <div class="w-6/12 mx-auto">
+    <div class="flex-auto max-w-2xl px-4">
       <h2
-        class="mt-2 mb-4 text-center text-3xl font-bold text-slate-500 uppercase"
+        class="mb-4 text-center lg:text-left text-3xl font-bold text-slate-400 uppercase tracking-wider"
       >
         Conclusion
       </h2>
-      <dl class="italic p-2 text-lg">
-        <dt class="font-bold text-slate-500">(ngSubmit) :</dt>
-        <dd class="px-8 italic mb-4 text-slate-50">
-          C'est un événement déclenché lors de la soumission du formulaire.<br />Il
-          faut lier cette action à une fonction dans le composant TypeScript.
-        </dd>
-        <dt class="font-bold text-slate-500">submitForm() :</dt>
-        <dd class="px-8 italic mb-4 text-slate-50">
-          C'est la fonction à exécuter lorsque le formulaire est soumis.
-          <br />
-          Pour gérer la logique de soumission, il faut définir dans le
-          composant.<br />
-          En utilisant ces concepts, je peux créer des formulaires efficaces et
-          bien organisés pour mes futures applications Angular.
-        </dd>
+      <dl class="italic space-y-4 text-slate-300">
+        <div>
+          <dt class="font-bold text-slate-400 text-lg">(ngSubmit) :</dt>
+          <dd class="px-4 mt-1">
+            C'est un événement déclenché lors de la soumission du formulaire. Il faut lier cette action à une fonction dans le composant TypeScript.
+          </dd>
+        </div>
+        <div>
+          <dt class="font-bold text-slate-400 text-lg">submitForm() :</dt>
+          <dd class="px-4 mt-1">
+            C'est la fonction à exécuter lorsque le formulaire est soumis. Elle est définie dans la classe TypeScript pour centraliser la logique de soumission de l'application.
+          </dd>
+        </div>
       </dl>
     </div>
 
-    <figure class="bg-white my-8 rounded-full mr-12">
+    <figure class="bg-white rounded-full p-4 shadow-md flex-shrink-0 hidden lg:block">
       <img
         src="../../../../assets/Angular_gradient.png"
         alt="logo angular v17"
-        class="size-64"
+        class="size-36"
       />
     </figure>
   </section>

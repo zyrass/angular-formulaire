@@ -1,297 +1,330 @@
+<!-- Contenu -->
 <section
-  class="bg-slate-600 flex-auto grid grid-cols-5 grid-rows-[1fr_auto_auto]"
+  class="bg-slate-600 flex-auto p-6 md:p-8 grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8"
 >
   <!-- Partie Titre -->
-  <section class="col-span-5 flex items-center justify-between py-4">
-    <figure class="bg-white m-8 rounded-full mr-12">
+  <section class="lg:col-span-5 flex items-center justify-between py-2 gap-6">
+    <figure class="bg-white m-4 rounded-full shadow-lg">
       <img
         src="../../../../assets/Angular_gradient.png"
         alt="logo angular v17"
-        class="size-24"
+        class="size-24 p-2"
       />
     </figure>
     <div
-      class="h-32 flex flex-col mt-2 mb-4 p-8 flex-auto rounded-tl-lg rounded-bl-lg bg-slate-950 text-left text-5xl font-black text-slate-50"
+      class="flex flex-col p-8 flex-auto rounded-lg bg-slate-950 text-left text-slate-50 shadow-md"
     >
-      <h1>
-        <span class="text-slate-600">Partie 2 - </span>
+      <h1 class="text-3xl md:text-5xl font-black tracking-tight">
         {{ title }}
       </h1>
-      <p class="font-normal py-2 text-lg text-zinc-500 cursor-pointer">
-        <span routerLink="/cours" class="underline hover:text-slate-50"
-          >/cours/</span
-        >
-        <span class="underline text-slate-50">{{ slug }}</span>
-      </p>
     </div>
   </section>
 
+  <!-- Version Impact Notice -->
+  <div *ngIf="selectedVersion !== 'v17' && versionNote" class="lg:col-span-5 bg-slate-900/90 border border-indigo-500/30 p-5 rounded-2xl shadow-xl flex items-center gap-4 transition-all duration-300">
+    <div class="bg-indigo-600 text-white font-bold text-xs uppercase tracking-wider px-3 py-1.5 rounded-lg shadow-sm shadow-indigo-500/20">
+      {{ selectedVersion | uppercase }}
+    </div>
+    <div class="flex-auto">
+      <h4 class="text-indigo-400 text-sm font-bold tracking-wide">Évolution Angular {{ selectedVersion | uppercase }}</h4>
+      <p class="text-slate-300 text-xs mt-1 leading-relaxed" [innerHTML]="versionNote"></p>
+    </div>
+  </div>
+
   <!-- Partie Résumé du cours -->
-  <section class="bg-slate-50 p-8 col-span-3">
+  <section class="bg-slate-50 p-8 lg:col-span-3 rounded-2xl shadow-lg border border-slate-200">
     <h2
-      class="mt-2 mb-4 text-center text-3xl font-bold text-slate-950 uppercase"
+      class="mt-2 mb-6 text-center text-3xl font-bold text-slate-950 uppercase tracking-wide"
     >
       Résumé du cours
     </h2>
-    <div class="p-2">
-      <p class="bg-slate-200 p-2 rounded-lg mb-4">
-        Afin d'utiliser le module lié aux formulaires, je dois importer
-        obligatoirement le module
-        <strong class="text-slate-950">ReactiveFormsModule</strong> qui provient
-        de <strong class="text-slate-950">&#64;angular/forms</strong>.
+    <div class="p-2 space-y-4">
+      <p class="bg-slate-200 p-4 rounded-lg">
+        Afin d'utiliser le module lié aux formulaires réactifs, je dois importer obligatoirement le module
+        <strong class="text-slate-950">ReactiveFormsModule</strong> qui provient de <strong class="text-slate-950">&#64;angular/forms</strong>.
       </p>
 
-      <pre
-        class="bg-neutral-900 py-1 text-slate-50 font-bold relative my-1 rounded-lg shadow-lg"
-      >
-          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">app Module</span>
-          <strong class="text-zinc-600 italic">... des imports ...</strong>
-          <span class="text-slate-400">import &#123; ReactiveFormsModule &#125; from '&#64;angular/forms';</span>
+      <!-- Code v17 (NgModule classique) -->
+      <div *ngIf="selectedVersion === 'v17'">
+        <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-4 rounded-lg shadow-lg overflow-x-auto">
+          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">app Module (v17)</span>
+          <span class="text-indigo-400">import</span> &#123; <span class="text-amber-400">ReactiveFormsModule</span> &#125; <span class="text-indigo-400">from</span> <span class="text-emerald-400">'&#64;angular/forms'</span>;
 
           &#64;NgModule(&#123;
-            declarations: [ <strong class="text-zinc-600 italic">... des components ...</strong> ],
-            imports: [ <strong class="text-zinc-600 italic">... des modules ...</strong>, <span class="text-slate-400">ReactiveFormsModule</span>],
+            declarations: [ <span class="text-slate-500 italic">// ... des components ...</span> ],
+            imports: [ <span class="text-slate-500 italic">// ... des modules ...</span>, <span class="text-amber-400">ReactiveFormsModule</span>],
             providers: [provideClientHydration()],
             bootstrap: [AppComponent],
           &#125;)
         </pre>
+      </div>
 
-      <p class="py-2 px-4">
-        Pour la partie HTML, là ou le formulaire est utilisé, dnas le tag
+      <!-- Code v18+ (Standalone Component par défaut) -->
+      <div *ngIf="selectedVersion !== 'v17'">
+        <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-4 rounded-lg shadow-lg overflow-x-auto">
+          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">Component Standalone (v18+)</span>
+          <span class="text-indigo-400">import</span> &#123; <span class="text-amber-400">Component</span> &#125; <span class="text-indigo-400">from</span> <span class="text-emerald-400">'&#64;angular/core'</span>;
+          <span class="text-indigo-400">import</span> &#123; <span class="text-amber-400">ReactiveFormsModule</span> &#125; <span class="text-indigo-400">from</span> <span class="text-emerald-400">'&#64;angular/forms'</span>;
+
+          &#64;Component(&#123;
+            selector: <span class="text-emerald-400">'app-form'</span>,
+            standalone: <span class="text-indigo-400">true</span>,
+            imports: [<span class="text-amber-400">ReactiveFormsModule</span>],
+            templateUrl: <span class="text-emerald-400">'./form.component.html'</span>
+          &#125;)
+          <span class="text-indigo-400">export</span> <span class="text-indigo-400">class</span> <span class="text-amber-400">FormComponent</span> &#123;&#125;
+        </pre>
+      </div>
+
+      <p class="py-2">
+        Pour la partie HTML, là où le formulaire est utilisé, dans le tag
         <strong>&lt;form&gt;</strong>, il faut placer la directive
-        <strong>[formGroup]="form"</strong> qui sera <strong>bindé</strong> à un
-        attribut portant le nom de <strong>"form"</strong> afin d'être utilisé
+        <strong>[formGroup]="form"</strong> qui sera <strong>bindée</strong> à un attribut portant le nom de <strong>"form"</strong> du composant TS.
       </p>
 
       <pre
-        class="bg-neutral-900 py-1 text-slate-50 font-bold relative my-1 rounded-lg shadow-lg"
+        class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-4 rounded-lg shadow-lg overflow-x-auto"
       >
-          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">template HTML</span>
-          &lt;form (ngSubmit)="submitForm()" <span class="text-slate-400">[formGroup]="form"</span>&gt;
-            <strong class="text-zinc-600 italic">... Le contenu du formulaire ici ...</strong>
-          &lt;/form&gt;
-        </pre>
+        <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">template HTML</span>
+        &lt;form (ngSubmit)="submitForm()" <span class="text-slate-400">[formGroup]="form"</span>&gt;
+          <span class="text-slate-500 italic">// ... Le contenu du formulaire ici ...</span>
+        &lt;/form&gt;
+      </pre>
 
-      <p class="py-2 px-4">
-        Ci-dessous le début du composant avec l'import de
-        <strong class="text-slate-950">FormGroup</strong> et
-        <strong class="text-slate-950">FormControl</strong> toujours depuis
-        <strong class="text-slate-950">&#64;angular/forms</strong>,
+      <p class="py-2">
+        Ci-dessous, le début du composant avec l'import de
+        <strong class="text-slate-950">FormGroup</strong> et <strong class="text-slate-950">FormControl</strong> depuis <strong class="text-slate-950">&#64;angular/forms</strong>.
       </p>
       <pre
-        class="bg-neutral-900 py-1 text-slate-50 font-bold relative my-1 rounded-lg shadow-lg"
+        class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-4 rounded-lg shadow-lg overflow-x-auto"
       >
-          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">component TS</span>
-          <strong class="text-zinc-600 italic">... des imports ...</strong>
-          <strong class="text-slate-400">import &#123; FormControl, FormGroup &#125; from '&#64;angular/forms';</strong>
+        <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">component TS</span>
+        <span class="text-slate-500 italic">// ... des imports ...</span>
+        <span class="text-indigo-400">import</span> &#123; <span class="text-amber-400">FormControl</span>, <span class="text-amber-400">FormGroup</span> &#125; <span class="text-indigo-400">from</span> <span class="text-emerald-400">'&#64;angular/forms'</span>;
 
-          <strong class="text-zinc-600 italic">... dans la classe ...</strong>
-          <strong class="text-slate-400">public form: FormGroup;</strong> <strong class="text-zinc-600 italic">// attribut</strong>
-          public submitForm() &#123;&#125;  <strong class="text-zinc-600 italic">// méthode</strong>
-        </pre>
+        <span class="text-slate-500 italic">// ... dans la classe ...</span>
+        <span class="text-indigo-400">public</span> form: <span class="text-amber-400">FormGroup</span>; <span class="text-slate-500 italic">// attribut</span>
+        <span class="text-indigo-400">public</span> submitForm() &#123;&#125;  <span class="text-slate-500 italic">// méthode</span>
+      </pre>
 
-      <p class="py-2 px-4">
-        La logique se passe dans le component, donc ici il est question
-        d'ajouter tout les inputs que je souhaite gérer. Pour celà,
-        <strong class="text-slate-950"
-          >je vais assigner une nouvelle instance</strong
-        >
-        de <strong class="text-slate-950">FormGroup</strong> et lui passer un
-        objet comprenant des clés, valeurs. Chacune de ces clés correspond à un
-        input en particulié. Pour celà, je vais définir un nom pour chaque clé
-        selon l'input désiré. Pour ce qui est de la valeur, il s'agira
-        d'instancier <strong class="text-slate-950">FormControl</strong> en
-        passant en <strong class="text-slate-950">1er</strong> paramètre une
-        chaîne de caractère vide soit dans le code j'obtiens :
+      <p class="py-2">
+        La logique se passe dans le composant. Il s'agit d'ajouter tous les contrôles que je souhaite gérer en assignant une nouvelle instance de
+        <strong class="text-slate-950">FormGroup</strong> à l'attribut `form` et en lui passant un objet dont les clés correspondent à chaque contrôle.
       </p>
 
       <pre
-        class="bg-neutral-900 py-1 text-slate-50 font-bold relative my-1 rounded-lg shadow-lg"
+        class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-4 rounded-lg shadow-lg overflow-x-auto"
       >
-          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">component TS</span>
-          <strong class="text-zinc-600 italic">... dans la classe ...</strong>
-          public form: FormGroup<strong class="text-slate-400"> = new FormGroup(&#123;
-            lastname: new FormControl(''),
-            firstname: new FormControl(''),
-            passPhrase: new FormControl(''),
-          &#125;)</strong>
-        </pre>
+        <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">component TS</span>
+        <span class="text-slate-500 italic">// ... dans la classe ...</span>
+        <span class="text-indigo-400">public</span> form: <span class="text-amber-400">FormGroup</span> = <span class="text-indigo-400">new</span> <span class="text-amber-400">FormGroup</span>(&#123;
+          lastname: <span class="text-indigo-400">new</span> <span class="text-amber-400">FormControl</span>(<span class="text-emerald-400">''</span>),
+          firstname: <span class="text-indigo-400">new</span> <span class="text-amber-400">FormControl</span>(<span class="text-emerald-400">''</span>),
+          passPhrase: <span class="text-indigo-400">new</span> <span class="text-amber-400">FormControl</span>(<span class="text-emerald-400">''</span>),
+        &#125;)
+      </pre>
 
-      <p class="py-2 px-4">
-        Afin de pouvoir lié les <strong class="text-slate-950">clés</strong> sur
-        l'input html, il faut ajouter la directive
-        <strong>formControlName</strong> avec comme valeur le nom de la clé
-        souhaité.
+      <p class="py-2">
+        Pour lier chaque input à sa clé correspondante dans le template HTML, on utilise la directive
+        <strong>formControlName</strong> :
       </p>
 
       <pre
-        class="bg-neutral-900 py-1 text-slate-50 font-bold relative my-1 rounded-lg shadow-lg"
+        class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-4 rounded-lg shadow-lg overflow-x-auto"
       >
-          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg">template HTML</span>
-          &lt;form (ngSubmit)="une_fonction() [formGroup]="form"&gt;
+        <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">template HTML</span>
+        &lt;form (ngSubmit)="submitForm()" [formGroup]="form"&gt;
+          &lt;div class="form-group flex flex-col p-2"&gt;
+            &lt;label class="font-bold mb-1"&gt;Nom :&lt;/label&gt;
+            &lt;input <span class="text-slate-400">formControlName="lastname"</span> type="text" class="rounded-md" /&gt;
+          &lt;/div&gt;
+          &lt;div class="form-group flex flex-col p-2"&gt;
+            &lt;label class="font-bold mb-1"&gt;Prénom :&lt;/label&gt;
+            &lt;input <span class="text-slate-400">formControlName="firstname"</span> type="text" class="rounded-md" /&gt;
+          &lt;/div&gt;
+          <span class="text-slate-500 italic">// ... etc ...</span>
+        &lt;/form&gt;
+      </pre>
 
-            &lt;div class="form-group flex flex-col p-2">
-              &lt;label for="" class="font-bold uppercase mb-1">Nom :&lt;/label>
-              &lt;input
-                <span class="text-slate-400">formControlName="lastname"</span>
-                type="text"
-                placeholder="votre nom"
-                class="w-full rounded-md"
-              />
-            &lt;/div>
+      <!-- Schéma d'architecture de liaison -->
+      <div class="mt-6 p-6 bg-slate-900 rounded-xl border border-slate-700 shadow-md">
+        <h4 class="text-slate-200 text-sm font-bold uppercase tracking-wider mb-4 flex items-center gap-1.5 justify-center">
+          📊 Flux de Liaison des Formulaires Réactifs
+        </h4>
+        <div class="flex justify-center items-center py-2">
+          <svg class="w-full max-w-3xl md:max-w-4xl lg:max-w-5xl mx-auto" viewBox="0 0 500 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Arrière-plan -->
+            <rect width="500" height="200" rx="12" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+            
+            <!-- Bloc TypeScript Component -->
+            <rect x="25" y="40" width="160" height="120" rx="8" fill="#1e1b4b" stroke="#4f46e5" stroke-width="2"/>
+            <text x="105" y="65" fill="#e0e7ff" font-size="12" font-weight="bold" font-family="monospace" text-anchor="middle">Modèle TS</text>
+            <rect x="35" y="85" width="140" height="25" rx="4" fill="#312e81" />
+            <text x="105" y="102" fill="#818cf8" font-size="10" font-family="monospace" text-anchor="middle">form: FormGroup</text>
+            <rect x="35" y="120" width="140" height="25" rx="4" fill="#312e81" />
+            <text x="105" y="137" fill="#818cf8" font-size="10" font-family="monospace" text-anchor="middle">lastname: FormControl</text>
 
-            &lt;div class="form-group flex flex-col p-2">
-              &lt;label for="" class="font-bold uppercase mb-1">Nom :&lt;/label>
-              &lt;input
-                <span class="text-slate-400">formControlName="firstname"</span>
-                type="text"
-                placeholder="votre nom"
-                class="w-full rounded-md"
-              />
-            &lt;/div>
+            <!-- Liaison FormGroup [formGroup]="form" -->
+            <path d="M 185 97 L 315 97" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4 2"/>
+            <polygon points="315,94 321,97 315,100" fill="#fbbf24"/>
+            <text x="250" y="88" fill="#fbbf24" font-size="9" font-weight="bold" font-family="sans-serif" text-anchor="middle">[formGroup]="form"</text>
 
-            <strong class="text-zinc-600 italic">... etc ...</strong>
-          &lt;/form&gt;
-        </pre>
+            <!-- Liaison FormControl formControlName="lastname" -->
+            <path d="M 185 132 L 315 132" stroke="#34d399" stroke-width="2"/>
+            <polygon points="315,129 321,132 315,135" fill="#34d399"/>
+            <text x="250" y="123" fill="#34d399" font-size="9" font-weight="bold" font-family="sans-serif" text-anchor="middle">formControlName="..."</text>
+
+            <!-- Liaison d'événement (ngSubmit)="submitForm()" -->
+            <path d="M 315 155 L 191 155" stroke="#f87171" stroke-width="2"/>
+            <polygon points="191,152 185,155 191,158" fill="#f87171"/>
+            <text x="250" y="150" fill="#f87171" font-size="9" font-weight="bold" font-family="sans-serif" text-anchor="middle">(ngSubmit)="submitForm()"</text>
+
+            <!-- Bloc HTML Template -->
+            <rect x="315" y="40" width="160" height="120" rx="8" fill="#064e3b" stroke="#059669" stroke-width="2"/>
+            <text x="395" y="65" fill="#d1fae5" font-size="12" font-weight="bold" font-family="monospace" text-anchor="middle">Template HTML</text>
+            <rect x="325" y="85" width="140" height="25" rx="4" fill="#022c22" />
+            <text x="395" y="102" fill="#34d399" font-size="10" font-family="monospace" text-anchor="middle">&lt;form&gt;</text>
+            <rect x="325" y="120" width="140" height="25" rx="4" fill="#022c22" />
+            <text x="395" y="137" fill="#34d399" font-size="10" font-family="monospace" text-anchor="middle">&lt;input&gt;</text>
+          </svg>
+        </div>
+        <p class="text-xs text-slate-400 mt-2 text-center italic">
+          Le modèle TS (FormGroup) est lié de façon bidirectionnelle aux éléments du DOM via les directives Angular.
+        </p>
+      </div>
     </div>
   </section>
 
   <!-- Partie formulaire -->
-  <section class="bg-slate-400 p-4 col-span-2">
-    <h2
-      class="mt-2 mb-4 text-center text-3xl font-bold uppercase text-slate-950"
-    >
-      Formulaire
-    </h2>
+  <section class="bg-slate-400 p-8 lg:col-span-2 rounded-2xl shadow-lg border border-slate-300 flex flex-col justify-between">
+    <div>
+      <h2
+        class="mt-2 mb-4 text-center text-3xl font-bold uppercase text-slate-950 tracking-wide"
+      >
+        Formulaire
+      </h2>
 
-    <p class="py-2 text-center italic">
-      Ci-desosus se trouve le formulaire utilisé dans le résumé du cours
-    </p>
+      <p class="py-2 text-center italic text-slate-800">
+        Ci-dessous se trouve le formulaire utilisé dans le résumé du cours
+      </p>
 
-    <form
-      (ngSubmit)="submitForm()"
-      [formGroup]="form"
-      class="bg-slate-200 m-8 p-8 rounded-lg shadow-lg"
-    >
-      <!-- Nom -->
-      <div class="form-group flex flex-col p-2">
-        <label for="" class="font-bold uppercase mb-1">Nom :</label>
-        <input
-          formControlName="lastname"
-          type="text"
-          placeholder="votre nom"
-          class="w-full rounded-md"
-        />
-      </div>
+      <form
+        (ngSubmit)="submitForm()"
+        [formGroup]="form"
+        class="bg-slate-200 p-6 rounded-lg shadow-md space-y-4"
+      >
+        <!-- Nom -->
+        <div class="form-group flex flex-col">
+          <label class="font-bold uppercase mb-1 text-slate-700 text-sm">Nom :</label>
+          <input
+            formControlName="lastname"
+            type="text"
+            placeholder="votre nom"
+            class="w-full rounded-md border-slate-300 shadow-sm"
+          />
+        </div>
 
-      <!-- Prénom -->
-      <div class="form-group flex flex-col p-2">
-        <label for="" class="font-bold uppercase mb-1">Prénom :</label>
-        <input
-          formControlName="firstname"
-          type="text"
-          placeholder="votre prénom"
-          class="w-full rounded-md"
-        />
-      </div>
+        <!-- Prénom -->
+        <div class="form-group flex flex-col">
+          <label class="font-bold uppercase mb-1 text-slate-700 text-sm">Prénom :</label>
+          <input
+            formControlName="firstname"
+            type="text"
+            placeholder="votre prénom"
+            class="w-full rounded-md border-slate-300 shadow-sm"
+          />
+        </div>
 
-      <!-- Phrase de passe -->
-      <div class="form-group flex flex-col p-2">
-        <label for="" class="font-bold uppercase mb-1">Phrase de passe :</label>
-        <input
-          formControlName="passPhrase"
-          type="text"
-          placeholder="votre phrase de passe"
-          class="w-full rounded-md"
-        />
-      </div>
+        <!-- Phrase de passe -->
+        <div class="form-group flex flex-col">
+          <label class="font-bold uppercase mb-1 text-slate-700 text-sm">Phrase de passe :</label>
+          <input
+            formControlName="passPhrase"
+            type="text"
+            placeholder="votre phrase de passe"
+            class="w-full rounded-md border-slate-300 shadow-sm"
+          />
+        </div>
 
-      <!-- Confirmer la phrase de passe -->
-      <div class="form-group flex flex-col p-2">
-        <label for="" class="font-bold uppercase mb-1"
-          >Confirmation de la phrase de passe :</label
-        >
-        <input
-          type="text"
-          placeholder="confirmer votre phrase de passe"
-          class="w-full rounded-md"
-        />
-      </div>
+        <!-- Confirmer la phrase de passe -->
+        <div class="form-group flex flex-col">
+          <label class="font-bold uppercase mb-1 text-slate-700 text-sm"
+            >Confirmation de la phrase de passe :</label
+          >
+          <input
+            type="text"
+            placeholder="confirmer votre phrase de passe"
+            class="w-full rounded-md border-slate-300 shadow-sm"
+          />
+        </div>
 
-      <!-- button de soumission-->
-      <div class="text-center">
-        <button
-          class="bg-slate-500 my-8 px-4 py-2 font-bold rounded-md text-slate-50"
-        >
-          Valider
-        </button>
-      </div>
-    </form>
+        <!-- button de soumission-->
+        <div class="text-center pt-4">
+          <button
+            class="bg-slate-600 hover:bg-slate-700 text-slate-50 font-bold px-6 py-2 rounded-md shadow-md transition-colors"
+          >
+            Valider
+          </button>
+        </div>
+      </form>
+    </div>
   </section>
 
   <!-- Ma conclusion -->
-  <section class="p-8 bg-black items-center flex justify-center col-span-5">
-    <figure class="flex flex-col items-center">
+  <section class="p-8 bg-slate-900 rounded-2xl shadow-xl border border-slate-800 flex flex-col lg:flex-row items-center justify-between lg:col-span-5 gap-8 mt-4">
+    <figure class="flex flex-col items-center flex-shrink-0">
       <img
         src="../../../../assets/alain.jpg"
-        alt=""
-        class="size-56 rounded-full border-4 border-slate-500 mb-2"
+        alt="Alain Guillon"
+        class="size-48 rounded-full border-4 border-slate-500 shadow-lg object-cover mb-2"
       />
-      <figcaption class="py-2 px-4 rounded-lg text-center flex flex-col">
-        <span class="font-black text-slate-500">Alain Guillon</span>
-        <span class="italic text-slate-600"
+      <figcaption class="text-center">
+        <span class="block font-black text-slate-400 text-lg">Alain Guillon</span>
+        <span class="block italic text-slate-500 text-sm"
           >Développeur fullstack certifié</span
         >
       </figcaption>
     </figure>
 
-    <div class="w-6/12 mx-auto">
-      <h2 class="mb-4 text-center text-3xl font-bold text-slate-500 uppercase">
+    <div class="flex-auto max-w-2xl px-4">
+      <h2
+        class="mb-4 text-center lg:text-left text-3xl font-bold text-slate-400 uppercase tracking-wider"
+      >
         Conclusion
       </h2>
-      <dl class="italic p-2 text-lg">
-        <dt class="font-bold text-slate-500">(ngSubmit) :</dt>
-        <dd class="px-8 italic mb-4 text-slate-50">
-          C'est un événement déclenché lors de la soumission du formulaire.<br />Il
-          faut lier cette action à une fonction dans le composant TypeScript.
-        </dd>
-        <dt class="font-bold text-slate-500">submitForm() :</dt>
-        <dd class="px-8 italic mb-4 text-slate-50">
-          C'est la fonction à exécuter lorsque le formulaire est soumis. <br />
-          Pour gérer la logique de soumission, il faut définir dans le
-          composant.<br />
-          En utilisant ces concepts, je peux créer des formulaires efficaces et
-          bien organisés pour mes futures applications Angular.
-        </dd>
-
-        <dt class="font-bold text-slate-500">ReactiveFormsModule:</dt>
-        <dd class="px-8 italic mb-4 text-slate-50">
-          Ce module est indispensable au bon fonctionnement des formulaires.
-        </dd>
-        <dt class="font-bold text-slate-500">[formGroup]="form" :</dt>
-        <dd class="px-8 italic mb-4 text-slate-50">
-          Binding d'une directive extrêmement important où je lie l'attribut
-          form de mon component qui est du type FormGroup
-        </dd>
-        <dt class="font-bold text-slate-500">new FormGroup(&#123;&#125;) :</dt>
-        <dd class="px-8 italic mb-4 text-slate-50">
-          Instanciation de la classe FormGroup en lui passant un objet qui
-          contient toutes les clés liés aux formulaires et chacune de ses clé
-          est instancié par une classe FormControl ou j'y passe une chaine de
-          caractère vide en premier paramètre.
-        </dd>
-        <dt class="font-bold text-slate-500">formControlName="x"</dt>
-        <dd class="px-8 italic mb-4 text-slate-50">
-          "x" correspond au nom d'une clé précédemment cité.
-        </dd>
+      <dl class="italic space-y-4 text-slate-300">
+        <div>
+          <dt class="font-bold text-slate-400 text-lg">ReactiveFormsModule :</dt>
+          <dd class="px-4 mt-1">
+            Ce module est indispensable au bon fonctionnement des formulaires réactifs.
+          </dd>
+        </div>
+        <div>
+          <dt class="font-bold text-slate-400 text-lg">[formGroup]="form" :</dt>
+          <dd class="px-4 mt-1">
+            Binding d'une directive extrêmement importante où je lie l'attribut form de mon component qui est du type FormGroup.
+          </dd>
+        </div>
+        <div>
+          <dt class="font-bold text-slate-400 text-lg">new FormGroup(&#123;&#125;) :</dt>
+          <dd class="px-4 mt-1">
+            Instanciation de la classe FormGroup en lui passant un objet qui contient toutes les clés liées aux inputs, chacune instanciée par une classe FormControl.
+          </dd>
+        </div>
+        <div>
+          <dt class="font-bold text-slate-400 text-lg">formControlName="x" :</dt>
+          <dd class="px-4 mt-1">
+            Liaison de l'input HTML avec la clé du FormGroup définie dans la classe TypeScript.
+          </dd>
+        </div>
       </dl>
     </div>
 
-    <figure class="bg-white my-8 rounded-full mr-12">
+    <figure class="bg-white rounded-full p-4 shadow-md flex-shrink-0 hidden lg:block">
       <img
         src="../../../../assets/Angular_gradient.png"
         alt="logo angular v17"
-        class="size-64"
+        class="size-36 filter grayscale"
       />
     </figure>
   </section>

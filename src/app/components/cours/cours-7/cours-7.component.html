@@ -1,0 +1,216 @@
+<!-- Contenu -->
+<section
+  class="bg-slate-600 flex-auto p-6 md:p-8 grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8"
+>
+  <!-- Partie Titre -->
+  <section class="lg:col-span-5 flex items-center justify-between py-2 gap-6">
+    <figure class="bg-white m-4 rounded-full shadow-lg">
+      <img
+        src="../../../../assets/Angular_gradient.png"
+        alt="logo angular v17"
+        class="size-24 p-2"
+      />
+    </figure>
+    <div
+      class="flex flex-col p-8 flex-auto rounded-lg bg-slate-950 text-left text-slate-50 shadow-md"
+    >
+      <h1 class="text-3xl md:text-5xl font-black tracking-tight">
+        {{ title }}
+      </h1>
+    </div>
+  </section>
+
+  <!-- Version Impact Notice -->
+  <div *ngIf="selectedVersion !== 'v17' && versionNote" class="lg:col-span-5 bg-slate-900/90 border border-indigo-500/30 p-5 rounded-2xl shadow-xl flex items-center gap-4 transition-all duration-300">
+    <div class="bg-indigo-600 text-white font-bold text-xs uppercase tracking-wider px-3 py-1.5 rounded-lg shadow-sm shadow-indigo-500/20">
+      {{ selectedVersion | uppercase }}
+    </div>
+    <div class="flex-auto">
+      <h4 class="text-indigo-400 text-sm font-bold tracking-wide">Évolution Angular {{ selectedVersion | uppercase }}</h4>
+      <p class="text-slate-300 text-xs mt-1 leading-relaxed" [innerHTML]="versionNote"></p>
+    </div>
+  </div>
+
+  <!-- Partie Résumé du cours -->
+  <section class="bg-slate-50 p-8 lg:col-span-3 rounded-2xl shadow-lg border border-slate-200">
+    <h2
+      class="mt-2 mb-6 text-center text-3xl font-bold text-slate-950 uppercase tracking-wide"
+    >
+      Résumé du cours
+    </h2>
+    <div class="p-2 space-y-4">
+      <p class="bg-slate-200 p-4 rounded-lg">
+        Pour structurer des formulaires complexes de manière logique (par exemple, regrouper les informations de contact ou d'adresse), Angular permet d'imbriquer des `FormGroup` au sein d'un `FormGroup` parent.
+      </p>
+
+      <h3 class="font-bold text-slate-950 text-xl mt-4">1. Déclaration du modèle imbriqué</h3>
+      <p class="py-1">
+        Dans la classe TypeScript, on instancie un `FormGroup` en lui passant un autre `FormGroup` comme valeur de l'une de ses clés :
+      </p>
+      <pre
+        class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto"
+      >
+        <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">TS</span>
+        <span class="text-indigo-400">public</span> form = <span class="text-indigo-400">new</span> <span class="text-amber-400">FormGroup</span>(&#123;
+          username: <span class="text-indigo-400">new</span> <span class="text-amber-400">FormControl</span>(<span class="text-emerald-400">''</span>, <span class="text-amber-400">Validators</span>.required),
+          address: <span class="text-indigo-400">new</span> <span class="text-amber-400">FormGroup</span>(&#123;
+            street: <span class="text-indigo-400">new</span> <span class="text-amber-400">FormControl</span>(<span class="text-emerald-400">''</span>, <span class="text-amber-400">Validators</span>.required),
+            city: <span class="text-indigo-400">new</span> <span class="text-amber-400">FormControl</span>(<span class="text-emerald-400">''</span>, <span class="text-amber-400">Validators</span>.required)
+          &#125;)
+        &#125;);
+      </pre>
+
+      <h3 class="font-bold text-slate-950 text-xl mt-6">2. Directive `formGroupName` dans le Template</h3>
+      <p class="py-1">
+        Dans le code HTML, on utilise la directive `formGroupName` sur un élément conteneur (comme une &lt;div&gt; ou un &lt;fieldset&gt;) pour informer Angular du changement de scope/contexte. Les contrôles internes restent référencés par `formControlName` :
+      </p>
+      <pre
+        class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto"
+      >
+        <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">HTML</span>
+        &lt;form <span class="text-slate-400">[formGroup]="form"</span>&gt;
+          &lt;input <span class="text-slate-400">formControlName="username"</span> /&gt;
+          
+          &lt;div <span class="text-indigo-400">formGroupName="address"</span>&gt;
+            &lt;input <span class="text-slate-400">formControlName="street"</span> /&gt;
+            &lt;input <span class="text-slate-400">formControlName="city"</span> /&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      </pre>
+
+      <h3 class="font-bold text-slate-950 text-xl mt-6">3. Accéder aux contrôles imbriqués</h3>
+      <p class="py-1">
+        On utilise la syntaxe pointée pour cibler un contrôle imbriqué : `form.get('parent.enfant')` :
+      </p>
+      <pre
+        class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto"
+      >
+        <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">TS</span>
+        <span class="text-indigo-400">const</span> cityControl = <span class="text-indigo-400">this</span>.form.get(<span class="text-emerald-400">'address.city'</span>);
+      </pre>
+    </div>
+  </section>
+
+  <!-- Partie formulaire -->
+  <section class="bg-slate-400 p-8 lg:col-span-2 rounded-2xl shadow-lg border border-slate-300 flex flex-col justify-between">
+    <div>
+      <h2
+        class="mt-2 mb-4 text-center text-3xl font-bold uppercase text-slate-950 tracking-wide"
+      >
+        Formulaire
+      </h2>
+
+      <p class="py-2 text-center italic text-slate-800">
+        Remplissez les champs de l'adresse pour voir la structure JSON imbriquée.
+      </p>
+
+      <form
+        (ngSubmit)="submitForm()"
+        [formGroup]="form"
+        class="bg-slate-200 p-6 rounded-lg shadow-md space-y-4"
+      >
+        <!-- Username -->
+        <div class="form-group flex flex-col">
+          <label class="font-bold uppercase mb-1 text-slate-700 text-sm">Nom d'utilisateur :</label>
+          <input
+            formControlName="username"
+            type="text"
+            placeholder="Ex: alain"
+            class="w-full rounded-md border-slate-300 shadow-sm"
+          />
+        </div>
+
+        <!-- Groupe Adresse -->
+        <div formGroupName="address" class="border-t-2 border-slate-300 pt-4 space-y-4">
+          <h4 class="font-bold text-slate-800 text-sm uppercase">Adresse Postale :</h4>
+
+          <!-- Street -->
+          <div class="form-group flex flex-col">
+            <label class="font-bold mb-1 text-slate-600 text-xs uppercase">Rue :</label>
+            <input
+              formControlName="street"
+              type="text"
+              placeholder="123 Rue Principale"
+              class="w-full rounded-md border-slate-300 shadow-sm"
+            />
+          </div>
+
+          <!-- City -->
+          <div class="form-group flex flex-col">
+            <label class="font-bold mb-1 text-slate-600 text-xs uppercase">Ville :</label>
+            <input
+              formControlName="city"
+              type="text"
+              placeholder="Paris"
+              class="w-full rounded-md border-slate-300 shadow-sm"
+            />
+          </div>
+        </div>
+
+        <!-- button de soumission-->
+        <div class="text-center pt-4">
+          <button
+            type="submit"
+            [disabled]="form.invalid"
+            class="bg-slate-600 hover:bg-slate-700 text-slate-50 font-bold px-6 py-2 rounded-md shadow-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Valider
+          </button>
+        </div>
+      </form>
+
+      <!-- Rendu en direct de la valeur -->
+      <div class="mt-6 p-4 bg-slate-900 rounded-lg shadow-inner">
+        <h4 class="text-slate-400 font-bold text-xs uppercase tracking-wider mb-2">Valeur imbriquée (form.value) :</h4>
+        <pre class="text-green-400 font-mono text-xs overflow-x-auto">{{ form.value | json }}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ma conclusion -->
+  <section class="p-8 bg-slate-900 rounded-2xl shadow-xl border border-slate-800 flex flex-col lg:flex-row items-center justify-between lg:col-span-5 gap-8 mt-4">
+    <figure class="flex flex-col items-center flex-shrink-0">
+      <img
+        src="../../../../assets/alain.jpg"
+        alt="Alain Guillon"
+        class="size-48 rounded-full border-4 border-slate-500 shadow-lg object-cover mb-2"
+      />
+      <figcaption class="text-center">
+        <span class="block font-black text-slate-400 text-lg">Alain Guillon</span>
+        <span class="block italic text-slate-500 text-sm"
+          >Développeur fullstack certifié</span
+        >
+      </figcaption>
+    </figure>
+
+    <div class="flex-auto max-w-2xl px-4">
+      <h2
+        class="mb-4 text-center lg:text-left text-3xl font-bold text-slate-400 uppercase tracking-wider"
+      >
+        Conclusion
+      </h2>
+      <dl class="italic space-y-4 text-slate-300">
+        <div>
+          <dt class="font-bold text-slate-400 text-lg">formGroupName :</dt>
+          <dd class="px-4 mt-1">
+            Indispensable pour lier le modèle imbriqué défini dans le TypeScript avec le DOM, permettant de garder une logique de structure propre et modulaire.
+          </dd>
+        </div>
+        <div>
+          <dt class="font-bold text-slate-400 text-lg">Structure de données :</dt>
+          <dd class="px-4 mt-1">
+            `form.value` reflète directement la hiérarchie déclarée. C'est parfait pour modéliser des objets complexes prêts à être consommés par une API REST.
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    <figure class="bg-white rounded-full p-4 shadow-md flex-shrink-0 hidden lg:block">
+      <img
+        src="../../../../assets/Angular_gradient.png"
+        alt="logo angular v17"
+        class="size-36"
+      />
+    </figure>
+  </section>
+</section>

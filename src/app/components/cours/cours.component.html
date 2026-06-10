@@ -1,67 +1,182 @@
-<section class="bg-slate-600 flex-auto">
-  <!-- Partie Titre -->
-  <section class="flex items-center justify-between py-4">
-    <figure class="bg-white m-8 rounded-full mr-12">
-      <img
-        src="../../../../assets/Angular_gradient.png"
-        alt="logo angular v17"
-        class="size-24"
-      />
-    </figure>
-    <div
-      class="h-32 flex flex-col mt-2 mb-4 p-8 flex-auto rounded-tl-lg rounded-bl-lg bg-slate-950 text-left text-5xl font-black text-slate-50"
-    >
-      <h1>
-        <span class="text-slate-600">List </span>
-        {{ title }}
-      </h1>
-      <p class="font-normal py-2 text-lg text-zinc-500 cursor-pointer">
-        <span class="underline text-slate-50">/cours/</span>
-      </p>
-    </div>
-  </section>
+<section class="bg-slate-950 flex-auto flex flex-col pt-16 pb-12 px-8 md:px-16 xl:px-24">
 
-  <!-- Partie Liste -->
-  <section
-    class="mx-auto bg-slate-500 flex flex-wrap items-center justify-evenly gap-4 py-12 px-48"
-  >
-    <table>
-      <thead>
-        <tr class="*:border-2 *:py-2 *:px-4 *:bg-slate-950 *:text-slate-50">
-          <th>#</th>
-          <th>Titre</th>
-          <th>Description</th>
-          <th>status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          *ngFor="let lesson of lessons; let i = index"
-          class="*:border-2 *:py-2 *:px-4 hover:bg-slate-950 *:text-slate-50 cursor-pointer"
-          (click)="rediriger(lesson.slug)"
+  <!-- ── En-tête du sommaire ───────────────────────────────────────────── -->
+  <header class="flex items-center gap-6 mb-14">
+    <figure class="bg-white rounded-full shadow-xl flex-shrink-0 p-3">
+      <img src="../../../../assets/Angular_gradient.png" alt="Angular" class="size-20" />
+    </figure>
+    <div class="flex flex-col gap-3 flex-auto bg-slate-900 border border-slate-800 rounded-2xl px-8 py-6 shadow-xl">
+      <h1 class="text-3xl md:text-4xl xl:text-5xl font-black tracking-tight text-white flex flex-wrap items-center gap-4">
+        {{ title }}
+        <span class="text-xs font-black tracking-widest uppercase px-3 py-1.5 bg-gradient-to-r from-red-600 to-rose-500 text-white rounded-full shadow flex items-center gap-2 flex-shrink-0">
+          <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+          Angular {{ selectedVersion | uppercase }}
+        </span>
+        <button
+          (click)="openModal()"
+          class="text-xs font-bold tracking-wider uppercase px-4 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-indigo-500/60 text-indigo-400 hover:text-indigo-300 rounded-full transition-all duration-200 flex items-center gap-2 cursor-pointer"
         >
-          <td class="text-center font-black">
-            {{ lesson.num }}
-          </td>
-          <td class="text-center font-bold uppercase">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Comparatif v17 vs v18+
+        </button>
+      </h1>
+      <p class="text-slate-400 text-base md:text-lg leading-relaxed">{{ description }}</p>
+
+      <!-- Barre de progression du track -->
+      <div class="flex items-center gap-4 mt-1">
+        <div class="flex-auto bg-slate-800 rounded-full h-1.5 overflow-hidden">
+          <div
+            class="h-full bg-gradient-to-r from-indigo-500 to-emerald-500 rounded-full transition-all duration-700"
+            [style.width]="getProgressPercent() + '%'"
+          ></div>
+        </div>
+        <span class="text-xs text-slate-500 font-semibold whitespace-nowrap flex-shrink-0">
+          {{ getCompletedCount() }} / {{ lessons.length }} acquis
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Sélecteur de version ──────────────────────────────────────────── -->
+  <div class="flex flex-col items-center gap-6 mb-14">
+    <div class="inline-flex bg-slate-900/80 p-1.5 rounded-2xl border border-slate-700 shadow-lg">
+      <button
+        *ngFor="let ver of ['v17', 'v18', 'v19', 'v20', 'v21']"
+        (click)="selectVersion(ver)"
+        [class]="ver === selectedVersion
+          ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold shadow-md shadow-indigo-500/20'
+          : 'text-slate-400 hover:text-slate-200'"
+        class="px-5 py-2.5 rounded-xl text-xs md:text-sm uppercase tracking-wider transition-all duration-200 cursor-pointer font-semibold"
+      >
+        Angular {{ ver | uppercase }}
+      </button>
+    </div>
+    <div
+      [innerHTML]="getVersionSummary(selectedVersion)"
+      class="bg-slate-800/60 border border-slate-700 px-6 py-4 rounded-2xl text-slate-300 text-sm leading-relaxed text-center max-w-3xl w-full shadow-inner"
+    ></div>
+    <p class="text-xs text-slate-600 italic uppercase tracking-widest font-semibold">
+      Cliquez sur une leçon pour accéder au cours
+    </p>
+  </div>
+
+  <!-- ── Grille des leçons — 2 colonnes ────────────────────────────────── -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-8">
+    <div
+      *ngFor="let lesson of lessons"
+      [routerLink]="['/cours', lesson.slug]"
+      class="group relative bg-slate-900 hover:bg-slate-800/80 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-7 cursor-pointer transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-xl hover:shadow-indigo-950/20 flex gap-6 items-start"
+    >
+      <!-- Numéro de leçon — impactant -->
+      <div class="flex-shrink-0 flex flex-col items-center gap-1">
+        <div class="w-14 h-14 rounded-2xl bg-slate-950 border border-slate-700 group-hover:border-indigo-500/60 flex items-center justify-center font-black text-xl text-slate-300 group-hover:text-indigo-400 transition-all duration-200 shadow-md">
+          {{ lesson.num }}
+        </div>
+        <!-- Indicateur de statut cliquable -->
+        <span
+          class="text-xl select-none cursor-pointer hover:scale-110 transition-transform mt-1"
+          (click)="changerStatut(lesson.num, $event)"
+          [attr.aria-label]="'Changer le statut de : ' + lesson.title + ' (actuellement : ' + lesson.status + ')'"
+          role="button"
+          tabindex="0"
+          title="Cliquer pour changer le statut de progression"
+        >{{ lesson.status }}</span>
+      </div>
+
+      <!-- Contenu principal -->
+      <div class="flex-auto min-w-0 flex flex-col gap-3">
+        <!-- Titre + badge version -->
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="text-lg font-bold text-slate-100 group-hover:text-white leading-snug">
             {{ lesson.title }}
-          </td>
-          <td class="italic">
-            {{ lesson.description }}
-          </td>
-          <td class="text-center bg-slate-600 text-2xl">
-            {{ lesson.status }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-  <section class="p-8 bg-slate-600">
-    <ul class="flex justify-evenly *:text-slate-50 *:font-bold italic">
-      <li>✅ - Acquis</li>
-      <li>❌ - Non Acquis</li>
-      <li>✒️ - En cours de rédaction ou d'apprentissage</li>
-      <li>🚧 - A développer et à apprendre</li>
+          </h3>
+          <span
+            [class]="getVersionBadge(lesson.num, selectedVersion).class"
+            class="text-[9px] font-black uppercase px-2.5 py-1 rounded-full tracking-wider flex-shrink-0 mt-0.5"
+          >{{ getVersionBadge(lesson.num, selectedVersion).text }}</span>
+        </div>
+
+        <!-- Description complète -->
+        <p class="text-sm text-slate-400 group-hover:text-slate-300 leading-relaxed line-clamp-2">
+          {{ lesson.description }}
+        </p>
+
+        <!-- Note de version si présente -->
+        <p
+          *ngIf="getVersionNote(lesson.num, selectedVersion)"
+          class="text-xs text-indigo-300/80 bg-indigo-950/30 border border-indigo-800/30 rounded-lg px-3 py-2 leading-relaxed italic line-clamp-2"
+        >
+          {{ getVersionNote(lesson.num, selectedVersion) }}
+        </p>
+
+        <!-- CTA -->
+        <div class="flex items-center gap-2 text-xs text-slate-600 group-hover:text-indigo-400 font-semibold tracking-wide transition-colors mt-2">
+          <span>Accéder au cours</span>
+          <svg class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Légende ────────────────────────────────────────────────────────── -->
+  <footer class="mt-auto pt-10 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-inner">
+    <h4 class="text-slate-500 text-xs font-black uppercase tracking-widest mb-4 text-center">
+      Légende des statuts de progression
+    </h4>
+    <ul class="flex flex-wrap justify-center gap-8 text-slate-300 text-sm font-medium italic">
+      <li class="flex items-center gap-2"><span>✅</span> Acquis</li>
+      <li class="flex items-center gap-2"><span>❌</span> Non Acquis</li>
+      <li class="flex items-center gap-2"><span>✒️</span> En cours de rédaction ou d'apprentissage</li>
+      <li class="flex items-center gap-2"><span>🚧</span> À développer et à apprendre</li>
     </ul>
-  </section>
+  </footer>
+
+  <!-- ── Modal Versioning ───────────────────────────────────────────────── -->
+  <div
+    *ngIf="showModal"
+    class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+  >
+    <div class="bg-slate-900 border border-slate-700 text-slate-100 max-w-2xl w-full rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+      <!-- En-tête modal -->
+      <div class="bg-gradient-to-r from-red-800 to-indigo-950 px-8 py-6 flex justify-between items-center border-b border-slate-700">
+        <h2 class="text-xl md:text-2xl font-black tracking-wide flex items-center gap-3">
+          <span>ℹ️</span> Angular v17 vs. v18+ &amp; v20
+        </h2>
+        <button
+          (click)="closeModal()"
+          class="text-slate-400 hover:text-white transition-colors text-3xl font-light p-1 leading-none cursor-pointer"
+        >&times;</button>
+      </div>
+      <!-- Contenu modal -->
+      <div class="p-8 space-y-5 overflow-y-auto max-h-[65vh]">
+        <p class="text-slate-300 leading-relaxed text-sm">
+          Ce cours est conçu sous <strong>Angular 17</strong> avec une architecture classique basée sur les <strong>Modules (NgModule)</strong>. La majorité des projets professionnels en production utilisent encore ces fondations.
+        </p>
+        <div class="space-y-4">
+          <div class="bg-slate-800/60 p-5 rounded-xl border border-slate-700/50">
+            <h4 class="text-amber-400 font-bold text-xs uppercase tracking-wider mb-2 flex items-center gap-2">📁 Modules (v17) vs. Standalone (v18+)</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">Depuis v18, le mode standalone est activé par défaut. Savoir déclarer <code class="text-amber-300">ReactiveFormsModule</code> dans un module reste indispensable pour maintenir les applications d'entreprise.</p>
+          </div>
+          <div class="bg-slate-800/60 p-5 rounded-xl border border-slate-700/50">
+            <h4 class="text-amber-400 font-bold text-xs uppercase tracking-wider mb-2 flex items-center gap-2">⚡ Flux d'événements (control.events)</h4>
+            <p class="text-xs text-slate-300 leading-relaxed"><strong>Angular 18+</strong> introduit <code class="text-amber-300">control.events</code> pour suivre précisément les interactions. Sur <strong>Angular 17</strong>, on utilise <code class="text-amber-300">valueChanges</code> et <code class="text-amber-300">statusChanges</code>.</p>
+          </div>
+          <div class="bg-slate-800/60 p-5 rounded-xl border border-slate-700/50">
+            <h4 class="text-amber-400 font-bold text-xs uppercase tracking-wider mb-2 flex items-center gap-2">💡 Vers Angular 20</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">Les versions récentes mettent l'accent sur les <strong>Signals</strong> pour la réactivité fine. Les formulaires réactifs fondamentaux (FormGroup, FormControl) restent identiques.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Pied modal -->
+      <div class="bg-slate-950 px-8 py-5 flex justify-end border-t border-slate-800">
+        <button
+          (click)="closeModal()"
+          class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3 rounded-xl shadow-lg transition-colors text-sm cursor-pointer"
+        >
+          J'ai compris, accéder au cours
+        </button>
+      </div>
+    </div>
+  </div>
+
 </section>

@@ -1,0 +1,179 @@
+<section class="bg-slate-600 flex-auto p-6 md:p-8 grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8">
+  
+  <!-- Title Block -->
+  <section class="lg:col-span-5 flex items-center justify-between py-2 gap-6">
+    <figure class="bg-white m-4 rounded-full shadow-lg">
+      <img
+        src="../../../../assets/Angular_gradient.png"
+        alt="logo angular"
+        class="size-24 p-2"
+      />
+    </figure>
+    <div class="flex flex-col p-8 flex-auto rounded-lg bg-slate-950 text-left text-slate-50 shadow-md">
+      <h1 class="text-3xl md:text-5xl font-black tracking-tight">
+        {{ title }}
+      </h1>
+    </div>
+  </section>
+
+  <!-- Version Impact Notice -->
+  <div *ngIf="selectedVersion !== 'v17' && versionNote" class="lg:col-span-5 bg-slate-900/90 border border-indigo-500/30 p-5 rounded-2xl shadow-xl flex items-center gap-4 transition-all duration-300">
+    <div class="bg-indigo-600 text-white font-bold text-xs uppercase tracking-wider px-3 py-1.5 rounded-lg shadow-sm shadow-indigo-500/20">
+      {{ selectedVersion | uppercase }}
+    </div>
+    <div class="flex-auto">
+      <h4 class="text-indigo-400 text-sm font-bold tracking-wide">Évolution Angular {{ selectedVersion | uppercase }}</h4>
+      <p class="text-slate-300 text-xs mt-1 leading-relaxed" [innerHTML]="versionNote"></p>
+    </div>
+  </div>
+
+  <!-- Lesson Resume -->
+  <section class="bg-slate-50 p-8 lg:col-span-3 rounded-2xl shadow-lg border border-slate-200">
+    <h2 class="mt-2 mb-6 text-center text-3xl font-bold text-slate-950 uppercase tracking-wide">
+      Résumé du cours
+    </h2>
+
+    <div class="text-slate-700 space-y-4">
+      <p class="bg-slate-200 p-4 rounded-lg">
+        L'optimisation des performances est au cœur des versions v17+. L'introduction des <strong>Deferrable Views</strong> permet de différer le chargement et le rendu de parties lourdes du template. En parallèle, l'avènement du mode <strong>Zoneless</strong> permet de se passer de Zone.js pour de meilleures performances de rendu.
+      </p>
+
+      <h3 class="font-bold text-slate-950 text-xl mt-4">1. La syntaxe Deferrable Views (v18+)</h3>
+      <p class="text-sm">
+        Les blocs `&#64;defer` permettent de spécifier des conditions de déclenchement (`on viewport`, `on idle`, `on hover`, `when condition`) :
+      </p>
+      
+      <!-- Code Snippet -->
+      <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-xs relative my-2 rounded-lg shadow-lg overflow-x-auto">
+&#64;defer (on viewport) &#123;
+  &lt;app-heavy-chart /&gt;
+&#125; &#64;loading &#123;
+  &lt;p&gt;Chargement du composant...&lt;/p&gt;
+&#125; &#64;placeholder &#123;
+  &lt;div&gt;Zone réservée au graphique&lt;/div&gt;
+&#125; &#64;error &#123;
+  &lt;p&gt;Échec du chargement&lt;/p&gt;
+&#125;</pre>
+
+      <h3 class="font-bold text-slate-950 text-xl mt-6">2. Passage au mode Zoneless</h3>
+      <p class="text-sm">
+        Pour activer la détection réactive fine sans Zone.js, on configure le bootstrap de l'application dans `app.config.ts` :
+      </p>
+
+      <!-- Code Snippet -->
+      <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-xs relative my-2 rounded-lg shadow-lg overflow-x-auto">
+<span class="text-indigo-400">export const</span> appConfig: ApplicationConfig = &#123;
+  providers: [
+    <span class="text-amber-400">provideExperimentalZonelessChangeDetection</span>()
+  ]
+&#125;;</pre>
+    </div>
+  </section>
+
+  <!-- Playground -->
+  <section class="bg-slate-400 p-8 lg:col-span-2 rounded-2xl shadow-lg border border-slate-300 flex flex-col justify-between">
+    <div>
+      <h2 class="mt-2 mb-4 text-center text-3xl font-bold uppercase text-slate-950 tracking-wide">
+        Playground
+      </h2>
+
+      <p class="py-2 text-center italic text-slate-800 text-sm">
+        Simulez le chargement asynchrone d'une vue différée avec temps de latence réseau pour observer les transitions d'état.
+      </p>
+
+      <div class="bg-slate-200 p-6 rounded-lg shadow-md space-y-6">
+        <!-- Control buttons -->
+        <div class="flex gap-2">
+          <button 
+            (click)="triggerDefer()" 
+            [disabled]="loading"
+            class="flex-auto bg-slate-900 hover:bg-slate-850 text-white font-bold py-2.5 px-3 rounded shadow transition-all cursor-pointer text-xs uppercase tracking-wider disabled:opacity-50"
+          >
+            Lancer le chargement
+          </button>
+          <button 
+            (click)="resetDefer()" 
+            class="bg-slate-600 hover:bg-slate-700 text-white font-bold py-2.5 px-3 rounded shadow transition-all cursor-pointer text-xs uppercase tracking-wider"
+          >
+            Réinitialiser
+          </button>
+        </div>
+
+        <!-- Simulated view area representing Deferrable blocks -->
+        <div class="border border-dashed border-slate-400 rounded-lg p-5 bg-white min-h-[180px] flex flex-col items-center justify-center text-center">
+          
+          <!-- State 1: Placeholder -->
+          <div *ngIf="!isTriggered" class="space-y-2">
+            <span class="inline-block px-2 py-1 bg-slate-200 text-slate-600 rounded text-[9px] uppercase font-bold tracking-wider">// &#64;placeholder</span>
+            <p class="text-slate-400 text-xs italic">
+              Emplacement réservé par défaut avant interaction ou déclenchement.
+            </p>
+          </div>
+
+          <!-- State 2: Loading -->
+          <div *ngIf="isTriggered && loading" class="space-y-3">
+            <span class="inline-block px-2 py-1 bg-amber-200 text-amber-800 rounded text-[9px] uppercase font-bold tracking-wider">// &#64;loading (Simulation réseau)</span>
+            <div class="flex items-center gap-2 text-xs font-mono text-amber-600 font-bold justify-center">
+              <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Téléchargement des modules différés...
+            </div>
+          </div>
+
+          <!-- State 3: Content loaded -->
+          <div *ngIf="isTriggered && !loading && showContent" class="w-full space-y-3">
+            <span class="inline-block px-2 py-1 bg-green-200 text-green-800 rounded text-[9px] uppercase font-bold tracking-wider">// Composant différé chargé</span>
+            <div class="bg-slate-950 text-slate-50 p-4 rounded-xl shadow-md text-left text-xs font-mono space-y-2">
+              <div class="text-slate-400 border-b border-slate-800 pb-1.5 flex justify-between items-center">
+                <span>⚡ app-heavy-chart.js</span>
+                <span class="text-green-400 font-bold uppercase tracking-wider text-[8px] border border-green-500/30 px-1 rounded">Lazy-loaded</span>
+              </div>
+              <p class="text-slate-300">
+                Poids du chunk : <strong class="text-indigo-300">421 Ko</strong><br>
+                Gain de chargement initial : <strong class="text-indigo-300">+25%</strong>
+              </p>
+              <div class="h-3 w-full bg-slate-800 rounded overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-indigo-500 to-rose-500 rounded w-full"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Conclusion Alain Guillon -->
+  <section class="p-8 bg-slate-900 rounded-2xl shadow-xl border border-slate-800 flex flex-col lg:flex-row items-center justify-between lg:col-span-5 gap-8 mt-4">
+    <figure class="flex flex-col items-center flex-shrink-0">
+      <img
+        src="../../../../assets/alain.jpg"
+        alt="Alain Guillon"
+        class="size-48 rounded-full border-4 border-slate-500 shadow-lg object-cover mb-2"
+      />
+      <figcaption class="text-center">
+        <span class="block font-black text-slate-400 text-lg">Alain Guillon</span>
+        <span class="block italic text-slate-500 text-sm">Développeur fullstack certifié</span>
+      </figcaption>
+    </figure>
+
+    <div class="flex-auto max-w-2xl px-4">
+      <h2 class="mb-4 text-center lg:text-left text-3xl font-bold text-slate-400 uppercase tracking-wider">
+        Conclusion
+      </h2>
+      <p class="text-slate-300 text-sm leading-relaxed text-justify">
+        L'utilisation conjointe des Deferrable Views et des architectures Zoneless révolutionne les performances de vos applications Angular. En scindant vos modules lourds en chunks chargés uniquement au survol ou à la visibilité, et en limitant les cycles de rendu aux seuls signaux ayant muté, vous offrez à vos utilisateurs une réactivité proche des 60 FPS sans effort de développement supplémentaire.
+      </p>
+    </div>
+
+    <figure class="bg-white rounded-full p-4 shadow-md flex-shrink-0 hidden lg:block">
+      <img
+        src="../../../../assets/Angular_gradient.png"
+        alt="logo angular v17"
+        class="size-36"
+      />
+    </figure>
+  </section>
+</section>

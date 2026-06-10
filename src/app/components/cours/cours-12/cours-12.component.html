@@ -1,0 +1,205 @@
+<!-- Contenu -->
+<section
+  class="bg-slate-600 flex-auto p-6 md:p-8 grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8"
+>
+  <!-- Partie Titre -->
+  <section class="lg:col-span-5 flex items-center justify-between py-2 gap-6">
+    <figure class="bg-white m-4 rounded-full shadow-lg">
+      <img
+        src="../../../../assets/Angular_gradient.png"
+        alt="logo angular v17"
+        class="size-24 p-2"
+      />
+    </figure>
+    <div
+      class="flex flex-col p-8 flex-auto rounded-lg bg-slate-950 text-left text-slate-50 shadow-md"
+    >
+      <h1 class="text-3xl md:text-5xl font-black tracking-tight">
+        {{ title }}
+      </h1>
+    </div>
+  </section>
+
+  <!-- Version Impact Notice -->
+  <div *ngIf="selectedVersion !== 'v17' && versionNote" class="lg:col-span-5 bg-slate-900/90 border border-indigo-500/30 p-5 rounded-2xl shadow-xl flex items-center gap-4 transition-all duration-300">
+    <div class="bg-indigo-600 text-white font-bold text-xs uppercase tracking-wider px-3 py-1.5 rounded-lg shadow-sm shadow-indigo-500/20">
+      {{ selectedVersion | uppercase }}
+    </div>
+    <div class="flex-auto">
+      <h4 class="text-indigo-400 text-sm font-bold tracking-wide">Évolution Angular {{ selectedVersion | uppercase }}</h4>
+      <p class="text-slate-300 text-xs mt-1 leading-relaxed" [innerHTML]="versionNote"></p>
+    </div>
+  </div>
+
+  <!-- Partie Résumé du cours -->
+  <section class="bg-slate-50 p-8 lg:col-span-3 rounded-2xl shadow-lg border border-slate-200">
+    <h2
+      class="mt-2 mb-6 text-center text-3xl font-bold text-slate-950 uppercase tracking-wide"
+    >
+      Résumé du cours
+    </h2>
+
+    <div class="text-slate-700 space-y-4">
+      <p class="bg-slate-200 p-4 rounded-lg">
+        L'interface <strong>ControlValueAccessor (CVA)</strong> fait office de pont entre un composant personnalisé Angular et l'API des formulaires réactifs ou template-driven. Elle permet à un composant personnalisé de se comporter exactement comme un input natif.
+      </p>
+
+      <h3 class="font-bold text-slate-950 text-xl mt-4">1. Les 4 méthodes clés</h3>
+      <ul class="list-disc pl-6 space-y-2">
+        <li><strong>writeValue(value: any)</strong> : Appelée par Angular pour écrire une nouvelle valeur depuis le modèle vers la vue (le composant).</li>
+        <li><strong>registerOnChange(fn: any)</strong> : Enregistre une fonction de rappel à exécuter lorsque la valeur change dans le composant (met à jour le modèle).</li>
+        <li><strong>registerOnTouched(fn: any)</strong> : Enregistre une fonction de rappel à appeler lorsque le composant reçoit le focus puis le perd (touched).</li>
+        <li><strong>setDisabledState(isDisabled: boolean)</strong> : (Optionnelle) Appelée par Angular lorsque le statut d'activation du contrôle change.</li>
+      </ul>
+
+      <h3 class="font-bold text-slate-950 text-xl mt-6">2. Implémentation du composant</h3>
+
+      <!-- Code v17 / v18 -->
+      <div *ngIf="selectedVersion === 'v17' || selectedVersion === 'v18'">
+        <p class="py-1">
+          En v17/v18, la déclaration requiert l'enregistrement du token <code>NG_VALUE_ACCESSOR</code> avec <code>forwardRef</code> :
+        </p>
+        <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto">
+          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">TS (v17/v18)</span>
+          <span class="text-indigo-400">&#64;Component</span>(&#123;
+            selector: <span class="text-emerald-400">'app-star-rating'</span>,
+            providers: [
+              &#123;
+                provide: <span class="text-amber-400">NG_VALUE_ACCESSOR</span>,
+                useExisting: <span class="text-amber-400">forwardRef</span>(() => StarRatingComponent),
+                multi: <span class="text-sky-400">true</span>
+              &#125;
+            ]
+          &#125;)
+          <span class="text-indigo-400">export class</span> <span class="text-amber-400">StarRatingComponent</span> <span class="text-indigo-400">implements</span> <span class="text-amber-400">ControlValueAccessor</span> &#123;
+            <span class="text-slate-500">// Implémentation des 4 méthodes...</span>
+          &#125;
+        </pre>
+      </div>
+
+      <!-- Code v19 / v20 -->
+      <div *ngIf="selectedVersion === 'v19' || selectedVersion === 'v20'">
+        <p class="py-1">
+          En v19/v20, on utilise les <strong>Signal inputs</strong> pour lier les états et simplifier le cycle de rendu sans Zone.js :
+        </p>
+        <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto">
+          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">TS (v19/v20)</span>
+          <span class="text-indigo-400">export class</span> <span class="text-amber-400">StarRatingComponent</span> <span class="text-indigo-400">implements</span> <span class="text-amber-400">ControlValueAccessor</span> &#123;
+            <span class="text-slate-500">// Utilisation de read-only signals pour piloter l'UI</span>
+            <span class="text-indigo-400">public</span> disabled = <span class="text-amber-400">signal</span>(<span class="text-sky-400">false</span>);
+            
+            <span class="text-indigo-400">setDisabledState</span>(isDisabled: <span class="text-sky-400">boolean</span>): <span class="text-sky-400">void</span> &#123;
+              <span class="text-indigo-400">this</span>.disabled.<span class="text-amber-400">set</span>(isDisabled);
+            &#125;
+          &#125;
+        </pre>
+      </div>
+
+      <!-- Code v21 -->
+      <div *ngIf="selectedVersion === 'v21'">
+        <p class="py-1">
+          En v21, le ControlValueAccessor fusionne avec les signaux bidirectionnels (<code>model()</code>), supprimant le boilerplate d'enregistrement manuel du ValueAccessor :
+        </p>
+        <pre class="bg-neutral-900 py-4 px-6 text-slate-50 font-mono text-sm relative my-2 rounded-lg shadow-lg overflow-x-auto">
+          <span class="text-slate-950 absolute top-4 right-0 bg-slate-200 px-2 py-1 rounded-tl-lg rounded-bl-lg text-xs">TS (v21)</span>
+          <span class="text-indigo-400">export class</span> <span class="text-amber-400">StarRatingComponent</span> &#123;
+            <span class="text-slate-500">// Liaison bidirectionnelle native basée sur les signaux</span>
+            <span class="text-indigo-400">value</span> = <span class="text-amber-400">model</span>(<span class="text-sky-400">0</span>); 
+            <span class="text-indigo-400">disabled</span> = <span class="text-amber-400">input</span>(<span class="text-sky-400">false</span>);
+          &#125;
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partie formulaire -->
+  <section class="bg-slate-400 p-8 lg:col-span-2 rounded-2xl shadow-lg border border-slate-300 flex flex-col justify-between">
+    <div>
+      <h2
+        class="mt-2 mb-4 text-center text-3xl font-bold uppercase text-slate-950 tracking-wide"
+      >
+        Formulaire
+      </h2>
+
+      <p class="py-2 text-center italic text-slate-800">
+        Le composant d'évaluation par étoiles ci-dessous est un contrôle personnalisé implémentant <strong>ControlValueAccessor</strong>.
+      </p>
+
+      <form
+        (ngSubmit)="submitForm()"
+        [formGroup]="form"
+        class="bg-slate-200 p-6 rounded-lg shadow-md space-y-4"
+      >
+        <!-- Nom d'utilisateur -->
+        <div class="form-group flex flex-col">
+          <label class="font-bold uppercase mb-1 text-slate-700 text-sm">Votre Nom :</label>
+          <input
+            formControlName="userName"
+            type="text"
+            placeholder="Ex: Alain Guillon"
+            class="w-full rounded-md border-slate-300 shadow-sm"
+          />
+        </div>
+
+        <!-- Satisfaction (Custom CVA Star Rating) -->
+        <div class="form-group flex flex-col">
+          <label class="font-bold uppercase mb-1 text-slate-700 text-sm">Votre note de satisfaction :</label>
+          <app-star-rating formControlName="satisfaction"></app-star-rating>
+        </div>
+
+        <!-- Bouton de soumission -->
+        <div class="text-center pt-4">
+          <button
+            type="submit"
+            [disabled]="form.invalid"
+            class="bg-slate-600 hover:bg-slate-700 text-slate-50 font-bold px-6 py-2 rounded-md shadow-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Soumettre
+          </button>
+        </div>
+      </form>
+
+      <!-- Rendu en direct de la valeur -->
+      <div class="mt-6 p-4 bg-slate-900 rounded-lg shadow-inner">
+        <h4 class="text-slate-400 font-bold text-xs uppercase tracking-wider mb-2">Valeur du formulaire :</h4>
+        <pre class="text-green-400 font-mono text-xs overflow-x-auto">{{ form.value | json }}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ma conclusion -->
+  <section class="p-8 bg-slate-900 rounded-2xl shadow-xl border border-slate-800 flex flex-col lg:flex-row items-center justify-between lg:col-span-5 gap-8 mt-4">
+    <figure class="flex flex-col items-center flex-shrink-0">
+      <img
+        src="../../../../assets/alain.jpg"
+        alt="Alain Guillon"
+        class="size-48 rounded-full border-4 border-slate-500 shadow-lg object-cover mb-2"
+      />
+      <figcaption class="text-center">
+        <span class="block font-black text-slate-400 text-lg">Alain Guillon</span>
+        <span class="block italic text-slate-500 text-sm"
+          >Développeur fullstack certifié</span
+        >
+      </figcaption>
+    </figure>
+
+    <div class="flex-auto max-w-2xl px-4">
+      <h2
+        class="mb-4 text-center lg:text-left text-3xl font-bold text-slate-400 uppercase tracking-wider"
+      >
+        Conclusion
+      </h2>
+      <p class="text-slate-300 text-sm leading-relaxed text-justify">
+        Le <strong>ControlValueAccessor</strong> est l'outil indispensable pour briser les limites des champs de formulaire standards d'HTML. Qu'il s'agisse d'un sélecteur de notation, d'une palette de couleur personnalisée ou d'un calendrier imbriqué, CVA assure que votre composant restera nativement compatible avec les API de validation et les directives de formulaires Angular.
+      </p>
+    </div>
+
+    <figure class="bg-white rounded-full p-4 shadow-md flex-shrink-0 hidden lg:block">
+      <img
+        src="../../../../assets/Angular_gradient.png"
+        alt="logo angular v17"
+        class="size-36"
+      />
+    </figure>
+  </section>
+</section>

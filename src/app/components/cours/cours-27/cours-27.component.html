@@ -1,0 +1,115 @@
+<!-- Leçon 11 : Standalone Components -->
+<section class="bg-slate-950 flex-auto p-6 md:p-8 grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8">
+  <section class="lg:col-span-5 flex items-center gap-6 py-2">
+    <figure class="bg-white m-4 rounded-full shadow-lg flex-shrink-0"><img src="../../../../assets/Angular_gradient.png" alt="logo angular" class="size-20 p-2" /></figure>
+    <div class="flex flex-col p-6 flex-auto rounded-xl bg-slate-900 border border-slate-800 text-left text-slate-50 shadow-md">
+      <span class="text-xs font-black uppercase tracking-widest text-amber-500 mb-1">Fondamentaux · Leçon 11</span>
+      <h1 class="text-3xl md:text-4xl font-black tracking-tight">{{ title }}</h1>
+      <p class="text-slate-400 text-sm mt-2">L'architecture moderne d'Angular — composants autonomes sans NgModule, disponible depuis v15 et par défaut en v18.</p>
+    </div>
+  </section>
+
+  <section class="bg-slate-900 border border-slate-800 p-8 lg:col-span-3 rounded-2xl shadow-lg">
+    <h2 class="mt-2 mb-6 text-center text-2xl font-bold text-white uppercase tracking-wide">Résumé du cours</h2>
+    <div class="text-slate-300 space-y-5 text-sm leading-relaxed">
+      <p class="bg-slate-800/60 border-l-4 border-amber-500 pl-4 py-3 rounded-r-lg">
+        Les <strong>Standalone Components</strong> (v15+) permettent de créer des composants qui déclarent leurs propres dépendances directement, sans passer par un <code class="text-amber-400">NgModule</code>. Depuis Angular 18, c'est la configuration <strong>par défaut</strong>.
+      </p>
+
+      <!-- Note contextuelle pédagogique -->
+      <div class="bg-sky-950/50 border border-sky-700/40 rounded-xl px-4 py-3 flex gap-3 items-start">
+        <span class="text-sky-400 text-base flex-shrink-0 mt-0.5">ℹ️</span>
+        <p class="text-xs text-sky-200 leading-relaxed">
+          <strong class="text-sky-300">Note pédagogique</strong> — Ce projet de formation utilise l'architecture <strong>NgModule</strong> (v17) pour illustrer les fondations classiques encore présentes dans la grande majorité des bases de code professionnelles. En production sur Angular 18+, vous démarreriez directement avec <code class="text-amber-300">bootstrapApplication()</code> et des composants standalone.
+        </p>
+      </div>
+
+      <h3 class="font-bold text-white text-lg">1. Composant Standalone</h3>
+      <pre class="bg-slate-800 py-4 px-5 text-slate-50 font-mono text-xs rounded-xl shadow-lg overflow-x-auto border border-slate-700">
+<span class="text-amber-400">&#64;Component</span>(&#123;
+  selector: <span class="text-emerald-400">'app-user-list'</span>,
+  <span class="text-sky-400">standalone: true</span>,             <span class="text-slate-500">← clé de la standalone</span>
+  imports: [
+    CommonModule,             <span class="text-slate-500">← ou NgIf, NgFor individuellement</span>
+    ReactiveFormsModule,
+    RouterModule,
+    UserCardComponent,        <span class="text-slate-500">← import direct d'un autre standalone</span>
+  ],
+  templateUrl: <span class="text-emerald-400">'./user-list.component.html'</span>,
+&#125;)
+<span class="text-indigo-400">export class</span> UserListComponent &#123; ... &#125;</pre>
+
+      <h3 class="font-bold text-white text-lg mt-6">2. Bootstrap sans NgModule</h3>
+      <pre class="bg-slate-800 py-4 px-5 text-slate-50 font-mono text-xs rounded-xl shadow-lg overflow-x-auto border border-slate-700">
+<span class="text-slate-500">// main.ts — Angular 18+ par défaut</span>
+<span class="text-amber-400">bootstrapApplication</span>(AppComponent, &#123;
+  providers: [
+    <span class="text-amber-400">provideRouter</span>(routes),
+    <span class="text-amber-400">provideHttpClient</span>(),
+    <span class="text-amber-400">provideAnimations</span>(),
+  ],
+&#125;).<span class="text-amber-400">catch</span>(err =&gt; console.<span class="text-amber-400">error</span>(err));</pre>
+
+      <h3 class="font-bold text-white text-lg mt-6">3. Migration NgModule → Standalone</h3>
+      <pre class="bg-slate-800 py-4 px-5 text-slate-50 font-mono text-xs rounded-xl shadow-lg overflow-x-auto border border-slate-700">
+<span class="text-slate-500">// Commande automatique de migration (Angular CLI)</span>
+ng generate &#64;angular/core:standalone
+
+<span class="text-slate-500">// Options disponibles :</span>
+<span class="text-slate-500">// --mode=convert-to-standalone</span>
+<span class="text-slate-500">// --mode=prune-ng-modules</span>
+<span class="text-slate-500">// --mode=standalone-bootstrap</span></pre>
+
+      <h3 class="font-bold text-white text-lg mt-6">4. Imports granulaires (v15+)</h3>
+      <pre class="bg-slate-800 py-4 px-5 text-slate-50 font-mono text-xs rounded-xl shadow-lg overflow-x-auto border border-slate-700">
+<span class="text-slate-500">// Au lieu de CommonModule (tout importer)</span>
+<span class="text-indigo-400">import</span> &#123; NgIf, NgFor, AsyncPipe &#125; <span class="text-indigo-400">from</span> <span class="text-emerald-400">'&#64;angular/common'</span>;
+
+<span class="text-amber-400">&#64;Component</span>(&#123;
+  standalone: <span class="text-indigo-400">true</span>,
+  imports: [NgIf, NgFor, AsyncPipe],  <span class="text-slate-500">← seulement ce dont on a besoin</span>
+&#125;)</pre>
+    </div>
+  </section>
+
+  <section class="bg-slate-900 border border-slate-800 p-8 lg:col-span-2 rounded-2xl shadow-lg flex flex-col">
+    <h2 class="mt-2 mb-4 text-center text-2xl font-bold text-white uppercase tracking-wide">À retenir</h2>
+    <div class="space-y-4 flex-auto">
+      <div class="bg-slate-800 border border-slate-700 rounded-xl p-4">
+        <h4 class="text-xs font-black uppercase tracking-wider text-amber-400 mb-3">NgModule vs Standalone</h4>
+        <div class="text-xs space-y-2 text-slate-400">
+          <div class="flex items-start gap-2"><span class="text-rose-400">✗</span><span>NgModule : déclarations centralisées</span></div>
+          <div class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Standalone : auto-suffisant, tree-shakable</span></div>
+          <div class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Standalone : meilleur pour le lazy loading</span></div>
+          <div class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Standalone : défaut Angular 18+</span></div>
+        </div>
+      </div>
+      <div class="bg-slate-800 border border-slate-700 rounded-xl p-4">
+        <h4 class="text-xs font-black uppercase tracking-wider text-sky-400 mb-3">Génération standalone</h4>
+        <code class="block bg-slate-900 p-2 rounded text-xs font-mono text-emerald-400">ng g c my-comp --standalone</code>
+        <code class="block bg-slate-900 p-2 rounded text-xs font-mono text-emerald-400 mt-2">ng g s my-service</code>
+      </div>
+      <div class="bg-indigo-950/40 border border-indigo-700/40 rounded-xl p-4">
+        <h4 class="text-xs font-black uppercase tracking-wider text-indigo-400 mb-2">🚀 v18+ par défaut</h4>
+        <p class="text-xs text-slate-300">Dans Angular 18+, <code class="text-amber-400">ng new</code> génère directement une application standalone sans NgModule. C'est la direction officielle du framework.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="p-8 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl flex flex-col lg:flex-row items-center justify-between lg:col-span-5 gap-8 mt-2">
+    <figure class="flex flex-col items-center flex-shrink-0">
+      <img src="../../../../assets/alain.jpg" alt="Alain Guillon" class="size-36 rounded-full border-4 border-slate-700 shadow-lg object-cover mb-2" />
+      <figcaption class="text-center">
+        <span class="block font-black text-slate-400 text-base">Alain Guillon</span>
+        <span class="block italic text-slate-500 text-xs">Développeur fullstack certifié</span>
+      </figcaption>
+    </figure>
+    <div class="flex-auto max-w-2xl px-4">
+      <h2 class="mb-4 text-center lg:text-left text-2xl font-bold text-slate-400 uppercase tracking-wider">Conclusion</h2>
+      <p class="text-slate-300 text-sm leading-relaxed text-justify">Les Standalone Components marquent une évolution majeure dans l'architecture Angular. En éliminant la friction des NgModules pour les projets modernes, Angular s'aligne sur les standards du web (Web Components) et simplifie considérablement l'expérience développeur. Que vous mainteniez un projet NgModule ou démarriez un nouveau projet standalone, comprendre les deux paradigmes est aujourd'hui indispensable.</p>
+    </div>
+    <figure class="bg-white rounded-full p-3 shadow-md flex-shrink-0 hidden lg:block">
+      <img src="../../../../assets/Angular_gradient.png" alt="logo angular" class="size-28" />
+    </figure>
+  </section>
+</section>

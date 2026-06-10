@@ -1,0 +1,150 @@
+<section class="bg-slate-950 flex-auto p-6 md:p-12 pt-12 md:pt-16 flex flex-col items-center justify-center min-h-[calc(100vh-6rem)]">
+  <!-- Hero Header -->
+  <div class="max-w-4xl text-center mb-12">
+    <div class="inline-flex items-center gap-3 bg-slate-950/40 px-4 py-2 rounded-full border border-slate-500/20 mb-6 backdrop-blur-md">
+      <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span>
+      <span class="text-xs font-black uppercase text-indigo-300 tracking-wider">Plateforme d'Apprentissage Progressive v17-v21</span>
+    </div>
+    
+    <h1 class="text-4xl md:text-6xl font-black tracking-tight text-white mb-6 leading-tight">
+      Angular de la <span class="bg-gradient-to-r from-indigo-400 to-rose-400 bg-clip-text text-transparent">v17 à la v21</span>
+    </h1>
+    
+    <p class="text-slate-200 text-lg md:text-xl max-w-2xl mx-auto font-normal leading-relaxed">
+      4 parcours progressifs et ciblés pour aller de l'installation jusqu'aux concepts avancés du framework.
+    </p>
+  </div>
+
+  <!-- Cards Grid for tracks -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl">
+    
+    <!-- Track 1: Installation & Styles -->
+    <div 
+      (click)="selectTrack('setup')"
+      class="group bg-slate-950/90 hover:bg-slate-900 border border-slate-800 hover:border-slate-500/60 p-8 rounded-2xl shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer flex flex-col justify-between"
+    >
+      <div>
+        <div class="flex items-center gap-4 mb-5">
+          <div class="size-12 rounded-xl bg-slate-700/60 text-slate-300 flex items-center justify-center border border-slate-600 group-hover:scale-110 transition-transform flex-shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+          <div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-slate-500">Parcours 1</span>
+            <h3 class="text-lg font-bold text-white tracking-wide">Installation & Styles</h3>
+          </div>
+        </div>
+        <p class="text-slate-400 text-sm leading-relaxed mb-5">
+          Configurez votre poste de travail, le CLI Angular, et choisissez votre stratégie CSS (Vanilla, Tailwind v3 ou v4).
+        </p>
+        <ul class="space-y-2 text-xs text-slate-400">
+          <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-slate-500 flex-shrink-0"></span>Matrice de versions Node / Angular CLI</li>
+          <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-slate-500 flex-shrink-0"></span>Tailwind CSS v3 & v4 · Vanilla CSS</li>
+        </ul>
+      </div>
+      <div class="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between text-slate-400 group-hover:text-white font-bold text-xs transition-colors">
+        <span>Accéder au guide</span>
+        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+
+    <!-- Track 2: Fondamentaux Angular — ACTIF -->
+    <div 
+      (click)="selectTrack('basics')"
+      class="group bg-slate-950/90 hover:bg-slate-900 border border-slate-800 hover:border-sky-500/50 p-8 rounded-2xl shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer flex flex-col justify-between"
+    >
+      <div>
+        <div class="flex items-center gap-4 mb-5">
+          <div class="size-12 rounded-xl bg-sky-600/20 text-sky-400 flex items-center justify-center border border-sky-500/30 group-hover:scale-110 transition-transform flex-shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          </div>
+          <div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-sky-500">Parcours 2 · Disponible</span>
+            <h3 class="text-lg font-bold text-white tracking-wide">Fondamentaux Angular</h3>
+          </div>
+        </div>
+        <p class="text-slate-400 text-sm leading-relaxed mb-5">
+          Composants, data binding, directives, services, routing — les 11 briques fondatrices indispensables avant tout framework avancé.
+        </p>
+        <ul class="space-y-2 text-xs text-slate-400">
+          <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-500 flex-shrink-0"></span>11 leçons progressives complètes</li>
+          <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-500 flex-shrink-0"></span>Lifecycle hooks · Change Detection · Standalone</li>
+        </ul>
+      </div>
+      <div class="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between text-sky-400 group-hover:text-sky-300 font-bold text-xs transition-colors">
+        <span>Commencer le parcours</span>
+        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+
+    <!-- Track 3: Formulaires Réactifs -->
+
+    <div 
+      (click)="selectTrack('forms')"
+      class="group bg-slate-950/90 hover:bg-slate-900 border border-slate-800 hover:border-amber-500/50 p-8 rounded-2xl shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer flex flex-col justify-between"
+    >
+      <div>
+        <div class="flex items-center gap-4 mb-5">
+          <div class="size-12 rounded-xl bg-amber-600/20 text-amber-400 flex items-center justify-center border border-amber-500/30 group-hover:scale-110 transition-transform flex-shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+          <div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-amber-600">Parcours 3 · Disponible</span>
+            <h3 class="text-lg font-bold text-white tracking-wide">Formulaires Réactifs</h3>
+          </div>
+        </div>
+        <p class="text-slate-400 text-sm leading-relaxed mb-5">
+          De FormControl au ControlValueAccessor — maîtrisez la liaison de données, les validations synchrones et asynchrones.
+        </p>
+        <ul class="space-y-2 text-xs text-slate-400">
+          <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0"></span>12 leçons progressives complètes</li>
+          <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0"></span>Validations synchrones & asynchrones · CVA</li>
+        </ul>
+      </div>
+      <div class="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between text-amber-400 group-hover:text-amber-300 font-bold text-xs transition-colors">
+        <span>Commencer le parcours</span>
+        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+
+
+    <!-- Track 4: Concepts Modernes (v17 - v21) -->
+    <div 
+      (click)="selectTrack('advanced')"
+      class="group bg-slate-950/90 hover:bg-slate-900 border border-slate-800 hover:border-indigo-500/50 p-8 rounded-2xl shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer flex flex-col justify-between"
+    >
+      <div>
+        <div class="flex items-center gap-4 mb-5">
+          <div class="size-12 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center border border-indigo-500/30 group-hover:scale-110 transition-transform flex-shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-indigo-500">Parcours 4 · Avancé</span>
+            <h3 class="text-lg font-bold text-white tracking-wide">Concepts Modernes (v17–v21)</h3>
+          </div>
+        </div>
+        <p class="text-slate-400 text-sm leading-relaxed mb-5">
+          Signals, HttpClient fonctionnel, Guards modernes, rendu différé et architecture Zoneless.
+        </p>
+        <ul class="space-y-2 text-xs text-slate-400">
+          <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0"></span>Signals & RxJS · HttpClient & Intercepteurs</li>
+          <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0"></span>Guards fonctionnels · &#64;defer & Zoneless</li>
+        </ul>
+      </div>
+      <div class="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between text-indigo-400 group-hover:text-indigo-300 font-bold text-xs transition-colors">
+        <span>Commencer le parcours</span>
+        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Alain Guillon Badge -->
+  <div class="mt-16 bg-slate-900/60 border border-slate-800 p-4 rounded-xl flex items-center gap-4 max-w-md w-full shadow-lg">
+    <img src="../../../../assets/alain.jpg" alt="Alain Guillon" class="w-12 h-12 rounded-full border border-slate-700 object-cover" />
+    <div>
+      <h5 class="text-white text-sm font-bold">Encadré par Alain Guillon</h5>
+      <p class="text-slate-400 text-xs mt-0.5">Fondateur d'OmnyVia, Formateur Tech. & Cyber.</p>
+    </div>
+  </div>
+</section>
+

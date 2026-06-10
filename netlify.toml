@@ -1,0 +1,52 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# Netlify Configuration — Mémoire Angular (Angular 17 + SSR)
+# ──────────────────────────────────────────────────────────────────────────────
+
+[build]
+  # Commande de build Angular (production)
+  command = "npm run build"
+
+  # Répertoire de sortie du build Angular 17 avec SSR
+  # Le dossier "browser" contient les assets statiques
+  publish = "dist/angular-formulaire/browser"
+
+[build.environment]
+  # Force Node.js 22 LTS (Active LTS — sécurité renforcée)
+  NODE_VERSION = "22"
+  NPM_VERSION  = "10"
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Redirections SPA — Obligatoire pour le routing Angular (client-side)
+# Toutes les routes inconnues renvoient vers index.html
+# ──────────────────────────────────────────────────────────────────────────────
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+# ──────────────────────────────────────────────────────────────────────────────
+# En-têtes de sécurité HTTP
+# ──────────────────────────────────────────────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options        = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy        = "strict-origin-when-cross-origin"
+    Permissions-Policy     = "camera=(), microphone=(), geolocation=()"
+
+# Assets statiques Angular — cache long terme
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
